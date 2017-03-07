@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionBd {
+public class ConnectionBdOk {
 	// private static Connection connection = null;
 
 	public static Connection getConnection() throws SQLException {
@@ -21,7 +21,7 @@ public class ConnectionBd {
 		return connection;
 	}
 
-	private ConnectionBd() {
+	private ConnectionBdOk() {
 
 	}
 }
