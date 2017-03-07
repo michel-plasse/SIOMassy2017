@@ -82,8 +82,8 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                             candidature.put("nom", nom);
                             candidature.put("prenom", prenom);
                             candidature.put("statut", statut);
-                            candidature.put("debut", nom);
-                            candidature.put("fin", nom);
+                            candidature.put("debut", debut);
+                            candidature.put("fin", fin);
                             candidature.put("formationNom", formationNom);
                             candidature.put("effectue", effectue);
                             listeMapCandidature.add(candidature);
