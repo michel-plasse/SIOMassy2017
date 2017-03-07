@@ -16,7 +16,7 @@ public class ConnectionBd {
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("Je ne suis pas connecté à la base de donn�es.");
+			System.out.println("Je ne suis pas connecté à la base de données.");
 		}
 		return connection;
 	}
