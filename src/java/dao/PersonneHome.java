@@ -3,7 +3,7 @@ package dao;
 import model.Personne;
 
 public interface PersonneHome extends DAO<Personne> {
-	//Ajouter toutes les méthodes supplémentaires à la DAO (besoin en plus de la DAO seule)
+	//Ajouter toutes les mï¿½thodes supplÃ©mentaires Ã  la DAO (besoin en plus de la DAO seule)
 	
 	
 

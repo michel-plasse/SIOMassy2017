@@ -49,7 +49,7 @@ public class PersonneDao implements PersonneHome {
 			System.out.println(personne);
 			// Valider
 			connection.commit();
-			System.out.println("Personne insérée.");
+			System.out.println("Personne insÃ©rÃ©e.");
 		} catch (SQLException exc) {
 			connection.rollback();
 			System.out.println("Rollback.");
@@ -61,7 +61,7 @@ public class PersonneDao implements PersonneHome {
 	}
 
 	/**
-	 * Personne de id donné, ou null si pas trouvé.
+	 * Personne de id donnï¿½, ou null si pas trouvï¿½.
 	 */
 	@Override
 	public Personne findById(int id) throws SQLException {
@@ -115,58 +115,6 @@ public class PersonneDao implements PersonneHome {
 		return false;
 	}
 	
-	//Méthode qui retourne la liste des inscrits à une date précise
+	//MÃ©thode qui retourne la liste des inscrits Ã  une date prï¿½cise
 
 }
-
-/*
- * package dao;
- * 
- * import java.sql.SQLException; import java.sql.Statement; import
- * java.util.ArrayList; import java.util.HashMap;
- * 
- * import model.Personne;
- * 
- * public class PersonneDao implements PersonneHome { HashMap<Integer, Personne>
- * liste;
- * 
- * 
- * public PersonneDao() { liste = new HashMap<Integer, Personne>(); Personne p1
- * = new Personne(1, "leto@lechat.meow"); liste.put(1, p1); }
- * 
- * @Override public int insert(Personne objetAInserer) throws SQLException {
- * ConnectionBd connection = new ConnectionBd();
- * 
- * String nom = objetAInserer.getNom(); String prenom =
- * objetAInserer.getPrenom(); String email = objetAInserer.getEmail(); String
- * password = objetAInserer.getMot_de_passe(); //int no_phone =
- * objetAInserer.getNo_phone(); String no_rue = objetAInserer.getNo_rue();
- * String nom_rue = objetAInserer.getRue(); String code_postal =
- * objetAInserer.getCode_postal(); String ville = objetAInserer.getVille();
- * String pays = objetAInserer.getPays();
- * 
- * Statement stmt = ConnectionBd.connection.createStatement();
- * stmt.executeUpdate(
- * "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe) VALUES ("
- * +nom+","+prenom+","+email+","+no_rue+","+nom_rue+","+code_postal+","+ville+
- * ","+pays+","+password+");"); return 0; }
- * 
- * 
- * @Override public boolean delete(int id) { // TODO Auto-generated method stub
- * return false; }
- * 
- * 
- * @Override //Renvoie la personne de id = id ou null si pas trouvée. public
- * Personne findById(int id) { return liste.get(id); }
- * 
- * 
- * @Override public ArrayList<Personne> findAll() { // TODO Auto-generated
- * method stub return null; }
- * 
- * 
- * @Override public boolean update(int ancien, Personne nouveau) { // TODO
- * Auto-generated method stub return false; }
- * 
- * 
- * }
- */

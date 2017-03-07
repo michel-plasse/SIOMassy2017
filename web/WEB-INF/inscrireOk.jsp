@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Inscription confirmée</title>
 </head>
 <body>
 <p>Merci de vous être enregistré <span>${leNom } ${lePrenom }</span>.

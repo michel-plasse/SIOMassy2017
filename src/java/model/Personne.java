@@ -121,9 +121,7 @@ public class Personne {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
-	
+        
 
 	public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal,
 		String ville, String pays, String mot_de_passe) {

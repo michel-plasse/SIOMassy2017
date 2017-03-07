@@ -53,7 +53,7 @@ public class InscrireServlet extends HttpServlet {
 		}
 		if (prenom.isEmpty()) {
 			champsrenseignes = false;
-			request.setAttribute("prenom", "Veuillez entrer votre prénom.");
+			request.setAttribute("prenom", "Veuillez entrer votre prï¿½nom.");
 		}
 		if (email.isEmpty()) {
 			champsrenseignes = false;
@@ -73,14 +73,14 @@ public class InscrireServlet extends HttpServlet {
 		}
 		if (!password.equals(passwordcheck)) {
 			champsrenseignes = false;
-			request.setAttribute("password2", "Le mot de passe entré ne correspond pas.");
+			request.setAttribute("password2", "Le mot de passe entrÃ© ne correspond pas.");
 		}
 		if (!email.equals(emailcheck)) {
 			champsrenseignes = false;
-			request.setAttribute("email2", "L'email entré ne correspond pas.");
+			request.setAttribute("email2", "L'email entrÃ© ne correspond pas.");
 		}
 
-		// Sinon envoi Personne à BDD
+		// Sinon envoi Personne ï¿½ BDD
 		if (champsrenseignes) {
 			try {
 				Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
@@ -89,7 +89,7 @@ public class InscrireServlet extends HttpServlet {
 				dao.insert(personneAjoutee);
 				request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
 			} catch (SQLException e) {
-				request.setAttribute("message", "Pb avec la base de données");
+				request.setAttribute("message", "Pb avec la base de donnÃ©es");
 				request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
 			}
 		} else {
