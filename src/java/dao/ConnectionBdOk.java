@@ -12,11 +12,11 @@ public class ConnectionBd {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost/agriotes2017", "root", "");
-			System.out.println("Je suis connecté à la base de données.");
+			System.out.println("Je suis connectÃ© Ã  la base de donnÃ©es.");
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("Je ne suis pas connecté à la base de données.");
+			System.out.println("Je ne suis pas connectÃ© Ã  la base de donnï¿½es.");
 		}
 		return connection;
 	}
