@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public interface Dao<T> {
 
-    public int insert(T objetAInserer) throws SQLException;
+    public void insert(T objetAInserer) throws SQLException;
 
-    public boolean delete(int id);
+    public boolean delete(int id) throws SQLException ;
 
-    public boolean update(int idAncien, T nouveau);
+    public boolean update(int idAncien, T nouveau)throws SQLException ;
 
-    public T findById(int id);
+    public T findById(int id) throws SQLException ;
 
-    public ArrayList<T> findAll();
+    public ArrayList<T> findAll()throws SQLException ;
 
 }
 

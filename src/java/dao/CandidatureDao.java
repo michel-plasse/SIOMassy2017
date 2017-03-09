@@ -12,10 +12,9 @@ import model.Candidature;
 public class CandidatureDao implements CandidatureHome<Candidature> {
 
     @Override
-    public int insert(Candidature objetAInserer) throws SQLException {
+    public void insert(Candidature objetAInserer) throws SQLException {
         // TODO Auto-generated method stub
         Connection connection = ConnectionBd.getConnection();
-        return 0;
     }
 
     @Override

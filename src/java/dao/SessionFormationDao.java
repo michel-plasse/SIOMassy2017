@@ -11,9 +11,8 @@ import model.SessionFormation;
 public class SessionFormationDao implements SessionHome {
 
     @Override
-    public int insert(SessionFormation objetAInserer) throws SQLException {
+    public void insert(SessionFormation objetAInserer) throws SQLException {
         // TODO Auto-generated method stub
-        return 0;
     }
 
     @Override

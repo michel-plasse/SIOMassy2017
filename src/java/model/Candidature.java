@@ -2,10 +2,10 @@ package model;
 
 public class Candidature {
     private Personne personne;
-    private SessionFomation sessionFomation;
+    private SessionFormation sessionFomation;
     private EtatCandidature etatCandidature;
 
-    public Candidature(Personne personne, SessionFomation sessionFomation, EtatCandidature etatCandidature) {
+    public Candidature(Personne personne, SessionFormation sessionFomation, EtatCandidature etatCandidature) {
         this.personne = personne;
         this.sessionFomation = sessionFomation;
         this.etatCandidature = etatCandidature;
@@ -19,11 +19,11 @@ public class Candidature {
         this.personne = personne;
     }
 
-    public SessionFomation getSessionFomation() {
+    public SessionFormation getSessionFomation() {
         return sessionFomation;
     }
 
-    public void setSessionFomation(SessionFomation sessionFomation) {
+    public void setSessionFomation(SessionFormation sessionFomation) {
         this.sessionFomation = sessionFomation;
     }
 
