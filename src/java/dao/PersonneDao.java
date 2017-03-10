@@ -61,7 +61,7 @@ public class PersonneDao implements PersonneHome {
 	}
 
 	/**
-	 * Personne de id donn�, ou null si pas trouv�.
+	 * Personne de id donnée, ou null si pas trouvée.
 	 */
 	@Override
 	public Personne findById(int id) throws SQLException {
@@ -94,7 +94,7 @@ public class PersonneDao implements PersonneHome {
 		String prenom = nouveau.getPrenom();
 		String email = nouveau.getEmail();
 		String password = nouveau.getMot_de_passe();
-		// int no_phone = nouveaur.getNo_phone();
+		// int no_phone = nouveau.getNo_phone();
 		int no_rue = Integer.parseInt(nouveau.getNo_rue());
 		String nom_rue = nouveau.getRue();
 		int code_postal = Integer.parseInt(nouveau.getCode_postal());
@@ -115,6 +115,6 @@ public class PersonneDao implements PersonneHome {
 		return false;
 	}
 	
-	//Méthode qui retourne la liste des inscrits à une date pr�cise
+	//Méthode qui retourne la liste des inscrits à une date précise
 
 }

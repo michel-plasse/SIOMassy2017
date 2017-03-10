@@ -80,7 +80,7 @@ public class InscrireServlet extends HttpServlet {
 			request.setAttribute("email2", "L'email entré ne correspond pas.");
 		}
 
-		// Sinon envoi Personne � BDD
+		// Sinon envoi Personne à BDD
 		if (champsrenseignes) {
 			try {
 				Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
