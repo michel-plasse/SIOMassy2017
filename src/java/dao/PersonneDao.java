@@ -80,8 +80,8 @@ public class PersonneDao implements PersonneHome {
 
 	@Override
 	public ArrayList<Personne> findAll() throws SQLException {
-		Statement stmt;
-		stmt = connection.createStatement();
+		connection = ConnectionBd.getConnection();
+		Statement stmt = connection.createStatement();
 		ResultSet resall = stmt.executeQuery("SELECT* FROM agriotes2017.personne");
 		resall.next();
 		return null;
@@ -89,7 +89,8 @@ public class PersonneDao implements PersonneHome {
 
 	@Override
 	public boolean update(int ancien, Personne nouveau) throws SQLException {
-		Statement stmt;
+		connection = ConnectionBd.getConnection();
+		Statement stmt = connection.createStatement();
 		String nom = nouveau.getNom();
 		String prenom = nouveau.getPrenom();
 		String email = nouveau.getEmail();
@@ -101,7 +102,6 @@ public class PersonneDao implements PersonneHome {
 		String ville = nouveau.getVille();
 		String pays = nouveau.getPays();
 
-		stmt = connection.createStatement();
 		stmt.executeUpdate("UPDATE personne SET(" + nom + ",'" + prenom + ",'" + email + ",'" + password + ",'" + no_rue
 				+ ",'" + nom_rue + ",'" + code_postal + ",'" + ville + ",'" + pays + ";");
 		return false;
@@ -109,8 +109,8 @@ public class PersonneDao implements PersonneHome {
 
 	@Override
 	public boolean delete(int id) throws SQLException {
-		Statement stmt;
-		stmt = connection.createStatement();
+		connection = ConnectionBd.getConnection();
+		Statement stmt = connection.createStatement();
 		stmt.executeUpdate("DELETE FROM personne WHERE id_personne =" + id + ";");
 		return false;
 	}
