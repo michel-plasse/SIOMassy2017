@@ -20,11 +20,11 @@
 
 			<tr>
 				<td>Mot de passe : </td>
-				<td><input type="text" name="password"><span> ${password}</span></td>
+				<td><input type="password" name="password"><span> ${password}</span></td>
 			</tr>
 			<tr>
 				<td>Confirmation du mot de passe : </td>
-				<td><input type="text" name="password2"><span> ${password2}</span></td>
+				<td><input type="password" name="password2"><span> ${password2}</span></td>
 			</tr>
 
 			<tr>
@@ -62,8 +62,8 @@
 						<option value="AutreEurope">Autre pays (Europe)</option>
 						<option value="AutreAfrique">Autre pays (Afrique)</option>
                                                 <option value='AutreAsie'>Autre pays (Asie)</option>
-                                                <option value='AutreAmérique'>Autre pays (Amérique)</option>
-                                                <option value='AutreOcéanie'>Autre pays (Océanie)</option>
+                                                <option value='AutreAmÃ©rique'>Autre pays (AmÃ©rique)</option>
+                                                <option value='AutreOcÃ©anie'>Autre pays (OcÃ©anie)</option>
 				</select></td>
 			</tr>
 
