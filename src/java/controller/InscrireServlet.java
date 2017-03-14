@@ -114,7 +114,7 @@ public class InscrireServlet extends HttpServlet {
         String body = "é€â Veuillez confirmer votre inscription en cliquant sur : "
                 + "<a href='http://localhost/SIOMassy2017/confirmerInscription'>confirmer</a>";
         MimeMessage mail = ServeurSMTP.newEmail(from, to, subject);
-        mail.setContent(body, "text/plain; charset=utf-8");
+        mail.setContent(body, "text/html; charset=utf-8");
         javax.mail.Transport.send(mail);
     }
 

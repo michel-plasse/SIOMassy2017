@@ -18,8 +18,8 @@ public class ServeurSMTPTest extends TestCase {
   public void testNewEmail() throws MessagingException {
     System.out.println("newEmail");
     try {
-      String from = "testUnitaire@agriotes.fr";
-      String to = "btssiomassy@gmail.com";
+      String from = "btssiomassy@gmail.com";
+      String to = "amiltondaveiga@gmail.com";
       String subject = "Test unitaire";
       MimeMessage result = ServeurSMTP.newEmail(from, to, subject);
       String body = "Du texte avec des € et autres caractères accentués.";
