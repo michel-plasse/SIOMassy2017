@@ -15,16 +15,16 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World! candidatures</h1>
+        <h1>La liste de candidatures</h1>
         <table border="1">
             <tr>
-                <th>nom</th>
-                <th>prenom</th>
-                <th>statut</th>
-                <th>debut</th>
-                <th>fin</th>
-                <th>formation</th>
-                <th>date</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Statut</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+                <th>Session</th>
+                <th>Date_de_postulation</th>
             </tr>
         <c:forEach var="unCandidature" items="${lesCandidatures}">
             <tr>
