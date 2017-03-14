@@ -13,8 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import dao.CandidatureDao;
 import dao.CandidatureHome;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import model.Candidature;
+import model.EtatCandidature;
+import model.Personne;
+import model.SessionFormation;
 
 /**
  * Servlet implementation class PostulerServlet
@@ -25,10 +30,12 @@ public class PostulerServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        Personne user = new Personne(2, "Monoi", "Chat", "croquette", "no_rue", "rue", "code_postal", "ville", "pays", "ot_de_passe");
 
         HttpSession session = request.getSession();
         //pour tester
-	session.setAttribute("user", "pouet");
+	session.setAttribute("user", user);
        
         if(session.getAttribute("user") != null) {
             // Utilisateur connecté
@@ -43,7 +50,8 @@ public class PostulerServlet extends HttpServlet {
                        int id_SessionFormation = Integer.parseInt(paramSessionFormation);
                        SessionFormationDao sFD = new SessionFormationDao();
                        if(sFD.isExistAndOpen(id_SessionFormation)) {
-                          
+                          //manque infos session/formation à envoyer à la jsp
+                          request.setAttribute("idsession", id_SessionFormation);
                           getServletContext().getRequestDispatcher("/WEB-INF/postuler.jsp").forward(request, response);
 
                        }else{
@@ -64,6 +72,11 @@ public class PostulerServlet extends HttpServlet {
                    //message erreur session selectionnée
                }
 
+            }else{
+                //message erreur session selectionnée
+                   PrintWriter out = response.getWriter();
+                   out.println("id session non précisé");
+                   //message erreur session selectionnée
             }
             
         }else{
@@ -79,7 +92,34 @@ public class PostulerServlet extends HttpServlet {
      * response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        
+        HttpSession session = request.getSession();
+        if(request.getParameter("idsession") != null && session.getAttribute("user") != null) {
+            try {
+                int id_SessionFormation = Integer.parseInt(request.getParameter("idsession"));
+                SessionFormationDao sFD = new SessionFormationDao();
+                SessionFormation uneSession = sFD.findById(id_SessionFormation);
+                Personne user = (Personne) session.getAttribute("user");
+                EtatCandidature etatCdt = new EtatCandidature(1, "libelle");
+                Candidature uneCandidature = new Candidature(user, uneSession, etatCdt);
+                
+                CandidatureDao candidatureDao = new CandidatureDao();
+                
+                candidatureDao.insert(uneCandidature);
+                
+                //manque envoi mail
+                
+                request.getRequestDispatcher("postulerOk.jsp").forward(request, response);
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(PostulerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "Pb avec la base de données / check formation");
+                request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+            }
+            
+        }
+        
         doGet(request, response);
     }
     
