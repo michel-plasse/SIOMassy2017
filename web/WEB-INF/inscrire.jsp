@@ -32,15 +32,14 @@
 				<td><input type="text" name="nom"><span> ${nom}</span></td>
 			</tr>
 			<tr>
-				<td>PrÃ©nom</td>
+				<td>Prénom</td>
 				<td><input type="text" name="prenom"><span> ${prenom}</span></td>
 			</tr>
-			<!-- 		NumÃ©ro de tÃ©lÃ©phone <input type="text" name="no_telephone"><br><br> -->
 
 				<td><h3>Adresse :</h1></td>
 			</tr>
 			<tr>
-				<td>NumÃ©ro</td>
+				<td>Numéro</td>
 				<td><input type="text" name="no_rue"></td>
 			</tr>
 			<tr>
