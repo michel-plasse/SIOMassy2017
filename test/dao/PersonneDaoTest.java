@@ -45,7 +45,7 @@ public class PersonneDaoTest {
 
 	@Before
 	public void resetDB() throws SQLException {
-		Connection connection = ConnectionBdOld.getConnection();
+		Connection connection = ConnectionBd.getConnection();
 		CallableStatement stmt = connection.prepareCall("CALL agriotes2017_reset()");
 		stmt.executeUpdate();
 	}
