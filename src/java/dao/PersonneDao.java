@@ -116,5 +116,7 @@ public class PersonneDao implements PersonneHome {
 	}
 	
 	//Méthode qui retourne la liste des inscrits à une date précise
+        
+        //Méthode getByLoginPassword
 
 }
