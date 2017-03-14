@@ -11,8 +11,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author AveigA
  */
-@WebServlet("/candidatures")
-public class ListerCandidaturesServlet extends HttpServlet {
+@WebServlet("/candicatures")
+public class ListerCandidaturesMulticritereServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +41,10 @@ public class ListerCandidaturesServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet listeCandidatureServlet</title>");            
+            out.println("<title>Servlet ListerCandidaturesMulticritereServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet listeCandidatureServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListerCandidaturesMulticritereServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,18 +62,52 @@ public class ListerCandidaturesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String statut = request.getParameter("statut");
+        String sessionFormation = request.getParameter("sessionFormation");
+        String datePostule = request.getParameter("dateDePostulation");
+        
+        ArrayList<String> conditions = new ArrayList<>();
+        
+        //NOM
+        if(!nom.isEmpty()){
+            String condition = "p.nom LIKE '" + nom + "'";
+            conditions.add(condition);
+        }
+        //PRENOM
+        if(!prenom.isEmpty()){
+            String condition = "p.prenom LIKE '" + prenom + "'";
+            conditions.add(condition);
+        }
+        //STATUT
+        if(!statut.isEmpty()){
+            String condition = "e.libelle LIKE '" + statut + "'";
+            conditions.add(condition);
+        }
+        //SESSION FORMATION
+        if(!sessionFormation.isEmpty()){
+            String condition = "f.nom LIKE '" + sessionFormation + "'";
+            conditions.add(condition);
+        }
+        //DATE POSTULE
+        if(!datePostule.isEmpty()){
+            String condition = "c.date_effectue LIKE '" + datePostule + "'";
+            conditions.add(condition);
+        }
+        
         try {
             CandidatureDao dao = new CandidatureDao();
-            ArrayList<HashMap<String, String>> lesCandidatures = dao.mapCandidatures();
+            ArrayList<HashMap<String, String>> lesCandidatures = dao.findMultiCriteres(conditions);
             request.setAttribute("lesCandidatures", lesCandidatures);
-            request.setAttribute("touslesCandidatures", lesCandidatures);
+            ArrayList<HashMap<String, String>> tousLesCandidatures = dao.mapCandidatures();
+            request.setAttribute("tousLesCandidatures", tousLesCandidatures);
             request.getRequestDispatcher("/WEB-INF/candidatures.jsp").forward(request, response);
 
         } catch (SQLException ex) {
             request.setAttribute("message", "Pb avec la base de données");
             request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);        
         }
-
     }
 
     /**
