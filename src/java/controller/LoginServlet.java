@@ -81,6 +81,7 @@ public class LoginServlet extends HttpServlet {
         if (login.isEmpty()){
             champsrenseignes = false;
             request.setAttribute("login", "Veuillez entrer votre identifiant.");
+            System.out.println("Rentre dans if.");
         }
         
         if (password.isEmpty()){
