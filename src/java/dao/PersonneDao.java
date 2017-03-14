@@ -12,13 +12,8 @@ import model.Personne;
 
 public class PersonneDao implements PersonneHome {
 	private Connection connection;
-	HashMap<Integer, Personne> liste;
 
 	public PersonneDao() {
-		/*
-		 * liste = new HashMap<Integer, Personne>(); Personne p1 = new
-		 * Personne(1, "leto@lechat.meow"); liste.put(1, p1);
-		 */
 	}
 
 	@Override
