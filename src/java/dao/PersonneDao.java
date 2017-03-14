@@ -113,7 +113,7 @@ public class PersonneDao implements PersonneHome {
 	//Méthode qui retourne la liste des inscrits à une date précise
         
         //Méthode getByLoginPassword
-        public void getByLoginPassword (String login, String password) throws SQLException {
+        public Personne getByLoginPassword (String login, String password) throws SQLException {
             connection = ConnectionBd.getConnection();
             
         }
