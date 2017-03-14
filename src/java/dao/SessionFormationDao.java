@@ -29,7 +29,7 @@ public class SessionFormationDao implements SessionHome {
 
     @Override
     public ArrayList<SessionFormation> getSessionsOuvertes() throws SQLException {
-        Connection connection = ConnectionBdOk.getConnection();
+        Connection connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
         ArrayList<SessionFormation> sessionOuvertes = new ArrayList<SessionFormation>();
         ResultSet resultat = canal.executeQuery("SELECT id_session,nom,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation ON session_formation.id_formation = formation.id_formation WHERE est_ouverte = 1 ;");

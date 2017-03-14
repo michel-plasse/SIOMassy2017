@@ -30,9 +30,9 @@ public class PersonneDaoTest {
 		PersonneDao dao = new PersonneDao();
 		Personne instance = new Personne(0,
 				"Nouveau nom",
-				"Nouveau prénom",
+				"Nouveau prÃ©nom",
 				"email@domaine.com",
-				"n° de rue",
+				"nÂ° de rue",
 				"une rue",
 				"12345",
 				"Triffouillis les oies",
@@ -45,7 +45,7 @@ public class PersonneDaoTest {
 
 	@Before
 	public void resetDB() throws SQLException {
-		Connection connection = ConnectionBd.getConnection();
+		Connection connection = ConnectionBdOld.getConnection();
 		CallableStatement stmt = connection.prepareCall("CALL agriotes2017_reset()");
 		stmt.executeUpdate();
 	}
