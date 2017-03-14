@@ -78,6 +78,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Pessimiste : on suppose saisie incorrecte
+        String vue = "WEB-INF/login.jsp";
         boolean champsrenseignes = true;
 
         String login = request.getParameter("login");
@@ -85,28 +87,35 @@ public class LoginServlet extends HttpServlet {
 
         if (login.isEmpty()) {
             champsrenseignes = false;
-            request.setAttribute("login", "Veuillez entrer votre identifiant.");
+            request.setAttribute("loginMsg", "Veuillez entrer votre identifiant.");
         }
 
         if (password.isEmpty()) {
             champsrenseignes = false;
-            request.setAttribute("password", "Veuillez entrer votre mot de passe.");
+            request.setAttribute("passwordMsg", "Veuillez entrer votre mot de passe.");
         }
 
         PersonneDao dao = new PersonneDao();
         if (champsrenseignes) {
+            System.out.println("champ renseignes");
             try {
-                Personne personne;
-                personne = dao.getByLoginPassword(login, password);
-                HttpSession maSession = request.getSession();
-                maSession.setAttribute("maSession", personne);
-                request.getRequestDispatcher("WEB-INF/connecte.jsp").forward(request, response);
+                System.out.println("login " + login);
+                System.out.println("password " + password);
+                Personne personne = dao.getByLoginPassword(login, password);
+                if (personne != null) {
+                    HttpSession maSession = request.getSession();
+                    maSession.setAttribute("user", personne);
+                    vue = "WEB-INF/connecte.jsp";
+                }
+                else {
+                    request.setAttribute("passwordMsg", "Utilisateur inconnu ou mot de passe invalide");
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("loginMsg", ex.getMessage());
             }
-        } else {
-            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
+        request.getRequestDispatcher(vue).forward(request, response);
 
     }
 
