@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.logging.Level;
 
 import model.Personne;
 
@@ -77,7 +77,7 @@ public class PersonneDao implements PersonneHome {
 	public ArrayList<Personne> findAll() throws SQLException {
 		connection = ConnectionBd.getConnection();
 		Statement stmt = connection.createStatement();
-		ResultSet resall = stmt.executeQuery("SELECT* FROM agriotes2017.personne");
+		ResultSet resall = stmt.executeQuery("SELECT * FROM agriotes2017.personne");
 		resall.next();
 		return null;
 	}
@@ -115,6 +115,11 @@ public class PersonneDao implements PersonneHome {
         //Méthode getByLoginPassword
         public Personne getByLoginPassword (String login, String password) throws SQLException {
             connection = ConnectionBd.getConnection();
+            Statement stmt = connection.createStatement();
+            
+            stmt.executeQuery("SELECT * FROM personne WHERE email="+login+" AND mot_de_passe="+password+";");
+            Personne log = new Personne();
+            
             
         }
 
