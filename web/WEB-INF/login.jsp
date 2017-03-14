@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Identifiez-vous</h1>
-        <form>
+        <form method="post" action="login">
             <table border =' 0'>
                 <tr>
                     <td>Identifiant : </td>

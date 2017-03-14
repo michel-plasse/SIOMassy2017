@@ -8,11 +8,16 @@ package controller;
 import dao.PersonneDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Personne;
 
 /**
  *
@@ -38,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
@@ -74,24 +79,35 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         boolean champsrenseignes = true;
-        
+
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        
-        if (login.isEmpty()){
+
+        if (login.isEmpty()) {
             champsrenseignes = false;
             request.setAttribute("login", "Veuillez entrer votre identifiant.");
-            System.out.println("Rentre dans if.");
         }
-        
-        if (password.isEmpty()){
+
+        if (password.isEmpty()) {
             champsrenseignes = false;
             request.setAttribute("password", "Veuillez entrer votre mot de passe.");
         }
-        
-        if (!champsrenseignes){
+
+        PersonneDao dao = new PersonneDao();
+        if (champsrenseignes) {
+            try {
+                Personne personne;
+                personne = dao.getByLoginPassword(login, password);
+                HttpSession maSession = request.getSession();
+                maSession.setAttribute("maSession", personne);
+                request.getRequestDispatcher("WEB-INF/connecte.jsp").forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
+
     }
 
     /**
