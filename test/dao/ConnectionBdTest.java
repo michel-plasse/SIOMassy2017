@@ -1,23 +1,18 @@
 package dao;
 
-import java.sql.Connection;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Xavier Claude PASSER
- */
-public class ConnectionBdTest {
-    
-    public ConnectionBdTest() {
-    }
+import java.sql.Connection;
+import java.sql.SQLException;
 
-    @Test
-    public void testGetConnection() throws Exception {
-        System.out.println("getConnection");
-        Connection result = ConnectionBd.getConnection();
-        assertNotNull(result);
-    }
-    
+import org.junit.Test;
+
+public class ConnectionBdTest {
+
+	@Test
+	public void test() throws SQLException {
+		Connection result = ConnectionBd.getConnection();
+		assertNotNull(result);
+	}
+
 }
