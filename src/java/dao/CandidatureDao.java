@@ -44,7 +44,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
     @Override
     public ArrayList<HashMap<String, String>> mapCandidatures() throws SQLException {
         ArrayList<HashMap<String, String>> listeMapCandidature = new ArrayList<HashMap<String, String>>();
-        Connection connection = ConnectionBdOk.getConnection();
+        Connection connection = ConnectionBd.getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(
                 "SELECT"
