@@ -1,17 +1,6 @@
-<%-- 
-    Document   : connecte
-    Created on : 14 mars 2017, 14:19:30
-    Author     : nate
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Vous êtes connecté</h1>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
+<p:header titre="Espace personnel"/>
+        <p>Bonjour ${sessionScope["user"].nom}</p>
     </body>
 </html>

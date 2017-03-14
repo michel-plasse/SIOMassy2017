@@ -16,6 +16,57 @@
     </head>
     <body>
         <h1>La liste de candidatures</h1>
+        <form action="">
+            <table>
+                <tr>
+                    <td>
+                        <select name="nom">
+                            <option value="" selected="">choisissez un nom</option>
+                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <option value="${unCandidature["nom"]}">${unCandidature["nom"]}</option>                           
+                            </c:forEach>
+                        </select>
+                    </td>
+                        
+                    <td>
+                        <select name="prenom">
+                             <option value="" selected="">choisissez un prenom</option>
+                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <option value="${unCandidature["prenom"]}">${unCandidature["prenom"]}</option>                           
+                            </c:forEach>
+                             
+                         </select>
+                    </td>
+                    <td>
+                         <select name="statut">
+                              <option value="" selected="">choisissez un statut</option>
+                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <option value="${unCandidature["statut"]}">${unCandidature["statut"]}</option>                           
+                            </c:forEach>
+                         </select>
+                    </td>
+                    <td>
+                         <select name="formationNom">
+                              <option value="" selected="">choisissez une session</option>
+                             <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <option value="${unCandidature["formationNom"]}">${unCandidature["formationNom"]}</option>                           
+                             </c:forEach>
+                              
+                         </select>
+                    </td>
+                    <td>
+                         <select name="DateDePostulation">
+                              <option value="" selected="">choisissez une date </option>
+                                <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <option value="${unCandidature["effectue"]}">${unCandidature["effectue"]}</option>                           
+                            </c:forEach>
+                         </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Rechercher">
+        </form>
+           
         <table border="1">
             <tr>
                 <th>Nom</th>
