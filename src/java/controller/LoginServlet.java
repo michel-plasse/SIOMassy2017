@@ -78,8 +78,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean champsrenseignes = true;
 
+        boolean champsrenseignes = true;
+        
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
@@ -94,19 +95,22 @@ public class LoginServlet extends HttpServlet {
         }
 
         PersonneDao dao = new PersonneDao();
-        if (champsrenseignes) {
+        if (champsrenseignes){
             try {
                 Personne personne;
                 personne = dao.getByLoginPassword(login, password);
-                HttpSession maSession = request.getSession();
-                maSession.setAttribute("maSession", personne);
-                request.getRequestDispatcher("WEB-INF/connecte.jsp").forward(request, response);
+                    if(personne.getEmail().equals(login) && personne.getMot_de_passe().equals(password)){
+                        HttpSession maSession = request.getSession();
+                        maSession.setAttribute("maSession", personne);
+                        request.getRequestDispatcher("WEB-INF/connecte.jsp").forward(request, response);
+                    }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
+            }}
+        else {
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         }
+        
 
     }
 
