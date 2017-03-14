@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dao.PersonneDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -72,7 +73,24 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        boolean champsrenseignes = true;
+        
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        
+        if (login.isEmpty()){
+            champsrenseignes = false;
+            request.setAttribute("login", "Veuillez entrer votre identifiant.");
+        }
+        
+        if (password.isEmpty()){
+            champsrenseignes = false;
+            request.setAttribute("password", "Veuillez entrer votre mot de passe.");
+        }
+        
+        if (!champsrenseignes){
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -17,12 +17,12 @@
             <table border =' 0'>
                 <tr>
                     <td>Identifiant : </td>
-                    <td><input type='text'></td>    
+                    <td><input type='text' name='login'><span>${login}</span></td>    
                 </tr>
                 
                 <tr>
                     <td>Mot de passe : </td>
-                    <td><input type='text'></td>
+                    <td><input type='text' name='password'><span>${password}</span></td>
                 </tr>
                 
                 <tr>
