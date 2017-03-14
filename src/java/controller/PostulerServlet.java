@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CandidatureDao;
 import dao.CandidatureHome;
+import java.io.PrintWriter;
 import javax.servlet.http.HttpSession;
 import model.Candidature;
 
@@ -23,48 +24,53 @@ public class PostulerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     * response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // A mettre dans le doPost()
-//        try {
-//            Candidature candidature = new Candidature();
-//            CandidatureHome dao = new CandidatureDao();
-//            dao.insert(candidature);
-//            response.sendRedirect("./");
-//        } catch (SQLException e) {
-//            request.setAttribute("message", "Pb avec la base de données");
-//            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
-//        }
+
         HttpSession session = request.getSession();
+        //pour tester
+	session.setAttribute("user", "pouet");
        
         if(session.getAttribute("user") != null) {
             // Utilisateur connecté
             String idSession = request.getParameter("idSessionFormation");
-            if(idSession != null && ) {
-                
+            if(idSession != null) {
+
                String paramSessionFormation = request.getParameter("idSessionFormation");
-               if(isParsable(paramSessionFormation)){
-                   int id_SessionFormation = Integer.parseInt(paramSessionFormation);
+               
+               if(isParsable(paramSessionFormation)){     
                    
+                   try {
+                       int id_SessionFormation = Integer.parseInt(paramSessionFormation);
+                       SessionFormationDao sFD = new SessionFormationDao();
+                       if(sFD.isExistAndOpen(id_SessionFormation)) {
+                          
+                          getServletContext().getRequestDispatcher("/WEB-INF/postuler.jsp").forward(request, response);
+
+                       }else{
+                           //message erreur session selectionnée
+                            PrintWriter out = response.getWriter();
+                            out.println("probleme avec id session(session non ouverte ou inexistante)");
+                            //message erreur session selectionnée
+                       }
+                   } catch (SQLException e) {
+                       request.setAttribute("message", "Pb avec la base de données / check formation");
+                       request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+                   }
                }else{
+
+                   //message erreur session selectionnée
+                   PrintWriter out = response.getWriter();
+                   out.println("id formation invalide.");
                    //message erreur session selectionnée
                }
 
-               SessionFormationDao sFD = new SessionFormationDao();
-
-               if(sFD.isExistAndOpen(id_SessionFormation)) {
-                   CandidatureDao cD = new CandidatureDao();
-                   Candidature candidature = new Candidature()
-                   cD.insert(objetAInserer)
-               }
-
-
             }
+            
         }else{
-            //blabla
+            //message erreur session selectionnée
+                   PrintWriter out = response.getWriter();
+                   out.println("pas connecté");
+                   //message erreur session selectionnée
         }
     }
 

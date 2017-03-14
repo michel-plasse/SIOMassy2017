@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -54,6 +55,18 @@ public class SessionFormationDao implements SessionHome {
     public ArrayList<SessionFormation> findAll() throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    public boolean isExistAndOpen(int id) throws SQLException {
+
+        connection = ConnectionBd.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT est_ouverte FROM session_formation WHERE id_session = ?" );
+        preparedStatement.setInt(1, id);
+        
+        ResultSet result = preparedStatement.executeQuery();
+        result.next();
+        return result.getBoolean("est_ouverte");
     }
 
 }
