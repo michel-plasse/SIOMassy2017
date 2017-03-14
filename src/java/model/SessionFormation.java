@@ -7,6 +7,7 @@ public class SessionFormation {
 
     private int id_session;
     private String nom;
+    private String descriptif;
     private Date dateDebut;
     private Date dateFin;
     private String lieu;
@@ -27,7 +28,15 @@ public class SessionFormation {
     public void setNom(String nom) {
         this.nom = nom;
     }
+        
+    public String getDescriptif() {
+        return descriptif;
+    }
 
+    public void setDescriptif(String descriptif) {
+        this.descriptif = descriptif;
+    }
+    
     public Date getDateDebut() {
         return dateDebut;
     }
@@ -64,9 +73,10 @@ public class SessionFormation {
 
     }
 
-    public SessionFormation(int id_session, String nom, Date dateDebut, Date dateFin, String lieu, boolean est_ouverte) {
+    public SessionFormation(int id_session, String nom, String descriptif, Date dateDebut, Date dateFin, String lieu, boolean est_ouverte) {
         this.id_session = id_session;
         this.nom = nom;
+        this.descriptif = descriptif;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.lieu = lieu;
@@ -78,6 +88,7 @@ public class SessionFormation {
         int hash = 3;
         hash = 73 * hash + this.id_session;
         hash = 73 * hash + Objects.hashCode(this.nom);
+        hash = 73 * hash + Objects.hashCode(this.descriptif);
         hash = 73 * hash + Objects.hashCode(this.dateDebut);
         hash = 73 * hash + Objects.hashCode(this.dateFin);
         hash = 73 * hash + Objects.hashCode(this.lieu);

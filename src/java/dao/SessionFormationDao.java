@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import model.SessionFormation;
 
 public class SessionFormationDao implements SessionHome {
+    private Connection connection;
 
     @Override
     public void insert(SessionFormation objetAInserer) throws SQLException {
@@ -29,13 +31,14 @@ public class SessionFormationDao implements SessionHome {
 
     @Override
     public ArrayList<SessionFormation> getSessionsOuvertes() throws SQLException {
-        Connection connection = ConnectionBd.getConnection();
+        connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
         ArrayList<SessionFormation> sessionOuvertes = new ArrayList<SessionFormation>();
-        ResultSet resultat = canal.executeQuery("SELECT id_session,nom,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation ON session_formation.id_formation = formation.id_formation WHERE est_ouverte = 1 ;");
+        ResultSet resultat = canal.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation "
+                + "ON session_formation.id_formation = formation.id_formation WHERE est_ouverte = 1 ORDER BY date_debut;");
         while (!resultat.isLast()) {
             resultat.next();
-            SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getDate("date_debut"),
+            SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getString("description"), resultat.getDate("date_debut"),
                     resultat.getDate("date_fin"), resultat.getString("lieu"), resultat.getBoolean("est_ouverte"));
             sessionOuvertes.add(a);
         }
@@ -52,6 +55,18 @@ public class SessionFormationDao implements SessionHome {
     public ArrayList<SessionFormation> findAll() throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    @Override
+    public boolean isExistAndOpen(int id) throws SQLException {
+
+        connection = ConnectionBd.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT est_ouverte FROM session_formation WHERE id_session = ?" );
+        preparedStatement.setInt(1, id);
+        
+        ResultSet result = preparedStatement.executeQuery();
+        result.next();
+        return result.getBoolean("est_ouverte");
     }
 
 }

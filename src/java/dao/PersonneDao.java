@@ -6,19 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.logging.Level;
 
 import model.Personne;
 
 public class PersonneDao implements PersonneHome {
 	private Connection connection;
-	HashMap<Integer, Personne> liste;
 
 	public PersonneDao() {
-		/*
-		 * liste = new HashMap<Integer, Personne>(); Personne p1 = new
-		 * Personne(1, "leto@lechat.meow"); liste.put(1, p1);
-		 */
 	}
 
 	@Override
@@ -82,7 +77,7 @@ public class PersonneDao implements PersonneHome {
 	public ArrayList<Personne> findAll() throws SQLException {
 		connection = ConnectionBd.getConnection();
 		Statement stmt = connection.createStatement();
-		ResultSet resall = stmt.executeQuery("SELECT* FROM agriotes2017.personne");
+		ResultSet resall = stmt.executeQuery("SELECT * FROM agriotes2017.personne");
 		resall.next();
 		return null;
 	}
@@ -118,9 +113,14 @@ public class PersonneDao implements PersonneHome {
 	//Méthode qui retourne la liste des inscrits à une date précise
         
         //Méthode getByLoginPassword
-        public void getByLoginPassword (String login, String password) throws SQLException {
+        public Personne getByLoginPassword (String login, String password) throws SQLException {
             connection = ConnectionBd.getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM personne WHERE email="+login+" AND mot_de_passe="+password+";");
             
+            Personne dao = new Personne(res.getInt("id_personne"), res.getString("nom"), res.getString("prenom"), res.getString("email"), res.getString("no_rue"), res.getString("rue"), res.getString("code_postal"), res.getString("ville"), res.getString("pays"), res.getString("mot_de_passe"));
+            
+            return dao; 
         }
 
 }
