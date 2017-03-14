@@ -68,7 +68,7 @@ public class ListerCandidaturesServlet extends HttpServlet {
             CandidatureDao dao = new CandidatureDao();
             ArrayList<HashMap<String, String>> lesCandidatures = dao.mapCandidatures();
             request.setAttribute("lesCandidatures", lesCandidatures);
-            request.setAttribute("touslesCandidatures", lesCandidatures);
+            request.setAttribute("tousLesCandidatures", lesCandidatures);
             request.getRequestDispatcher("/WEB-INF/candidatures.jsp").forward(request, response);
 
         } catch (SQLException ex) {

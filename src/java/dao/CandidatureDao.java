@@ -137,8 +137,8 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " session_formation s ON c.id_session = s.id_session"
                 + " INNER JOIN"
                 + " formation f ON s.id_formation = f.id_formation"
-                + " ORDER BY date_effectue DESC"
                 + where
+                + " ORDER BY date_effectue DESC"                
         );
         
         while (resultSet.next()) {

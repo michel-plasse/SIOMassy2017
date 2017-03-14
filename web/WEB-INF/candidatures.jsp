@@ -16,13 +16,13 @@
     </head>
     <body>
         <h1>La liste de candidatures</h1>
-        <form action="">
+        <form action="${pageContext.request.contextPath}/candidatures/multicriteres">
             <table>
                 <tr>
                     <td>
                         <select name="nom">
                             <option value="" selected="">choisissez un nom</option>
-                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
                                 <option value="${unCandidature["nom"]}">${unCandidature["nom"]}</option>                           
                             </c:forEach>
                         </select>
@@ -31,7 +31,7 @@
                     <td>
                         <select name="prenom">
                              <option value="" selected="">choisissez un prenom</option>
-                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
                                 <option value="${unCandidature["prenom"]}">${unCandidature["prenom"]}</option>                           
                             </c:forEach>
                              
@@ -40,7 +40,7 @@
                     <td>
                          <select name="statut">
                               <option value="" selected="">choisissez un statut</option>
-                            <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
                                 <option value="${unCandidature["statut"]}">${unCandidature["statut"]}</option>                           
                             </c:forEach>
                          </select>
@@ -48,16 +48,15 @@
                     <td>
                          <select name="formationNom">
                               <option value="" selected="">choisissez une session</option>
-                             <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                             <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
                                 <option value="${unCandidature["formationNom"]}">${unCandidature["formationNom"]}</option>                           
-                             </c:forEach>
-                              
+                             </c:forEach>                              
                          </select>
                     </td>
                     <td>
-                         <select name="DateDePostulation">
+                         <select name="dateDePostulation">
                               <option value="" selected="">choisissez une date </option>
-                                <c:forEach var="unCandidature" items="${lesCandidatures}">                
+                                <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
                                 <option value="${unCandidature["effectue"]}">${unCandidature["effectue"]}</option>                           
                             </c:forEach>
                          </select>

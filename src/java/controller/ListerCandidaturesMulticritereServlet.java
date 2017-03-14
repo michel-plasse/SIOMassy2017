@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author AveigA
  */
-@WebServlet("/candicatures")
+@WebServlet("/candidatures/multicriteres")
 public class ListerCandidaturesMulticritereServlet extends HttpServlet {
 
     /**
@@ -65,7 +65,7 @@ public class ListerCandidaturesMulticritereServlet extends HttpServlet {
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         String statut = request.getParameter("statut");
-        String sessionFormation = request.getParameter("sessionFormation");
+        String sessionFormation = request.getParameter("formationNom");
         String datePostule = request.getParameter("dateDePostulation");
         
         ArrayList<String> conditions = new ArrayList<>();
@@ -106,7 +106,7 @@ public class ListerCandidaturesMulticritereServlet extends HttpServlet {
 
         } catch (SQLException ex) {
             request.setAttribute("message", "Pb avec la base de données");
-            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);        
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);        
         }
     }
 
