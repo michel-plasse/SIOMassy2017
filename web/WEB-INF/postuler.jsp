@@ -9,7 +9,7 @@
         <h1>confirmer candidature</h1>
         
         <div><button id="oui" href="PostulerServlet.java" >Oui</button></div>
-        <div><button id="Non" href="ServletListe.java" >Non</button></div>
+        <div><button id="Non" href="SessionServlet.java" >Non</button></div>
         
     </body>
 </html>
