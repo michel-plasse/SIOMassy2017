@@ -9,7 +9,7 @@ package model;
  *
  * @author AveigA
  */
-class EtatCandidature {
+public class EtatCandidature {
     private int idEtatCandidature;
     private String libelle;
 

@@ -1,9 +1,6 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,10 +8,29 @@ import model.Candidature;
 
 public class CandidatureDao implements CandidatureHome<Candidature> {
 
+    private Connection connection;
+    
     @Override
     public void insert(Candidature objetAInserer) throws SQLException {
-        // TODO Auto-generated method stub
-        Connection connection = ConnectionBd.getConnection();
+       
+        try {
+            Connection connection = ConnectionBd.getConnection();
+                        
+            String sql = "INSERT INTO candidature(id_personne, id_session, id_etat_candidature)"
+                    + "VALUES (?. ?, ?)";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, objetAInserer.getPersonne().getId());
+            stmt.setInt(2, objetAInserer.getSessionFomation().getId_session());
+            stmt.setInt(3, objetAInserer.getEtatCandidature().getIdEtatCandidature());
+            stmt.executeUpdate();
+                                
+        }
+        catch (SQLException exc) {
+            connection.rollback();
+            System.out.println("Rollback.");
+            throw exc;
+        }
+               
     }
 
     @Override
