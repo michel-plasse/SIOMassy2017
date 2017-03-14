@@ -116,11 +116,11 @@ public class PersonneDao implements PersonneHome {
         public Personne getByLoginPassword (String login, String password) throws SQLException {
             connection = ConnectionBd.getConnection();
             Statement stmt = connection.createStatement();
+            ResultSet res = stmt.executeQuery("SELECT * FROM personne WHERE email="+login+" AND mot_de_passe="+password+";");
             
-            stmt.executeQuery("SELECT * FROM personne WHERE email="+login+" AND mot_de_passe="+password+";");
-            Personne log = new Personne();
+            Personne dao = new Personne(res.getInt("id_personne"), res.getString("nom"), res.getString("prenom"), res.getString("email"), res.getString("no_rue"), res.getString("rue"), res.getString("code_postal"), res.getString("ville"), res.getString("pays"), res.getString("mot_de_passe"));
             
-            
+            return dao; 
         }
 
 }
