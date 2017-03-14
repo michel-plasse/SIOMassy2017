@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author nate
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(request, response);
+        request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
     }
 
     /**

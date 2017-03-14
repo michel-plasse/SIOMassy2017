@@ -12,7 +12,7 @@
         <title>Page d'identification</title>
     </head>
     <body>
-        <h1>Identifiez-vous.</h1>
+        <h1>Identifiez-vous</h1>
         <form>
             <table border =' 0'>
                 <tr>
@@ -23,6 +23,10 @@
                 <tr>
                     <td>Mot de passe : </td>
                     <td><input type='text'></td>
+                </tr>
+                
+                <tr>
+                    <td><button type='submit'>Se connecter</button></td>
                 </tr>
             </table>
         </form>
