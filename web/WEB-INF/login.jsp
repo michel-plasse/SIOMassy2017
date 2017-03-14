@@ -18,14 +18,20 @@
             <table border =' 0'>
                 <tr>
                     <td>Identifiant : </td>
-                    <td><input type='text' name="login"><span>${login}</span></td>    
+                    <td>
+                        <input type='text' name="login" required="required"/>
+                        <span>${loginMsg}</span>
+                    </td>    
                 </tr>
-                
+
                 <tr>
                     <td>Mot de passe : </td>
-                    <td><input type='password' name="password"><span>${password}</span></td>
+                    <td>
+                        <input type='password' name="password" required="required"/>
+                        <span>${passwordMsg}</span>
+                    </td>
                 </tr>
-                
+
                 <tr>
                     <td><button type='submit'>Se connecter</button></td>
                 </tr>
