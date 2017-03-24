@@ -31,7 +31,7 @@ public class PostulerServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        Personne user = new Personne(2, "Monoi", "Chat", "croquette", "no_rue", "rue", "code_postal", "ville", "pays", "ot_de_passe");
+        Personne user = new Personne(7, "Monoi", "Chat", "croquette", "no_rue", "rue", "code_postal", "ville", "pays", "ot_de_passe");
 
         HttpSession session = request.getSession();
         //pour tester
@@ -50,8 +50,10 @@ public class PostulerServlet extends HttpServlet {
                        int id_SessionFormation = Integer.parseInt(paramSessionFormation);
                        SessionFormationDao sFD = new SessionFormationDao();
                        if(sFD.isExistAndOpen(id_SessionFormation)) {
-                          //manque infos session/formation à envoyer à la jsp
-                          request.setAttribute("idsession", id_SessionFormation);
+                          
+                          SessionFormation uneSession = sFD.findById(id_SessionFormation);
+                          
+                          request.setAttribute("sessionFormation", uneSession);
                           getServletContext().getRequestDispatcher("/WEB-INF/postuler.jsp").forward(request, response);
 
                        }else{
@@ -94,9 +96,9 @@ public class PostulerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        if(request.getParameter("idsession") != null && session.getAttribute("user") != null) {
+        if(request.getParameter("idSessionFormation") != null && session.getAttribute("user") != null) {
             try {
-                int id_SessionFormation = Integer.parseInt(request.getParameter("idsession"));
+                int id_SessionFormation = Integer.parseInt(request.getParameter("idSessionFormation"));
                 SessionFormationDao sFD = new SessionFormationDao();
                 SessionFormation uneSession = sFD.findById(id_SessionFormation);
                 Personne user = (Personne) session.getAttribute("user");
@@ -104,12 +106,12 @@ public class PostulerServlet extends HttpServlet {
                 Candidature uneCandidature = new Candidature(user, uneSession, etatCdt);
                 
                 CandidatureDao candidatureDao = new CandidatureDao();
-                
+
                 candidatureDao.insert(uneCandidature);
                 
                 //manque envoi mail
                 
-                request.getRequestDispatcher("postulerOk.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/postulerOk.jsp").forward(request, response);
                 
                 
             } catch (SQLException ex) {
@@ -118,9 +120,18 @@ public class PostulerServlet extends HttpServlet {
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
             }
             
+        }else{
+            //message erreur session selectionnée
+                   PrintWriter out = response.getWriter();
+                   out.println("erreur");
+            //message erreur session selectionnée
+            
         }
         
-        doGet(request, response);
+        //message erreur session selectionnée
+                   PrintWriter out = response.getWriter();
+                   out.println("erreur2");
+            //message erreur session selectionnée
     }
     
     public static boolean isParsable(String input){
