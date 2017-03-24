@@ -24,11 +24,8 @@ public class ListerSessionsOuvertesServlet extends HttpServlet {
 
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vue = "/WEB-INF/listerSessionsOuvertes.jsp";
         try {
             SessionFormationDao dao = new SessionFormationDao();
@@ -40,6 +37,13 @@ public class ListerSessionsOuvertesServlet extends HttpServlet {
             vue = "/WEB-INF/message.jsp";
         }
         request.getRequestDispatcher(vue).forward(request, response);
+        
+        
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
     }
 
 }
