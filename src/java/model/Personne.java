@@ -23,19 +23,19 @@ public class Personne {
         this.inscriptionValide = inscriptionValide;
     }
 
-    public Personne(int i, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
         this.id = id;
-		this.email = email;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.no_rue = no_rue;
-		this.rue = rue;
-		this.code_postal = code_postal;
-		this.ville = ville;
-		this.pays = pays;
-		this.mot_de_passe = mot_de_passe;
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.no_rue = no_rue;
+        this.rue = nom_rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = password;
     }
-	
+
 	public String getNo_phone() {
 		return no_phone;
 	}
