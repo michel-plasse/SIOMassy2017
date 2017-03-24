@@ -25,7 +25,19 @@ public class SessionFormationDao implements SessionHome {
 
     @Override
     public SessionFormation findById(int id) throws SQLException {
-        // TODO Auto-generated method stub
+        
+        connection = ConnectionBd.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation "
+                                                    + "ON session_formation.id_formation = formation.id_formation WHERE id_session="+id+";");
+
+        if(resultat != null) {
+            resultat.next();
+            SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getString("description"), resultat.getDate("date_debut"),
+                        resultat.getDate("date_fin"), resultat.getString("lieu"), resultat.getBoolean("est_ouverte"));
+
+            return a;
+        }
         return null;
     }
 
