@@ -8,6 +8,7 @@
 </head>
 <body>
 <p>Merci de vous être enregistré <span>${leNom } ${lePrenom }</span>.
-Vous allez recevoir un e-mail afin de finaliser votre inscription.
+Veuillez cliquez sur le lien afin de finaliser votre inscription.
+<a href='http://localhost/SIOMassy2017/confirmerInscription?token="+token+"'></a>
 </body>
 </html>

@@ -91,31 +91,35 @@ public class InscrireServlet extends HttpServlet {
                         pays, password);
                 PersonneDao dao = new PersonneDao();
                 dao.insert(personneAjoutee);
-                envoyerMail(personneAjoutee);
+              //  envoyerMail(personneAjoutee);
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
                 request.setAttribute("message", "Pb avec la base de données");
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
-            }
-            catch (MessagingException exc) {
+            }}
+        
+        /*
+             catch (MessagingException exc) {
                 request.setAttribute("message", "Votre inscription est enregistrée, mais pb pour vous le confirmer par mail");
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
             }
         } else {
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
-        }
+        }*/
 
     }
-
-    public void envoyerMail(Personne personne) throws MessagingException {
+        //Abandon de la solution mail cause proxy.
+    /*public void envoyerMail(Personne personne) throws MessagingException {
         String from = "greta@gmail.com";
         String to = personne.getEmail();
         String subject = "Votre inscription sur Agriotes.";
+        String token = personne.getToken();
+        int id = personne.getId();
         String body = "é€â Veuillez confirmer votre inscription en cliquant sur : "
-                + "<a href='http://localhost/SIOMassy2017/confirmerInscription'>confirmer</a>";
+                + "<a href='http://localhost/SIOMassy2017/confirmerInscription?token="+token+"'>confirmer</a>";
         MimeMessage mail = ServeurSMTP.newEmail(from, to, subject);
         mail.setContent(body, "text/html; charset=utf-8");
         javax.mail.Transport.send(mail);
-    }
+    }*/
 
 }
