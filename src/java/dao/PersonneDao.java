@@ -138,4 +138,19 @@ public class PersonneDao implements PersonneHome {
         return result;
     }
 
+    @Override
+    public boolean findTokenIsTrue(String toktok) throws SQLException {
+        boolean boole = false;
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        Statement stmt2 = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT * FROM personne WHERE EXIST token="+toktok+";");
+        if(res != null){
+            boole = true;
+            stmt2.executeUpdate("UPDATE personne SET valide = '1' WHERE token="+toktok+";");
+        }
+        
+        return boole;
+    }
+
 }
