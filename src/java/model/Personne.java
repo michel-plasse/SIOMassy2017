@@ -12,7 +12,29 @@ public class Personne {
 	private String pays;
 	private String mot_de_passe;
 	private String no_phone;
-	
+	private String token;
+        private boolean inscriptionValide;
+
+    public boolean isInscriptionValide() {
+        return inscriptionValide;
+    }
+
+    public void setInscriptionValide(boolean inscriptionValide) {
+        this.inscriptionValide = inscriptionValide;
+    }
+
+    public Personne(int i, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
+        this.id = id;
+		this.email = email;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.no_rue = no_rue;
+		this.rue = rue;
+		this.code_postal = code_postal;
+		this.ville = ville;
+		this.pays = pays;
+		this.mot_de_passe = mot_de_passe;
+    }
 	
 	public String getNo_phone() {
 		return no_phone;
@@ -121,21 +143,17 @@ public class Personne {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+        public String getToken() {
+		return token;
+	}
+	
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
         
 
-	public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal,
-		String ville, String pays, String mot_de_passe) {
-		this.id = id;
-		this.email = email;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.no_rue = no_rue;
-		this.rue = rue;
-		this.code_postal = code_postal;
-		this.ville = ville;
-		this.pays = pays;
-		this.mot_de_passe = mot_de_passe;
-	}
+	
 
 
 	@Override

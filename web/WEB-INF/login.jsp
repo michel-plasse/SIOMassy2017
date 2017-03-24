@@ -14,6 +14,7 @@
     </head>
     <body>
         <h1>Identifiez-vous</h1>
+        <p><span>${inscriptionValide}</span></p>
         <form method="post" action="login">
             <table border =' 0'>
                 <tr>

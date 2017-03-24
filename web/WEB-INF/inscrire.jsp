@@ -7,6 +7,7 @@
 <title>Formulaire d'inscription</title>
 </head>
 <body>
+    <p><span>${messageErreurValidation}</span></p>
 	<table border=0>
 		<form method="post">
 			<tr>
