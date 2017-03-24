@@ -58,9 +58,9 @@
                   
                 <div style="text-align: center;">
                     <br>
-                    <input style="display:none;" type="text" name="idSessionFormation" value="${requestScope.sessionFormation.id_session}" />
-                    <input type="submit" name="submit" value="Envoyer candidature"/> 
-                    <input type="reset" name="reset" value="Effacer" />
+                    <input type="hidden" name="idSessionFormation" value="${requestScope.sessionFormation.id_session}" />
+                    <input type="submit" value="Envoyer candidature"/> 
+                    <input type="reset" value="Effacer" />
                 </div>
             </form>
         </div>
