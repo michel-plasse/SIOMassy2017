@@ -11,7 +11,6 @@ public class Personne {
 	private String ville;
 	private String pays;
 	private String mot_de_passe;
-	private String no_phone;
 	private String token;
         private boolean inscriptionValide;
         private String photo;
@@ -37,14 +36,21 @@ public class Personne {
         this.mot_de_passe = password;
     }
 
-	public String getNo_phone() {
-		return no_phone;
-	}
-
-
-	public void setNo_phone(String no_phone) {
-		this.no_phone = no_phone;
-	}
+    public Personne(int id, String email, String nom, String prenom, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
+        this.id = id;
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.photo = photo;
+    }
+    
+   
 
 
 	public String getNom() {
@@ -198,7 +204,7 @@ public class Personne {
 
     @Override
     public String toString() {
-        return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", no_phone=" + no_phone + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';
+        return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';
     }
 
 

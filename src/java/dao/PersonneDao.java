@@ -75,11 +75,16 @@ public class PersonneDao implements PersonneHome {
 
     @Override
     public ArrayList<Personne> findAll() throws SQLException {
-        connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT * FROM agriotes2017.personne");
-        resall.next();
-        return null;
+                connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT id_personne, nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, photo FROM personne");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(resultat.getInt("id_personne"), resultat.getString("nom"), resultat.getString("prenom"), resultat.getString("email"), resultat.getString("no_rue"), resultat.getString("rue"), resultat.getString("code_postal"),resultat.getString("ville"), resultat.getString("pays"), resultat.getString("mot_de_passe"), resultat.getString("photo"));
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
     }
 
     @Override
