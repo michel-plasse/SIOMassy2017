@@ -14,6 +14,7 @@ public class Personne {
 	private String no_phone;
 	private String token;
         private boolean inscriptionValide;
+        private String photo;
 
     public boolean isInscriptionValide() {
         return inscriptionValide;
@@ -146,6 +147,16 @@ public class Personne {
         public String getToken() {
 		return token;
 	}
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
+        
+        
 	
 	
 	public void setToken(String token) {
@@ -185,13 +196,12 @@ public class Personne {
 		return true;
 	}
 
+    @Override
+    public String toString() {
+        return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", no_phone=" + no_phone + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';
+    }
 
-	@Override
-	public String toString() {
-		return "Personne [id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue
-				+ ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays
-				+ ", mot_de_passe=" + mot_de_passe + ", no_phone=" + no_phone + "]";
-	}
+
 
 
 
