@@ -1,20 +1,19 @@
 package model;
 
 public class Personne {
-
-    private int id;
-    private String email;
-    private String nom;
-    private String prenom;
-    private String no_rue;
-    private String rue;
-    private String code_postal;
-    private String ville;
-    private String pays;
-    private String mot_de_passe;
-    private String no_phone;
-    private String token;
-    private boolean inscriptionValide;
+	private int id;
+	private String email;	
+	private String nom;
+	private String prenom;
+	private String no_rue;
+	private String rue;
+	private String code_postal;
+	private String ville;
+	private String pays;
+	private String mot_de_passe;
+	private String token;
+        private boolean inscriptionValide;
+        private String photo;
 
     public boolean isInscriptionValide() {
         return inscriptionValide;
@@ -30,20 +29,28 @@ public class Personne {
         this.nom = nom;
         this.prenom = prenom;
         this.no_rue = no_rue;
+        this.rue = nom_rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = password;
+    }
+
+    public Personne(int id, String email, String nom, String prenom, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
+        this.id = id;
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.no_rue = no_rue;
         this.rue = rue;
         this.code_postal = code_postal;
         this.ville = ville;
         this.pays = pays;
         this.mot_de_passe = mot_de_passe;
+        this.photo = photo;
     }
-
-    public String getNo_phone() {
-        return no_phone;
-    }
-
-    public void setNo_phone(String no_phone) {
-        this.no_phone = no_phone;
-    }
+    
+   
 
     public String getNom() {
         return nom;
@@ -165,13 +172,27 @@ public class Personne {
             return false;
         }
         return true;
-    }
+        }
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
+
 
     @Override
     public String toString() {
-        return "Personne [id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue
-                + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays
-                + ", mot_de_passe=" + mot_de_passe + ", no_phone=" + no_phone + "]";
+        return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';
     }
+
+
+
+
+
+	
+	
 
 }

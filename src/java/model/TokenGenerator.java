@@ -15,7 +15,7 @@ import java.security.SecureRandom;
 public class TokenGenerator {
     private SecureRandom random = new SecureRandom();
     
-    public String nextSessionId() {
+    public String Token() {
     return new BigInteger(130, random).toString(32);
     }
     

@@ -31,23 +31,40 @@ public class ConfirmerInscriptionServlet extends HttpServlet {
             throws ServletException, IOException {
           PersonneDao pers = new PersonneDao();
           String token = request.getParameter("token");
-          String pattern = "(^[0-9]{32}$)";
+          String pattern = "(^[a-zA-Z0-9]{26,32}$)";
           Pattern r = Pattern.compile(pattern);
           Matcher m = r.matcher(token);
-          if(m.find()){
+
+          if(m.matches()){
+              int id_personne = 0;
+              boolean result = false;
               try {
-                  if(pers.findTokenIsTrue(token)){
-                      request.setAttribute("inscriptionValide", "Votre inscription à bien été validée, vous pouvez vous connectez.");
-                      request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-                      
-                  }
-              } catch (SQLException ex) {
+                  id_personne = pers.findIdFromToken(token);
+               } 
+              catch (SQLException ex) {
                   Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
               }
-          }
-          else{
+              
+              //PrintWriter out = response.getWriter();
+              //out.print(id_personne);
+
+              if(id_personne != -1) {
+                  try {
+                      result = pers.activeUser(id_personne);
+                  } catch (SQLException ex) {
+                      Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                  
+              }
+              //out.print(result);
+              if(result){
+                  response.sendRedirect(this.getServletContext().getContextPath() + "/login" );
+              }
+
+          }else{
             //Demander à plaplasse !!!!!!
             request.setAttribute("messageErreurValidation", "Une erreur s'est produite lors de la confirmation, veuillez entrez a nouveau vos informations.");
+            //response.sendRedirect(this.getServletContext().getContextPath() + "/inscrire" );
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
           }
     }
