@@ -17,7 +17,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
             Connection connection = ConnectionBd.getConnection();
                         
             String sql = "INSERT INTO candidature(id_personne, id_session, id_etat_candidature)"
-                    + "VALUES (?. ?, ?)";
+                    + "VALUES (?, ?, ?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, objetAInserer.getPersonne().getId());
             stmt.setInt(2, objetAInserer.getSessionFomation().getId_session());
