@@ -14,8 +14,9 @@
                 margin: auto;
                 border-style: solid;
                 border-width: thin;
+                border-radius: 5px;
                 width: 600px;
-                height: 600px;
+                height: 100%;
                 background-color: white;
                 position: relative;
             }
@@ -39,13 +40,9 @@
     </head>
     <body>
         <div id="candidat-form">
-        <h1>//Nom formation//</h1>
+        <h1><c:out value="${requestScope.sessionFormation.nom}" /></h1>
         <div id="infos-session">
-                Autem utilia admovente mariti haec cum reducere cum exitium ut deberet propositum in 
-                lenitate praeceps stimulos scrutanda ad rettulimus fortunas suadendo trudebat lenitate 
-                admovente trudebat exitium stimulos admovente cum factitasse imperatoris admovente 
-                propositum utilia fortunas lenitate erga cum multa potius feminea truculenti cum 
-                imperatoris factitasse ut ut exitium fortunas similia
+                <c:out value="${requestScope.sessionFormation.descriptif}" />
         </div>
         <div id="content-form">
             <form method="POST" action="postuler">
@@ -61,7 +58,7 @@
                   
                 <div style="text-align: center;">
                     <br>
-                    <input style="display:none;" type="text" name="idSessionFormation" value="${requestScope.idsession}" disabled/>
+                    <input style="display:none;" type="text" name="idSessionFormation" value="${requestScope.sessionFormation.id_session}" />
                     <input type="submit" name="submit" value="Envoyer candidature"/> 
                     <input type="reset" name="reset" value="Effacer" />
                 </div>
