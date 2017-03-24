@@ -23,8 +23,8 @@ public class PersonneDao implements PersonneHome {
             connection = ConnectionBd.getConnection();
             // Commencer une transaction
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, token)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -35,6 +35,7 @@ public class PersonneDao implements PersonneHome {
             stmt.setString(7, personne.getVille());
             stmt.setString(8, personne.getPays());
             stmt.setString(9, personne.getMot_de_passe());
+            stmt.setString(10,personne.getToken());
             stmt.executeUpdate();
             // Recuperer le id
             sql = "SELECT MAX(id_personne) AS id FROM personne";
@@ -144,18 +145,28 @@ public class PersonneDao implements PersonneHome {
     }
 
     @Override
-    public boolean findTokenIsTrue(String toktok) throws SQLException {
-        boolean boole = false;
+    public int findIdFromToken(String token) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        Statement stmt2 = connection.createStatement();
-        ResultSet res = stmt.executeQuery("SELECT * FROM personne WHERE EXIST token="+toktok+";");
+        ResultSet res = stmt.executeQuery("SELECT id_personne FROM personne WHERE token='"+token+"';");
         if(res != null){
-            boole = true;
-            stmt2.executeUpdate("UPDATE personne SET valide = '1' WHERE token="+toktok+";");
+            res.next();
+            return res.getInt("id_personne");
         }
-        
-        return boole;
+        return -1;
+    }
+
+    @Override
+    public boolean activeUser(int id) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        int res = stmt.executeUpdate("UPDATE personne SET valide=1, token='0' WHERE id_personne="+id+";");
+        if(res != 0){
+            return true;
+        }
+        return false;
+
+    
     }
 
 }

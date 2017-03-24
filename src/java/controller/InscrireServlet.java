@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.TokenGenerator;
+
 import dao.PersonneDao;
+import java.io.PrintWriter;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import model.Personne;
@@ -90,8 +93,13 @@ public class InscrireServlet extends HttpServlet {
                 Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
                         pays, password);
                 PersonneDao dao = new PersonneDao();
+                TokenGenerator token = new TokenGenerator();
+                personneAjoutee.setToken(token.Token());
+                request.setAttribute("leToken", personneAjoutee.getToken());             
                 dao.insert(personneAjoutee);
               //  envoyerMail(personneAjoutee);
+//              PrintWriter out = response.getWriter();
+//              out.print(personneAjoutee.getEmail() +" : "+ personneAjoutee.getToken());
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
                 request.setAttribute("message", "Pb avec la base de données");
