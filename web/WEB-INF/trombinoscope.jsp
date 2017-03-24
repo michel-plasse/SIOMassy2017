@@ -25,7 +25,7 @@
                 <tr>
                     <td><c:out value="${unePersonne.nom}" /></td>
                     <td><c:out value="${unePersonne.prenom}" /></td>
-                    <td><img height="42" width="42" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></td>
+                    <td><img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></td>
                   
                 </tr>  
             </c:forEach>

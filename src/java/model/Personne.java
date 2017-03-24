@@ -1,10 +1,10 @@
 package model;
 
 public class Personne {
-	private int id;
-	private String email;	
+	private int id;	
 	private String nom;
 	private String prenom;
+        private String email;
 	private String no_rue;
 	private String rue;
 	private String code_postal;
@@ -36,7 +36,7 @@ public class Personne {
         this.mot_de_passe = password;
     }
 
-    public Personne(int id, String email, String nom, String prenom, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
         this.id = id;
         this.email = email;
         this.nom = nom;
