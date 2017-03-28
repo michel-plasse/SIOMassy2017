@@ -12,58 +12,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Liste de candidatures</title>
     </head>
     <body>
         <h1>La liste de candidatures</h1>
-        <form action="${pageContext.request.contextPath}/candidatures/multicriteres">
+        <form action="${pageContext.request.contextPath}/candidatures">
             <table>
                 <tr>
                     <td>
-                        <select name="nom">
-                            <option value="" selected="">choisissez un nom</option>
-                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
-                                <option value="${unCandidature["nom"]}">${unCandidature["nom"]}</option>                           
-                            </c:forEach>
-                        </select>
-                    </td>
-                        
-                    <td>
-                        <select name="prenom">
-                             <option value="" selected="">choisissez un prenom</option>
-                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
-                                <option value="${unCandidature["prenom"]}">${unCandidature["prenom"]}</option>                           
-                            </c:forEach>
-                             
-                         </select>
-                    </td>
-                    <td>
                          <select name="statut">
                               <option value="" selected="">choisissez un statut</option>
-                            <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
-                                <option value="${unCandidature["statut"]}">${unCandidature["statut"]}</option>                           
+                            <c:forEach var="unEtat" items="${lesEtats}">                
+                                <option value="${unEtat["libelle"]}" <c:if test='${ param.statut == unEtat["libelle"]}' >selected</c:if>>${unEtat["libelle"]}</option>                           
                             </c:forEach>
                          </select>
                     </td>
                     <td>
                          <select name="formationNom">
                               <option value="" selected="">choisissez une session</option>
-                             <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
-                                <option value="${unCandidature["formationNom"]}">${unCandidature["formationNom"]}</option>                           
+                             <c:forEach var="unFormation" items="${lesFormations}">
+                                <option value="${unFormation["nom"]}" <c:if test='${ param.formationNom == unFormation["nom"]}' >selected</c:if>>${unFormation["nom"]}</option>                           
                              </c:forEach>                              
                          </select>
                     </td>
-                    <td>
-                         <select name="dateDePostulation">
-                              <option value="" selected="">choisissez une date </option>
-                                <c:forEach var="unCandidature" items="${tousLesCandidatures}">                
-                                <option value="${unCandidature["effectue"]}">${unCandidature["effectue"]}</option>                           
-                            </c:forEach>
-                         </select>
-                    </td>
+                    <td><input type="submit" value="Rechercher"></td>
                 </tr>
-            </table>
-            <input type="submit" value="Rechercher">
+            </table>            
         </form>
            
         <table border="1">

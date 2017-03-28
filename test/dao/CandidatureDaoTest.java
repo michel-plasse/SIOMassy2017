@@ -5,19 +5,28 @@
  */
 package dao;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import junit.framework.TestCase;
+
 import model.Candidature;
 
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.*;
 /**
  *
  * @author Xavier Claude PASSER
  */
-public class CandidatureDaoTest extends TestCase {
+public class CandidatureDaoTest{
     
-    public CandidatureDaoTest(String testName) {
-        super(testName);
+    @Before
+    public void resetDB() throws SQLException {
+        Connection connection = ConnectionBd.getConnection();
+        CallableStatement stmt = connection.prepareCall("CALL agriotes2017_reset()");
+        stmt.executeUpdate();
     }
 
     public void testInsert() throws Exception {
@@ -28,7 +37,7 @@ public class CandidatureDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
-    public void testDelete() {
+    public void testDelete() throws SQLException {
         System.out.println("delete");
         int id = 0;
         CandidatureDao instance = new CandidatureDao();
@@ -38,7 +47,7 @@ public class CandidatureDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
-    public void testUpdate() {
+    public void testUpdate() throws SQLException {
         System.out.println("update");
         int idAncien = 0;
         Candidature nouveau = null;
@@ -49,7 +58,7 @@ public class CandidatureDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
-    public void testFindById() {
+    public void testFindById() throws SQLException {
         System.out.println("findById");
         int id = 0;
         CandidatureDao instance = new CandidatureDao();
@@ -59,7 +68,7 @@ public class CandidatureDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
-    public void testFindAll() {
+    public void testFindAll() throws SQLException {
         System.out.println("findAll");
         CandidatureDao instance = new CandidatureDao();
         ArrayList<Candidature> expResult = null;
@@ -68,13 +77,15 @@ public class CandidatureDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
+    @Test
     public void testMapCandidatures() throws Exception {
-        System.out.println("mapCandidatures");
-        CandidatureDao instance = new CandidatureDao();
-        ArrayList<HashMap<String, String>> expResult = null;
-        ArrayList<HashMap<String, String>> result = instance.mapCandidatures();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        ArrayList<String> conditions = new ArrayList<>();        
+        
+        CandidatureDao dao = new CandidatureDao();
+        ArrayList<HashMap<String, String>> result = dao.mapCandidatures(conditions);
+        
+        assertEquals(7, result.size());
+        
     }
-    
+   
 }

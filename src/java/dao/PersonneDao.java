@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import model.Personne;
 
@@ -160,13 +159,18 @@ public class PersonneDao implements PersonneHome {
     public boolean activeUser(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        int res = stmt.executeUpdate("UPDATE personne SET valide=1, token='0' WHERE id_personne="+id+";");
+        int res = stmt.executeUpdate("UPDATE personne SET estValide=1, token='0' WHERE id_personne="+id+";");
         if(res != 0){
             return true;
         }
         return false;
 
     
+    }
+
+    @Override
+    public ArrayList<Personne> findBySession(int id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
