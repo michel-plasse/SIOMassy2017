@@ -14,10 +14,9 @@
         <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
         <a href="<c:url value="Trombinoscope"/>">Trombinoscope</a>
         <a href="<c:url value="/"/>">Espace Personnel</a>
-        <form id="connexion">
             <c:set var="user" value="${sessionScope['user']}"/>
             <c:if test="${user == null}">
-                        <form method="post" action="login">
+          <form id="connexion" method="post" action="login">
             <table border =' 0'>
                 <tr>
                     <td>Identifiant : </td>
@@ -30,13 +29,11 @@
                 <tr>
                     <td>Mot de passe : <input type='password' name="password" required="required"/>
                         <span>${passwordMsg}</span>
-<button type='submit'>Se connecter</button>
+        <input type="submit">Se connecter</button>
         </form>
             </c:if>
             <c:if test="${user != null}">
-                <form action="login" method="post">
-                    <a href="<c:url value="Deconnexion"/>"><button type="submit">Déconnecter ${user.nom} ${user.prenom}</button></a>
-                </form>
+                <a href="<c:url value="Deconnexion"/>"><button>Déconnecter ${user.nom} ${user.prenom}</button></a>
             </c:if>
         </form>
     </nav>
