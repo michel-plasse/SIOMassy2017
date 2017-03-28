@@ -18,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Personne;
 
 /**
  *
@@ -62,7 +61,6 @@ public class ConfirmerInscriptionServlet extends HttpServlet {
               }
 
           }else{
-            //Demander à plaplasse !!!!!!
             request.setAttribute("messageErreurValidation", "Une erreur s'est produite lors de la confirmation, veuillez entrez a nouveau vos informations.");
             //response.sendRedirect(this.getServletContext().getContextPath() + "/inscrire" );
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
