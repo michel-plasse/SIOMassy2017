@@ -14,27 +14,20 @@
         <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
         <a href="<c:url value="Trombinoscope"/>">Trombinoscope</a>
         <a href="<c:url value="/"/>">Espace Personnel</a>
-            <c:set var="user" value="${sessionScope['user']}"/>
-            <c:if test="${user == null}">
-          <form id="connexion" method="post" action="login">
-            <table border =' 0'>
-                <tr>
-                    <td>Identifiant : </td>
-                    <td>
-                        <input type='text' name="login" required="required"/>
-                        <span>${loginMsg}</span>
-                    </td>    
-                </tr>
-
-                <tr>
-                    <td>Mot de passe : <input type='password' name="password" required="required"/>
-                        <span>${passwordMsg}</span>
-        <input type="submit">Se connecter</button>
-        </form>
-            </c:if>
-            <c:if test="${user != null}">
-                <a href="<c:url value="Deconnexion"/>"><button>Déconnecter ${user.nom} ${user.prenom}</button></a>
-            </c:if>
-        </form>
-    </nav>
-    <h1>${titre}</h1>
+        <c:set var="user" value="${sessionScope['user']}"/>
+        <c:if test="${user == null}">
+            <form id="connexion" method="post" action="login">
+                Identifiant :
+                <input type='text' name="login" required="required"/>
+                <span>${loginMsg}</span>
+                Mot de passe : <input type='password' name="password" required="required"/>
+                <span>${passwordMsg}</span>
+                <input type="submit" value="Se connecter"/>
+            </form>
+        </c:if>
+        <c:if test="${user != null}">
+            <a href="<c:url value="Deconnexion"/>"><button>Déconnecter ${user.nom} ${user.prenom}</button></a>
+        </c:if>
+    </form>
+</nav>
+<h1>${titre}</h1>
