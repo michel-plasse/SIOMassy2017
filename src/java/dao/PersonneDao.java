@@ -23,8 +23,8 @@ public class PersonneDao implements PersonneHome {
             connection = ConnectionBd.getConnection();
             // Commencer une transaction
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, token)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -35,6 +35,7 @@ public class PersonneDao implements PersonneHome {
             stmt.setString(7, personne.getVille());
             stmt.setString(8, personne.getPays());
             stmt.setString(9, personne.getMot_de_passe());
+            stmt.setString(10,personne.getToken());
             stmt.executeUpdate();
             // Recuperer le id
             sql = "SELECT MAX(id_personne) AS id FROM personne";
@@ -75,11 +76,16 @@ public class PersonneDao implements PersonneHome {
 
     @Override
     public ArrayList<Personne> findAll() throws SQLException {
-        connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT * FROM agriotes2017.personne");
-        resall.next();
-        return null;
+                connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT id_personne, nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, photo FROM personne");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(resultat.getInt("id_personne"), resultat.getString("nom"), resultat.getString("prenom"), resultat.getString("email"), resultat.getString("no_rue"), resultat.getString("rue"), resultat.getString("code_postal"),resultat.getString("ville"), resultat.getString("pays"), resultat.getString("mot_de_passe"), resultat.getString("photo"));
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
     }
 
     @Override
@@ -136,6 +142,31 @@ public class PersonneDao implements PersonneHome {
                     rs.getString("ville"), rs.getString("pays"), rs.getString("mot_de_passe"));
         }
         return result;
+    }
+
+    @Override
+    public int findIdFromToken(String token) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_personne FROM personne WHERE token='"+token+"';");
+        if(res != null){
+            res.next();
+            return res.getInt("id_personne");
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean activeUser(int id) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        int res = stmt.executeUpdate("UPDATE personne SET valide=1, token='0' WHERE id_personne="+id+";");
+        if(res != 0){
+            return true;
+        }
+        return false;
+
+    
     }
 
 }
