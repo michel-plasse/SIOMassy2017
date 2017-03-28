@@ -36,9 +36,7 @@ public class ListerSessionsOuvertesServlet extends HttpServlet {
             request.setAttribute("message", "Pb avec la base de données");
             vue = "/WEB-INF/message.jsp";
         }
-        request.getRequestDispatcher(vue).forward(request, response);
-        
-        
+        request.getRequestDispatcher(vue).forward(request, response);        
     }
 
     @Override
