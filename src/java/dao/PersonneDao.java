@@ -168,4 +168,9 @@ public class PersonneDao implements PersonneHome {
     
     }
 
+    @Override
+    public ArrayList<Personne> findBySession(int id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
