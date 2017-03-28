@@ -13,7 +13,7 @@
         <a href="<c:url value="/"/>">Acceuil</a>
         <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
         <a href="<c:url value="Trombinoscope"/>">Trombinoscope</a>
-        <a href="">Espace Personnel</a>
+        <a href="<c:url value="/"/>">Espace Personnel</a>
         <form id="connexion">
             <c:set var="user" value="${sessionScope['user']}"/>
             <c:if test="${user == null}">
