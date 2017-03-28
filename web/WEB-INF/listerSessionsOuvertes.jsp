@@ -20,7 +20,7 @@
             <td><c:out value="${uneSession.lieu}" /></td>
             <td><a href="<c:url value="postuler">
                        <c:param name="idSessionFormation" value="${uneSession.id_session}"/>
-                   </c:url>">plop</a></td>
+                   </c:url>">Cliquer ici</a></td>
         </tr>  
     </c:forEach>
 
