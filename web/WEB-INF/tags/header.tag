@@ -10,15 +10,32 @@
 
     <body>
     <nav class="topnav">
-        Menu commun à toutes les pages
+        <a href="<c:url value="/"/>">Acceuil</a>
+        <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
+        <a href="<c:url value="Trombinoscope"/>">Trombinoscope</a>
+        <a href="">Espace Personnel</a>
         <form id="connexion">
             <c:set var="user" value="${sessionScope['user']}"/>
             <c:if test="${user == null}">
-                formulaire de connexion
+                        <form method="post" action="login">
+            <table border =' 0'>
+                <tr>
+                    <td>Identifiant : </td>
+                    <td>
+                        <input type='text' name="login" required="required"/>
+                        <span>${loginMsg}</span>
+                    </td>    
+                </tr>
+
+                <tr>
+                    <td>Mot de passe : <input type='password' name="password" required="required"/>
+                        <span>${passwordMsg}</span>
+<button type='submit'>Se connecter</button>
+        </form>
             </c:if>
             <c:if test="${user != null}">
                 <form action="login" method="post">
-                    <button type="submit">Déconnecter ${user.email}</button>
+                    <a href="<c:url value="Deconnexion"/>"><button type="submit">Déconnecter ${user.nom} ${user.prenom}</button></a>
                 </form>
             </c:if>
         </form>

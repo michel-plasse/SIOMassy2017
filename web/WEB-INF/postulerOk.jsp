@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
+<p:header titre=""/>
 <!DOCTYPE html>
 <html>
     <head>
