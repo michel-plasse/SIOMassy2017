@@ -12,7 +12,7 @@
     <nav class="topnav">
         <a href="<c:url value="/"/>">Acceuil</a>
         <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
-        <a href="<c:url value="Trombinoscope"/>">Trombinoscope</a>
+        <a href="<c:url value="trombinoscope"/>">Trombinoscope</a>
         <a href="<c:url value="/"/>">Espace Personnel</a>
         <c:set var="user" value="${sessionScope['user']}"/>
         <c:if test="${user == null}">
