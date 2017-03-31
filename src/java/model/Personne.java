@@ -225,6 +225,16 @@ public class Personne {
             this.photo = photo;
         }
 
+    public String getNo_tel() {
+        return no_tel;
+    }
+
+    public void setNo_tel(String no_tel) {
+        this.no_tel = no_tel;
+    }
+
+        
+        
 
     @Override
     public String toString() {
