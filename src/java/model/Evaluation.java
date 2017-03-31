@@ -17,16 +17,16 @@ public class Evaluation {
     private int id_session;
     private Date dateDebutEval;
     private int idFormateur;
-    private String intitulé;
+    private String intitule;
 
     public Evaluation() {
     }
 
-    public Evaluation(int id_session, Date dateDebutEval, int idFormateur, String intitulé) {
+    public Evaluation(int id_session, Date dateDebutEval, int idFormateur, String intitule) {
         this.id_session = id_session;
         this.dateDebutEval = dateDebutEval;
         this.idFormateur = idFormateur;
-        this.intitulé = intitulé;
+        this.intitule = intitule;
     }
     
     
@@ -63,12 +63,12 @@ public class Evaluation {
         this.idFormateur = idFormateur;
     }
 
-    public String getIntitulé() {
-        return intitulé;
+    public String getIntitule() {
+        return intitule;
     }
 
-    public void setIntitulé(String intitulé) {
-        this.intitulé = intitulé;
+    public void setIntitule(String intitule) {
+        this.intitule = intitule;
     }
     
     

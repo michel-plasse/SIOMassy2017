@@ -9,58 +9,38 @@ package model;
  *
  * @author admin
  */
-public class Note {
-    private int idNote;
-    private int idEvaluation;
-    private int idEleve;
-    private double valeurNote;
+public class Note{
+    private int id_note;
+    private double note;
     private String commentaire;
 
-    public int getIdNote() {
-        return idNote;
+    public int getId_note() {
+        return id_note;
     }
 
-    public void setIdNote(int idNote) {
-        this.idNote = idNote;
-    }
-
-    public int getIdEvaluation() {
-        return idEvaluation;
-    }
-
-    public void setIdEvaluation(int idEvaluation) {
-        this.idEvaluation = idEvaluation;
-    }
-
-    public int getIdEleve() {
-        return idEleve;
-    }
-
-    public void setIdEleve(int idEleve) {
-        this.idEleve = idEleve;
-    }
-
-    public double getValeurNote() {
-        return valeurNote;
-    }
-
-    public void setValeurNote(double valeurNote) {
-        this.valeurNote = valeurNote;
+    public double getNote() {
+        return note;
     }
 
     public String getCommentaire() {
         return commentaire;
     }
 
+    public void setId_note(int id_note) {
+        this.id_note = id_note;
+    }
+
+    public void setNote(double note) {
+        this.note = note;
+    }
+
     public void setCommentaire(String commentaire) {
         this.commentaire = commentaire;
     }
 
-    public Note(int idNote, int idEvaluation, int idEleve, double valeurNote, String commentaire) {
-        this.idNote = idNote;
-        this.idEvaluation = idEvaluation;
-        this.idEleve = idEleve;
-        this.valeurNote = valeurNote;
+    public Note(int id_note, double note, String commentaire) {
+        this.id_note = id_note;
+        this.note = note;
         this.commentaire = commentaire;
     }
 

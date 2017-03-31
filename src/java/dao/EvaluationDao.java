@@ -31,7 +31,7 @@ public class EvaluationDao implements EvaluationHome{
         stmt.setInt(1, objetAInserer.getId_session());
         stmt.setDate(2, (Date) objetAInserer.getDateDebutEval());
         stmt.setInt(3, objetAInserer.getIdFormateur());
-        stmt.setString(4, objetAInserer.getIntitulé());
+        stmt.setString(4, objetAInserer.getIntitule());
         stmt.executeUpdate();
     }
 
