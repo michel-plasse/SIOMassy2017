@@ -24,7 +24,7 @@ public class SessionFormationDaoTest extends TestCase {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateDebut = new Date(df.parse("2017-05-01").getTime());
         Date dateFin = new Date(df.parse("2018-04-15").getTime());
-        expResult.add(new SessionFormation(1, "BTS SIO", "Ceci est une description", dateDebut, dateFin, "MASSY", true));
+        expResult.add(new SessionFormation(1, "BTS SIO", "Ceci est une description", dateDebut, dateFin, true));
         ArrayList<SessionFormation> result = instance.getSessionsOuvertes();
         assertEquals(expResult, result);
     }

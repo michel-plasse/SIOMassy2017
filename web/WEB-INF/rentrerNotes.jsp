@@ -14,6 +14,6 @@
         <title>Rentrer notes</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Page de notes</h1>
     </body>
 </html>

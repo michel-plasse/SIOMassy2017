@@ -52,7 +52,6 @@ public class SessionFormation {
         this.dateFin = dateFin;
     }
 
-
     public boolean isEst_ouverte() {
         return est_ouverte;
     }
