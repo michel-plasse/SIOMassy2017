@@ -6,7 +6,7 @@
     <%@include file="espacePersoEtudiant.jsp" %>
 </c:if>
 <c:if test="${user.est_formateur eq true}">
-    <p>${user.nom} ${user.nom}, Vous n'êtes pas un chat, désolé ...</p>
+    <%@include file="espacePersonnelFormateur.jsp" %>
 </c:if>-->
 </div>
 </body>

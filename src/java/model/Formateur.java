@@ -5,37 +5,24 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Xavier Claude PASSER
  */
 public class Formateur extends Personne {
     
-    private String matiereEnseignee;
-    
-    public Formateur(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password, String matiereEnseignee) {
+       public Formateur(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
         super(id, nom, prenom, email, no_rue, nom_rue, code_postal, ville, pays, password);
-        this.matiereEnseignee = matiereEnseignee;
     }
     
-    public Formateur(String nom, String prenom, String matiereEnseignee) {
+    public Formateur(String nom, String prenom) {
         super(nom, prenom);
-        this.matiereEnseignee = matiereEnseignee;
     }
     
     public Formateur() {
         
     }
-
-    public String getMatiereEnseignee() {
-        return matiereEnseignee;
-    }
-
-    public void setMatiereEnseignee(String matiereEnseignee) {
-        this.matiereEnseignee = matiereEnseignee;
-    }
-    
-    
-    
-    
+   
 }
