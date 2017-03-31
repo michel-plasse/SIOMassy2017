@@ -30,7 +30,7 @@ public class RentrerNotesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vue = "/WEB-INF/rentrerNotes.jsp";
-        /* try {
+/*         try {
             NoteDao dao = new NoteDao();
             ArrayList<SessionFormation> lesSessionsOuvertes = dao.getSessionsOuvertes();
             request.setAttribute("lesSessions", lesSessionsOuvertes);

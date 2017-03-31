@@ -64,7 +64,7 @@ public class SessionFormation {
 
     }
 
-    public SessionFormation(int id_session, String nom, String descriptif, Date dateDebut, Date dateFin, boolean est_ouverte) {
+    public SessionFormation(int id_session, String nom, String descriptif, Date dateDebut, Date dateFin,boolean est_ouverte) {
         this.id_session = id_session;
         this.nom = nom;
         this.descriptif = descriptif;
@@ -106,7 +106,6 @@ public class SessionFormation {
         if (!Objects.equals(this.nom, other.nom)) {
             return false;
         }
-
         if (!Objects.equals(this.dateDebut, other.dateDebut)) {
             return false;
         }

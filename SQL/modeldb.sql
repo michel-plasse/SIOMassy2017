@@ -123,6 +123,13 @@ WHERE
     est_valide = TRUE
 GROUP BY p.id_personne , nom , prenom , email , no_rue , rue , code_postal , ville , pays , mot_de_passe , no_tel , photo , token , est_valide;
 
+CREATE VIEW membre_pmembrepromotion AS
+SELECT 	personne.id_personne, nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, no_tel, photo, token, 
+		est_valide, session_formation.id_session, id_formation, date_debut, date_fin, est_ouverte, date_effet, id_etat_candidature FROM personne        
+INNER JOIN candidature ON personne.id_personne = candidature.id_personne
+INNER JOIN session_formation ON candidature.id_session = session_formation.id_session
+WHERE id_etat_candidature = 6;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

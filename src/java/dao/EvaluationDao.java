@@ -57,6 +57,15 @@ public class EvaluationDao implements EvaluationHome{
     public ArrayList<Evaluation> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public ArrayList<Evaluation> findByEval() throws SQLException {
+        ArrayList<Evaluation> lesEleves = new ArrayList<Evaluation>();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_evaluation FROM evaluation");
+        
+        return lesEleves;
+    }
 
     @Override
     public ArrayList<Evaluation> findAllEleve(int idEleve) throws SQLException {
