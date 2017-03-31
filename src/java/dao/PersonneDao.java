@@ -113,7 +113,7 @@ public class PersonneDao implements PersonneHome {
         connection = ConnectionBd.getConnection();
             // Commencer une transaction
             String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?) WHERE id_personne = "+ ancien + ";";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());

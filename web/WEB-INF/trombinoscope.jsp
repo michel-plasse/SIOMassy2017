@@ -38,18 +38,17 @@
         </div>
 
 
-<div class="container">
-	<div class="row">
-		
-                    <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
-                        <div class="col-md-3 col-sm-4 col-xs-6">
-                            <c:out value="${unePersonne.nom}" />
-                            <c:out value="${unePersonne.prenom}" /><br>
-                            <img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/><br>
-                            <c:out value="${unePersonne.no_tel}"/><br>
-                            <c:out value="${unePersonne.email}"/>
-                        </div>
-                    </c:forEach>
+        <div class="container-fluid col-md-8">
+            <div class="row">
+                <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
+                    <div class="col-md-3 col-sm-4 col-xs-6" style="padding-bottom: 25px;">
+                        <b><c:out value="${unePersonne.nom}" />
+                            <c:out value="${unePersonne.prenom}" /></b><br>
+                        <img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/><br>
+                        <c:out value="${unePersonne.no_tel}"/><br>
+                        <c:out value="${unePersonne.email}"/>
+                    </div>
+                </c:forEach>
             </div>
         </div>
     </body>
