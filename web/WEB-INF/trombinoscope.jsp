@@ -17,9 +17,9 @@
         <title>Trombinoscope</title>
     </head>
     <body>
-        <div>
-        <div>
-            <ul>
+
+        <div class="col-md-2">
+            <ul class = "nav nav-pills nav-stacked">
                 <li>
                     <a href="#">Formation</a>
                 </li>
@@ -37,30 +37,21 @@
                 </li>
             </ul>
         </div>
+
+<div class="col-md-8">
+        <div class="container">
+
+            <div class="cell"><c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
+
+                <c:out value="${unePersonne.nom}" />
+                    <c:out value="${unePersonne.prenom}" />
+                    <img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/>
+                    <c:out value="${unePersonne.no_tel}"/><br>
+                    <c:out value="${unePersonne.email}"/>
+
+            </c:forEach></div>
+
         </div>
-
-
-
-        <div class="contenu">
-            <table border="1">
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Photo</th>
-                <th>Numéro de téléphone</th>
-                <th>Email</th>
-
-                <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
-                    <tr>
-                        <td><c:out value="${unePersonne.nom}" /></td>
-                        <td><c:out value="${unePersonne.prenom}" /></td>
-                        <td><img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></td>
-                        <td><c:out value="${unePersonne.no_tel}"/></td>
-                        <td><c:out value="${unePersonne.email}"/></td>
-
-                    </tr>  
-                </c:forEach>
-            </table>
-        </div>
-
+</div>
     </body>
 </html>
