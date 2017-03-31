@@ -15,6 +15,9 @@ public class Personne {
         private boolean inscriptionValide;
         private String no_tel;
         private String photo;
+        private boolean est_formateur;
+
+
 
     public boolean isInscriptionValide() {
         return inscriptionValide;
@@ -84,6 +87,23 @@ public class Personne {
         this.mot_de_passe = mot_de_passe;
         this.photo = photo;
     }
+    
+        public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.no_tel = no_tel;
+        this.photo = photo;
+        this.est_formateur = est_formateur;
+    }
+
 
     
     public Personne(String nom, String prenom){
@@ -233,7 +253,13 @@ public class Personne {
         this.no_tel = no_tel;
     }
 
-        
+    public boolean isEst_formateur() {
+        return est_formateur;
+    }
+
+    public void setEst_formateur(boolean est_formateur) {
+        this.est_formateur = est_formateur;
+    }    
         
 
     @Override

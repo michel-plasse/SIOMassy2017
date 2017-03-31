@@ -1,21 +1,4 @@
-<%-- 
-    Document   : candidatures
-    Created on : 13 mars 2017, 19:42:28
-    Author     : AveigA
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Liste de candidatures</title>
-    </head>
-    <body>
-        <h1>La liste de candidatures</h1>
+       <h1>La liste de candidatures</h1>
         <form action="${pageContext.request.contextPath}/candidatures">
             <table>
                 <tr>
@@ -63,5 +46,3 @@
             
         </c:forEach>
         </table>
-    </body>
-</html>

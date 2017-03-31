@@ -112,79 +112,23 @@ CREATE TABLE IF NOT EXISTS `candidature` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-USE `agriotes2017` ;
+CREATE VIEW membre AS
+SELECT
+	p.id_personne , nom , prenom , email , no_rue , rue , code_postal , ville , pays , mot_de_passe , no_tel , photo , token , est_valide, COUNT(f.id_personne) AS est_formateur
+FROM
+    personne p
+        LEFT OUTER JOIN
+    formateur f ON p.id_personne = f.id_personne
+WHERE
+    est_valide = TRUE
+GROUP BY p.id_personne , nom , prenom , email , no_rue , rue , code_postal , ville , pays , mot_de_passe , no_tel , photo , token , est_valide;
 
--- -----------------------------------------------------
--- procedure agriotes2017_reset
--- -----------------------------------------------------
-
-DELIMITER $$
-USE `agriotes2017`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `agriotes2017_reset`()
-BEGIN
-  -- Désactiver contraintes de clé étrangère
-  SET FOREIGN_KEY_CHECKS = 0;
-  -- Vider les tables en repositionnant à 1 leur auto-incrément
-  TRUNCATE TABLE candidature;
-  TRUNCATE TABLE etat_candidature;
-  TRUNCATE TABLE formation;
-  TRUNCATE TABLE personne;
-  TRUNCATE TABLE session_formation;
-  -- Réasactiver contraintes de clé étrangère
-  SET FOREIGN_KEY_CHECKS = 1;
-
-  BEGIN
-    -- Recuperation en cas d'exception
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      -- Annuler la transaction
-      ROLLBACK;
-      -- Afficher la cause de l'échec
-      SHOW ERRORS;
-    END;  
-    START TRANSACTION;
-    -- Insérer les données dans l'ordre des contraintes
-    -- d'intégrité référentielle
-    INSERT INTO personne VALUES
-    (1, 'Leto','Elias','leto@yahoo.com',12,'rue du chat',75001,'Paris','France','Jesuisunchat123!'),
-    (2, 'Yuuki', 'Gertrude', 'gyuuki@wanadoo.fr', 16, 'avenue des papillons', 69000, 'Lyon', 'France', 'Jaimelaneige345?'),
-    (3, 'Scout', 'Luke', 'vader@lycos.fr', 29, 'boulevard du tank', 89000, 'Auxerre', 'France', 'Jesuistonpère99/'),
-    (4, 'Bond', 'Julie', 'pasjamesbond@free.fr', 5, 'chemin de la voiture', 89100, 'Sens', 'France', 'Jesuis1espion!'),
-    (5, 'Loganlapointe', 'Bob', 'bob@viril.com', 26,'rue des chats', 75029, 'Meow', 'Irlande', 'Jaimeleschats777-'),
-    (6, 'Titteh', 'Serena', 'des@tits.com', 8, 'chemin des voisins', 59000, 'Lille', 'France', 'adri1cestpourTOI?'),
-    (7, 'Luc', 'Lana', 'blblblbl@essef.com', 18,'avenue du derrière', 14360, 'Trouville', 'Thailande', 'Jaimelestomates888!'),
-    (8, 'Dicoco', 'Margeriti', 'bgpenne@caramail.fr', 69, 'boulevard du chemin', 40100, 'Bologne', 'Italie', '+grandde14cm');
-
-    INSERT INTO etat_candidature (id_etat_candidature, libelle) VALUES
-    (1, 'reçu'),
-    (2, 'convoqué'),
-    (3, 'accepté'),
-    (4, 'refusé'),
-    (5, 'liste d''attente'),
-    (6, 'inscrit');
-
-    INSERT INTO formation (id_formation, nom, description) VALUES 
-    (1, 'BTS SIO', 'le bts de l''amour'),
-    (2, 'BTS IRIS', 'la formation qu''il te faut !');
-
-    INSERT INTO session_formation (id_session, id_formation, date_debut, date_fin, lieu, est_ouverte) VALUES 
-    (1, 1, '2017-05-01', '2018-04-15', 'MASSY', 1),
-    (2, 1, '2016-06-01', '2017-05-08', 'MASSY', 0),
-    (3, 2, '2017-04-03', '2018-04-02', 'MASSY', 1);
-    
-    INSERT INTO candidature (id_personne, id_session, id_etat_candidature) VALUES 
-    (1, 1, 1), 
-    (2, 1, 2), 
-    (3, 1, 3),
-    (4, 1, 4),
-    (5, 1, 5),
-    (6, 1, 6),
-    (1, 2, 4);
-    COMMIT;
-  END;
-END$$
-
-DELIMITER ;
+CREATE VIEW membre_pmembrepromotion AS
+SELECT 	personne.id_personne, nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, no_tel, photo, token, 
+		est_valide, session_formation.id_session, id_formation, date_debut, date_fin, est_ouverte, date_effet, id_etat_candidature FROM personne        
+INNER JOIN candidature ON personne.id_personne = candidature.id_personne
+INNER JOIN session_formation ON candidature.id_session = session_formation.id_session
+WHERE id_etat_candidature = 6;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

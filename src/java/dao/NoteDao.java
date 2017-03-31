@@ -19,8 +19,7 @@ public class NoteDao implements NoteHome{
             connection = ConnectionBd.getConnection();
             // Commencer une transaction
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO note (id_note, note, commentaire)"
-                    + " VALUES (?,?,?)";
+            String sql = "INSERT INTO note (id_note, note, commentaire)" + " VALUES (?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, note.getId_note());
             stmt.setDouble(2, note.getNote());
@@ -41,7 +40,7 @@ public class NoteDao implements NoteHome{
             connection.setAutoCommit(true);
         }
     }
-
+    
     @Override
     public boolean delete(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

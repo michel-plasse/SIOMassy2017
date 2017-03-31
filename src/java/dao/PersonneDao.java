@@ -113,7 +113,7 @@ public class PersonneDao implements PersonneHome {
         connection = ConnectionBd.getConnection();
             // Commencer une transaction
             String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?) WHERE id_personne = "+ ancien + ";";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -152,7 +152,7 @@ public class PersonneDao implements PersonneHome {
     public Personne getByLoginPassword(String login, String password) throws SQLException {
         Personne result = null;
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT * FROM personne WHERE email=? AND mot_de_passe=?";
+        String sql = "SELECT * FROM membre WHERE email=? AND mot_de_passe=?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, login);
         stmt.setString(2, password);
@@ -170,7 +170,8 @@ public class PersonneDao implements PersonneHome {
                     rs.getString("pays"), 
                     rs.getString("mot_de_passe"),
                     rs.getString("no_tel"),
-                    rs.getString("photo"));
+                    rs.getString("photo"),
+                    rs.getBoolean("est_formateur"));
         }
         return result;
     }

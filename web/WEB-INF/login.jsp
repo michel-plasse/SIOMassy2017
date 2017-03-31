@@ -1,20 +1,4 @@
-<%-- 
-    Document   : login
-    Created on : 14 mars 2017, 10:45:29
-    Author     : nate
---%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<p:header titre="Sessions ouvertes à candidature"/>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Page d'identification</title>
-    </head>
-    <body>
         <h1>Identifiez-vous</h1>
         <p><span>${inscriptionValide}</span></p>
         <form method="post" action="login">
@@ -40,5 +24,3 @@
                 </tr>
             </table>
         </form>
-    </body>
-</html>
