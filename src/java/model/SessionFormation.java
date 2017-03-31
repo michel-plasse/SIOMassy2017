@@ -10,7 +10,6 @@ public class SessionFormation {
     private String descriptif;
     private Date dateDebut;
     private Date dateFin;
-    private String lieu;
     private boolean est_ouverte;
 
     public int getId_session() {
@@ -53,14 +52,6 @@ public class SessionFormation {
         this.dateFin = dateFin;
     }
 
-    public String getLieu() {
-        return lieu;
-    }
-
-    public void setLieu(String lieu) {
-        this.lieu = lieu;
-    }
-
     public boolean isEst_ouverte() {
         return est_ouverte;
     }
@@ -73,13 +64,12 @@ public class SessionFormation {
 
     }
 
-    public SessionFormation(int id_session, String nom, String descriptif, Date dateDebut, Date dateFin, String lieu, boolean est_ouverte) {
+    public SessionFormation(int id_session, String nom, String descriptif, Date dateDebut, Date dateFin, boolean est_ouverte) {
         this.id_session = id_session;
         this.nom = nom;
         this.descriptif = descriptif;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.lieu = lieu;
         this.est_ouverte = est_ouverte;
     }
 
@@ -91,7 +81,6 @@ public class SessionFormation {
         hash = 73 * hash + Objects.hashCode(this.descriptif);
         hash = 73 * hash + Objects.hashCode(this.dateDebut);
         hash = 73 * hash + Objects.hashCode(this.dateFin);
-        hash = 73 * hash + Objects.hashCode(this.lieu);
         hash = 73 * hash + (this.est_ouverte ? 1 : 0);
         return hash;
     }
@@ -117,9 +106,7 @@ public class SessionFormation {
         if (!Objects.equals(this.nom, other.nom)) {
             return false;
         }
-        if (!Objects.equals(this.lieu, other.lieu)) {
-            return false;
-        }
+
         if (!Objects.equals(this.dateDebut, other.dateDebut)) {
             return false;
         }

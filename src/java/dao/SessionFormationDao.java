@@ -28,13 +28,13 @@ public class SessionFormationDao implements SessionHome {
         
         connection = ConnectionBd.getConnection();
         Statement statement = connection.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation "
+        ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,est_ouverte FROM formation INNER JOIN session_formation "
         + "ON session_formation.id_formation = formation.id_formation WHERE id_session="+id+";");
 
         if(resultat != null) {
             resultat.next();
             SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getString("description"), resultat.getDate("date_debut"),
-                        resultat.getDate("date_fin"), resultat.getString("lieu"), resultat.getBoolean("est_ouverte"));
+                        resultat.getDate("date_fin"), resultat.getBoolean("est_ouverte"));
 
             return a;
         }
@@ -46,13 +46,13 @@ public class SessionFormationDao implements SessionHome {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
         ArrayList<SessionFormation> sessionOuvertes = new ArrayList<SessionFormation>();
-        ResultSet resultat = canal.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,lieu,est_ouverte FROM formation INNER JOIN session_formation "
+        ResultSet resultat = canal.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,est_ouverte FROM formation INNER JOIN session_formation "
         + "ON session_formation.id_formation = formation.id_formation WHERE est_ouverte = 1 ORDER BY date_debut;");
         
         while (!resultat.isLast()) {
             resultat.next();
             SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getString("description"), resultat.getDate("date_debut"),
-                    resultat.getDate("date_fin"), resultat.getString("lieu"), resultat.getBoolean("est_ouverte"));
+                    resultat.getDate("date_fin"), resultat.getBoolean("est_ouverte"));
             sessionOuvertes.add(a);
         }
         return sessionOuvertes;

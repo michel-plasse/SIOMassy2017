@@ -1,13 +1,13 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
 <p:header titre="Sessions ouvertes à candidature"/>
-<table border="1">	
+<div id="main">
+<table class="table">	
     <th>identifiant de la session</th>
     <th>nom de la formation</th>
     <th>descriptif de la formation</th>
     <th>début de la formation</th>
     <th>fin de la formation</th>
-    <th>lieu de la formation</th>
     <th>Lien vers la formation</th>
 
     <c:forEach items="${requestScope.lesSessions}" var="uneSession">
@@ -17,7 +17,6 @@
             <td><c:out value="${uneSession.descriptif}" /></td>
             <td><c:out value="${uneSession.dateDebut}" /></td>
             <td><c:out value="${uneSession.dateFin}" /></td>
-            <td><c:out value="${uneSession.lieu}" /></td>
             <td><a href="<c:url value="postuler">
                        <c:param name="idSessionFormation" value="${uneSession.id_session}"/>
                    </c:url>">Cliquer ici</a></td>
@@ -28,7 +27,8 @@
 </table>
 
 Nombre de sessions ouvertes = <c:out value="${lesSessions.size()}" />
-
+    </div>
+</div>
 </body>
 </html>
 

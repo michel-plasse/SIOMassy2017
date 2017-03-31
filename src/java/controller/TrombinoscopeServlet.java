@@ -22,7 +22,7 @@ import model.Personne;
  *
  * @author nate
  */
-@WebServlet(name = "TrombinoscopeServlet", urlPatterns = {"/Trombinoscope"})
+@WebServlet(name = "TrombinoscopeServlet", urlPatterns = {"/trombinoscope"})
 public class TrombinoscopeServlet extends HttpServlet {
 
     @Override
