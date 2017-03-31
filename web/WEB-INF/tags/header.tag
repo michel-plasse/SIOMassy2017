@@ -41,11 +41,8 @@
       </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
   </nav>
-<!--    <nav class="topnav">
-        <a href="<c:url value="/"/>">Acceuil</a>
-        <a href="<c:url value="sessionsOuvertes"/>">Formation</a>
-        <a href="<c:url value="trombinoscope"/>">Trombinoscope</a>
-        <a href="<c:url value="login"/>">Espace Personnel</a>-->
+
+          
 <%--<c:set var="user" value="${sessionScope['user']}"/>
         <c:if test="${user == null}">
             <form id="connexion" method="post" action="login">
@@ -61,4 +58,7 @@
             <a href="<c:url value="Deconnexion"/>"><button>Déconnecter ${user.nom} ${user.prenom}</button></a>
         </c:if>
 --%>
+
+
+
 <h1>${titre}</h1>

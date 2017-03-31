@@ -36,3 +36,29 @@ and open the template in the editor.
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
     
 }
+
+ #candidat-form{
+    margin: auto;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+    width: 600px;
+    height: 100%;
+    background-color: white;
+    position: relative;
+}
+#infos-session{
+    margin: 10px;
+    padding-bottom: 40px;
+    border-bottom: thin black solid;
+}
+#content-form{
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+#backlink{
+    bottom: 5px;
+    right: 5px;
+    position: absolute;
+}

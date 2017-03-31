@@ -1,7 +1,3 @@
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
-<p:header titre="Sessions ouvertes à candidature"/>
-<div id="main">
 <table class="table">	
     <th>identifiant de la session</th>
     <th>nom de la formation</th>
@@ -27,12 +23,3 @@
 </table>
 
 Nombre de sessions ouvertes = <c:out value="${lesSessions.size()}" />
-    </div>
-</div>
-</body>
-</html>
-
-
-<%-- <a href="<c:url value="/monSiteWeb/countZeros.jsp">
-        <c:param name="idSessionFormation" value="${lesSessions.id_session}"/>
-   </c:url>">plop</a>--%>
