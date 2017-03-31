@@ -8,12 +8,31 @@ and open the template in the editor.
     Author     : admin
 */
 
+#banner-div {
+    padding:10px;
+    background-color: #efefef;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+}
 
-
-
-banner {
+#banner {
     height: 150px;
     width: 100%;
-    margin: 15px;
-    background-image: url("../../../image/banner.png");
+    background-image: url("../../image/banner.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+#main {
+    width: 100%;
+    padding:10px;
+    background-color: #efefef;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 5px rgba(0, 0, 0, .075);
+    
 }
