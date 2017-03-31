@@ -45,7 +45,7 @@ public class TrombinoscopeServlet extends HttpServlet {
             throws ServletException, IOException {
                 PersonneDao pdao = new PersonneDao();
         try {
-            ArrayList<Personne> lesPersonnes = pdao.findBySession(1);
+            ArrayList<Personne> lesPersonnes = pdao.findAll();
             request.setAttribute("lesPersonnes", lesPersonnes);
         } catch (SQLException ex) {
             Logger.getLogger(TrombinoscopeServlet.class.getName()).log(Level.SEVERE, null, ex);
