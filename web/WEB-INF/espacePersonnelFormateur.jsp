@@ -6,6 +6,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
 <p:header titre="Espace personnel formateur"/>
-        echo "Il n'y a personne :p "
+<p>Il n'y a personne :p </p>
     </body>
 </html>
