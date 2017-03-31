@@ -33,8 +33,8 @@
                             <c:out value="${unePersonne.nom}" />
                             <c:out value="${unePersonne.prenom}" /></b><br>
                         <img height="200" width="200" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/><br>
-                        <c:out value="${unePersonne.no_tel}"/><br>
-                        <c:out value="${unePersonne.email}"/>
+                        <i class="fa fa-phone" aria-hidden="true"></i><c:out value="${unePersonne.no_tel}"/><br>
+                        <i class="fa fa-envelope" aria-hidden="true"></i><c:out value="${unePersonne.email}"/>
                     </div>
                 </c:forEach>
             </div>
