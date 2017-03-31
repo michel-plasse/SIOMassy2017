@@ -18,7 +18,6 @@
     </head>
     <body>
         <div>
-        <div>
             <ul>
                 <li>
                     <a href="#">Formation</a>
@@ -36,7 +35,6 @@
                     <a href="#">Formateurs</a>
                 </li>
             </ul>
-        </div>
         </div>
 
 
