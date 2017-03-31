@@ -13,26 +13,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style>
-            #menu{
-                width: 150px;
-                float: left;
-            }
-            
-            #sous-menu{
-                float:right;
-            }
 
-            #contenu{
-                width: 800px;
-                height: 400px;
-            }
-        </style>
         <title>Trombinoscope</title>
     </head>
     <body>
-        <div class="menu">
-        <div class="sous-menu">
+        <div>
+        <div>
             <ul>
                 <li>
                     <a href="#">Formation</a>
