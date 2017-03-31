@@ -15,6 +15,11 @@ public class Personne {
         private boolean inscriptionValide;
         private String no_tel;
         private String photo;
+        private boolean est_formateur;
+
+    public Personne(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, boolean aBoolean) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     public boolean isInscriptionValide() {
         return inscriptionValide;
@@ -233,7 +238,13 @@ public class Personne {
         this.no_tel = no_tel;
     }
 
-        
+    public boolean isFormateur() {
+        return est_formateur;
+    }
+
+    public void setFormateur(boolean est_formateur) {
+        this.est_formateur = est_formateur;
+    }    
         
 
     @Override
