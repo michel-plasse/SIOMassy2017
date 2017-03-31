@@ -9,6 +9,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -58,16 +59,22 @@ public class EvaluationDao implements EvaluationHome{
     }
 
     @Override
-    public ArrayList<Evaluation> findAllEleve(int idEleve,int scope) throws SQLException {
+    public ArrayList<Evaluation> findAllEleve(int idEleve) throws SQLException {
         ArrayList<Evaluation> lesEvalDeEleve = new ArrayList<Evaluation>();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        stmt.executeUpdate("SELECT * FROM evaluation WHERE id_evaluation = :");
+        ResultSet res =  stmt.executeQuery("SELECT * FROM evaluation INNER JOIN candidature ON evaluation.id_session = candidature.id_session WHERE candidature.id_personne ="
+                            + idEleve + "AND candidature.id_etat_candidature = 3 ;");
+        while (!res.isLast()) {
+            res.next();
+            Evaluation eval = new Evaluation(res.getInt("id_session"), res.getDate("MANQUANT"), res.getInt("id_formateur"), res.getString("intitule"));
+            lesEvalDeEleve.add(eval);
+        }
         return lesEvalDeEleve;
     }
 
     @Override
-    public ArrayList<Evaluation> findAllFormateur(int idFormateur,int scope) throws SQLException {
+    public ArrayList<Evaluation> findAllFormateur(int idFormateur) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

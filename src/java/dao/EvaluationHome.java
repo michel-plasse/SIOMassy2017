@@ -15,6 +15,6 @@ import model.Evaluation;
  */
 public interface EvaluationHome extends Dao<Evaluation> {
     
-    public ArrayList<Evaluation> findAllEleve(int idEleve,int scope)throws SQLException ;
-    public ArrayList<Evaluation> findAllFormateur(int idFormateur,int scope)throws SQLException ;
+    public ArrayList<Evaluation> findAllEleve(int idEleve)throws SQLException ;
+    public ArrayList<Evaluation> findAllFormateur(int idFormateur)throws SQLException ;
 }
