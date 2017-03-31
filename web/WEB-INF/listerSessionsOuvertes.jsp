@@ -1,7 +1,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
 <p:header titre="Sessions ouvertes à candidature"/>
-<table border="1">	
+<div id="main">
+<table class="table">	
     <th>identifiant de la session</th>
     <th>nom de la formation</th>
     <th>descriptif de la formation</th>
@@ -26,7 +27,8 @@
 </table>
 
 Nombre de sessions ouvertes = <c:out value="${lesSessions.size()}" />
-
+    </div>
+</div>
 </body>
 </html>
 
