@@ -14,7 +14,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <title>Trombinoscope</title>
     </head>
     <body>
 
@@ -38,20 +37,20 @@
             </ul>
         </div>
 
-<div class="col-md-8">
-        <div class="container">
 
-            <div class="cell"><c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
-
-                <c:out value="${unePersonne.nom}" />
-                    <c:out value="${unePersonne.prenom}" />
-                    <img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/>
-                    <c:out value="${unePersonne.no_tel}"/><br>
-                    <c:out value="${unePersonne.email}"/>
-
-            </c:forEach></div>
-
+<div class="container">
+	<div class="row">
+		
+                    <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
+                        <div class="col-md-3 col-sm-4 col-xs-6">
+                            <c:out value="${unePersonne.nom}" />
+                            <c:out value="${unePersonne.prenom}" /><br>
+                            <img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/><br>
+                            <c:out value="${unePersonne.no_tel}"/><br>
+                            <c:out value="${unePersonne.email}"/>
+                        </div>
+                    </c:forEach>
+            </div>
         </div>
-</div>
     </body>
 </html>
