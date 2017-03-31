@@ -6,6 +6,7 @@
 package controller;
 
 import dao.PersonneDao;
+import dao.SessionFormationDao;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Personne;
+import model.SessionFormation;
 
 /**
  *
@@ -43,8 +45,13 @@ public class TrombinoscopeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                PersonneDao pdao = new PersonneDao();
+        PersonneDao pdao = new PersonneDao();
+        SessionFormationDao dao = new SessionFormationDao();
         try {
+
+            ArrayList<SessionFormation> lesSessions = dao.getSessionsOuvertes();
+            request.setAttribute("lesSessions", lesSessions);
+            
             ArrayList<Personne> lesPersonnes = pdao.findAll();
             request.setAttribute("lesPersonnes", lesPersonnes);
         } catch (SQLException ex) {
@@ -52,7 +59,7 @@ public class TrombinoscopeServlet extends HttpServlet {
             request.setAttribute("msgerreur", "Problème avec la base de données");
         }
         request.getRequestDispatcher("/WEB-INF/trombinoscope.jsp").forward(request, response);
-        
+
     }
 
 }
