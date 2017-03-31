@@ -34,6 +34,8 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    //si l'utilisateur existe alors on le renvoie sur sa page
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
