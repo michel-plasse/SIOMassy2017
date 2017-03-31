@@ -13,6 +13,7 @@ public class Personne {
 	private String mot_de_passe;
 	private String token;
         private boolean inscriptionValide;
+        private String no_tel;
         private String photo;
 
     public boolean isInscriptionValide() {
@@ -23,19 +24,53 @@ public class Personne {
         this.inscriptionValide = inscriptionValide;
     }
 
-    public Personne(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.no_tel = no_tel;
+        this.photo = photo;
+    }
+
+    
+    
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String token, boolean inscriptionValide, String no_tel, String photo) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.token = token;
+        this.inscriptionValide = inscriptionValide;
+        this.no_tel = no_tel;
+        this.photo = photo;
+    }
+    
+        public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe) {
         this.id = id;
         this.email = email;
         this.nom = nom;
         this.prenom = prenom;
         this.no_rue = no_rue;
-        this.rue = nom_rue;
+        this.rue = rue;
         this.code_postal = code_postal;
         this.ville = ville;
         this.pays = pays;
-        this.mot_de_passe = password;
+        this.mot_de_passe = mot_de_passe;
     }
-
+    
     public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
         this.id = id;
         this.email = email;
@@ -49,6 +84,7 @@ public class Personne {
         this.mot_de_passe = mot_de_passe;
         this.photo = photo;
     }
+
     
     public Personne(String nom, String prenom){
         this.nom = nom;

@@ -13,23 +13,68 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            #menu{
+                width: 150px;
+                float: left;
+            }
+            
+            #sous-menu{
+                float:right;
+            }
+
+            #contenu{
+                width: 800px;
+                height: 400px;
+            }
+        </style>
         <title>Trombinoscope</title>
     </head>
     <body>
-        <table border="1">
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Photo</th>
+        <div class="menu">
+        <div class="sous-menu">
+            <ul>
+                <li>
+                    <a href="#">Formation</a>
+                </li>
+                <li>
+                    <a href="#">BTS 1</a>
+                </li>
+                <li>
+                    <a href="#">BTS 2</a>
+                </li>
+                <li>
+                    <a href="#">BTS 3</a>
+                </li>
+                <li>
+                    <a href="#">Formateurs</a>
+                </li>
+            </ul>
+        </div>
+        </div>
 
-            <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
-                <tr>
-                    <td><c:out value="${unePersonne.nom}" /></td>
-                    <td><c:out value="${unePersonne.prenom}" /></td>
-                    <td><img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></td>
-                  
-                </tr>  
-            </c:forEach>
-        </table>
+
+
+        <div class="contenu">
+            <table border="1">
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Photo</th>
+                <th>Numéro de téléphone</th>
+                <th>Email</th>
+
+                <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
+                    <tr>
+                        <td><c:out value="${unePersonne.nom}" /></td>
+                        <td><c:out value="${unePersonne.prenom}" /></td>
+                        <td><img height="100" width="100" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></td>
+                        <td><c:out value="${unePersonne.no_tel}"/></td>
+                        <td><c:out value="${unePersonne.email}"/></td>
+
+                    </tr>  
+                </c:forEach>
+            </table>
+        </div>
 
     </body>
 </html>
