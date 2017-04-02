@@ -6,14 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import model.Equipe;
 import model.Personne;
 import model.Projet;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 
 public class EquipeDao implements EquipeHome<Equipe> {
     
     private Connection connection;
+    
+    private static final String CHAMP_ID_EQUIPE = "id_equipe";
+    private static final String CHAMP_ID_CREATEUR = "id_personne";
+    private static final String CHAMP_ID_PROJET = "id_projet";
+    private static final String CHAMP_DATE = "date_creation";
 
     private static final String SQL_INSERT = "INSERT INTO equipe(id_createur, id_projet, date_creation) VALUES (?,?,NOW())";
     private static final String SQL_DELETE = "DELETE FROM equipe WHERE id_equipe = ?";
@@ -171,6 +178,68 @@ public class EquipeDao implements EquipeHome<Equipe> {
             
         }
         return isDelete;
+    }
+
+    @Override
+    public ArrayList<Equipe> findAll(Projet unProjet) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        PersonneDao personneDao = new PersonneDao();
+        PreparedStatement preparedStatementGetEquipe = null;
+        ResultSet result;
+        ArrayList<Equipe> lesEquipes = new ArrayList<Equipe>();
+        
+        try {
+            preparedStatementGetEquipe = initialisationRequetePreparee(connection, SQL_SELECT_ALL_BYPROJECT, false, 
+                                                                       unProjet.getId());
+            result = preparedStatementGetEquipe.executeQuery();
+            
+            while(result.next()) {
+                HashMap<Integer,Personne> lesMembres = new HashMap<Integer,Personne>();
+                PreparedStatement preparedStatementGetMembre = null;
+                ResultSet resultIdMembre;
+                
+                try{
+                    //récupération de l'ensemble des id des membres de l'équipe
+                    preparedStatementGetMembre = initialisationRequetePreparee(connection, SQL_SELECT_MEMBERS_BYTEAM, false,
+                                                                               result.getInt(CHAMP_ID_EQUIPE));
+                    resultIdMembre = preparedStatementGetMembre.executeQuery();
+                    
+                    while(resultIdMembre.next()) {
+                        //récupération des informations sur chaque membre
+                        Personne unMembreDeLequipe = personneDao.findById(resultIdMembre.getInt("id_personne"));
+                        
+                        //ajout du membre récupéré à la liste des membres de l'equipe
+                        lesMembres.put(unMembreDeLequipe.getId(), unMembreDeLequipe);       
+                    }
+                }catch (SQLException e) {
+                    System.out.println("problème sql rencontré lors de la récupération des membres de l'équipe : id = " +result.getInt(CHAMP_ID_EQUIPE));
+                    throw e;
+                }finally{
+                    fermetureSilencieuse(preparedStatementGetMembre);
+                }
+                
+                //récupération des informations du createur
+                Personne createur = personneDao.findById(result.getInt(CHAMP_ID_CREATEUR));
+                
+                Equipe uneEquipe = new Equipe();
+                
+                uneEquipe.setId(result.getInt(CHAMP_ID_EQUIPE));
+                uneEquipe.setCreateur(createur);
+                uneEquipe.setUnProjet(unProjet);
+                uneEquipe.setLesMembres(lesMembres);
+                uneEquipe.setDateCreation(result.getDate(CHAMP_DATE));
+                System.out.println("Récupération des données relatives à l'équipe (id = " +uneEquipe.getId()+ " ) : OK...");
+                lesEquipes.add(uneEquipe);
+            }
+            
+        }catch (SQLException e) {
+            System.out.println("Probleme avec la récupération des équipes");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(preparedStatementGetEquipe, connection);
+        }
+        
+        return lesEquipes;
     }
     
 }

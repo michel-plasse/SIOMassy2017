@@ -13,7 +13,14 @@ public class Equipe {
     public Equipe() {
     }
 
-    public Equipe(int id, Personne createur, Projet unProjet, HashMap<Integer, Personne> lesMembres) {
+    public Equipe(Integer id, Personne createur, Projet unProjet, Date dateCreation) {
+        this.id = id;
+        this.createur = createur;
+        this.unProjet = unProjet;
+        this.dateCreation = dateCreation;
+    }
+ 
+    public Equipe(Integer id, Personne createur, Projet unProjet, HashMap<Integer, Personne> lesMembres) {
         this.id = id;
         this.createur = createur;
         this.unProjet = unProjet;
