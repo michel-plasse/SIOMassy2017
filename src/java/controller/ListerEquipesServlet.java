@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Equipe;
+import model.Personne;
 import model.Projet;
 
 /**
@@ -94,6 +96,15 @@ public class ListerEquipesServlet extends HttpServlet {
             }
             
             request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
+            
+            //check si les infos sont bien récupérées
+            
+//            for(Equipe equipe: lesEquipesDuProjet) {
+//                Collection<Personne> col = equipe.getLesMembres().values();
+//                for(Personne personne : col) {
+//                System.out.println(personne.getEmail());
+//                }
+//            }
             
             this.getServletContext().getRequestDispatcher(VUE_EQUIPES).forward(request, response);
         }

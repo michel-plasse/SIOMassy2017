@@ -18,7 +18,8 @@ public class EquipeDao implements EquipeHome<Equipe> {
     private Connection connection;
     
     private static final String CHAMP_ID_EQUIPE = "id_equipe";
-    private static final String CHAMP_ID_CREATEUR = "id_personne";
+    private static final String CHAMP_ID_CREATEUR = "id_createur";
+    private static final String CHAMP_ID_PERSONNE = "id_personne";
     private static final String CHAMP_ID_PROJET = "id_projet";
     private static final String CHAMP_DATE = "date_creation";
 
