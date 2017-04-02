@@ -98,7 +98,7 @@ public class ListerEquipesServlet extends HttpServlet {
             this.getServletContext().getRequestDispatcher(VUE_EQUIPES).forward(request, response);
         }
         
-        response.sendError(401, "Accès interdit, votre requête ne peut aboutir.");
+        response.sendError(404, "Erreur, votre requête ne peut aboutir.");
         
     }
 

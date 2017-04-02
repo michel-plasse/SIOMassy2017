@@ -29,7 +29,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
     private static final String SQL_INSERT_MEMBER = "INSERT INTO membre_equipe(id_equipe,id_personne) VALUES (?,?)";
     private static final String SQL_DELETE_MEMBER = "DELETE FROM membre_equipe WHERE ( id_equipe = ? AND id_personne = ? )";
     
-    private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_personne, id_projet, date_creation FROM equipe WHERE id_projet = ?";
+    private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_projet = ?";
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
 
     //private static final String SQL_UPDATE_EQUIPE = "UPDATE equipe"
