@@ -180,12 +180,15 @@ public class PersonneDao implements PersonneHome {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
         ArrayList<Personne> lesPersonnes = new ArrayList();
-        ResultSet resultat = canal.executeQuery("SELECT nom, prenom FROM membre_promotion WHERE id_etat_candidature = 6");
+        ResultSet resultat = canal.executeQuery("SELECT * FROM membre_promotion WHERE id_etat_candidature = 6");
         while (!resultat.isLast()) {
             resultat.next();
             Personne p = new Personne(
                     resultat.getString("nom"), 
                     resultat.getString("prenom"));
+            
+            p.setId(resultat.getInt("id_personne"));
+            
             lesPersonnes.add(p);
         }
         return lesPersonnes;
