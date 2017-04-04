@@ -5,15 +5,15 @@
     </div>
     <div>
         <div id="formateur-form">
-            <div id="formateur-formBox" height="100">
+            <div id="formateur-formBox">
                 ${user.prenom} ${user.nom}<br>
                 ${user.no_rue} ${user.rue}<br>
                 ${user.code_postal} ${user.ville}<br>
                 ${user.pays}<br>
                 ${user.email}
             </div>
-            <div>
-                <a height="100" vertical-align="bottom" >Modifier profil</a>
+            <div style="display:table;height: 100px;">
+                <div style="display:table-cell;vertical-align:bottom"><a>Modifier profil</a></div>
             </div>
         </div>
         <div>

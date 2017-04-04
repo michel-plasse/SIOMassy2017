@@ -69,6 +69,7 @@ and open the template in the editor.
 
 #formateur-formBox{
     padding-right: 15px;
+    height: 100px;
 }
 
 .item-menu:hover {
