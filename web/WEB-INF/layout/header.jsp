@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
+        <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
     </head>
 
 <body>

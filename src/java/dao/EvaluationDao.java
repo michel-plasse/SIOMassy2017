@@ -85,7 +85,7 @@ public class EvaluationDao implements EvaluationHome{
         ArrayList<Evaluation> lesEvalDeEleve = new ArrayList();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT module.nom,personne.nom ,evaluation.date_effet, evaluation.intitule, note.note, note.commentaire FROM evaluation "
+        ResultSet res =  stmt.executeQuery("SELECT evaluation.date_effet, evaluation.intitule, module.nom, personne.nom , note.note, note.commentaire FROM evaluation "
                 + "+ INNER JOIN candidature ON evaluation.id_session = candidature.id_session"
                 + "INNER JOIN module ON evaluation.id_module = module.id_module"
                 + "INNER JOIN personne ON evaluation.id_formateur = personne.id_personne"
@@ -94,12 +94,18 @@ public class EvaluationDao implements EvaluationHome{
         while (!res.isLast()) {
             res.next();
             Evaluation eval = new Evaluation(
-                    res.getDate("evaluation.date_effet"),
-                    res.getString("evaluation.intitule"),
-                    res.getString("module.nom"),
-                    res.getString("personne.nom"),
-                    res.getFloat("note.note"),
-                    res.getString("note.commentaire"));
+                    
+                    res.getDate("date_effet"),
+                    
+                    res.getString("intitule"),
+                    
+                    res.getString("nom"),
+                    
+                    res.getString("nom"),
+                    
+                    res.getDouble("note"),
+                    
+                    res.getString("commentaire"));
             lesEvalDeEleve.add(eval);
         }
         return lesEvalDeEleve;

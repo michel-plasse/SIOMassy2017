@@ -5,16 +5,21 @@
  */
 package controller;
 
+import dao.EvaluationDao;
 import dao.PersonneDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Evaluation;
 import model.Personne;
 
 /**
@@ -41,18 +46,18 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession maSession = request.getSession(true);
         Personne user = (Personne) maSession.getAttribute("user");  
-        if (user == null) {
+        EvaluationDao eval = new EvaluationDao();
+        try {
+            ArrayList<Evaluation> evaluation = eval.findAllEvalEleve(user.getId());
+            maSession.setAttribute("eval", evaluation);
+            if (user == null) {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        }
-        else {
-//            try {
-//                // Chercher des infos dans les DAO
-//            } catch (SQLException ex) {
-//                request.setAttribute("message", "Pb avec la base de données");
-//                request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
-//            }
-
-            request.getRequestDispatcher( "/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
+            }
+           // else {
+          //  request.getRequestDispatcher( "/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
+        //}
+        } catch (SQLException ex) {
+            Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
