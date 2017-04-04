@@ -64,7 +64,7 @@ public class PersonneDao implements PersonneHome {
         Personne result = null;
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM agriotes2017.personne WHERE id_personne =" + id + ";");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM personne WHERE id_personne =" + id + ";");
         if (rs.next()) {
             result = new Personne(id,
                     rs.getString("nom"), 

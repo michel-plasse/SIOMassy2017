@@ -7,29 +7,62 @@ package model;
 
 import java.util.Date;
 
-
-/**
- *
- * @author admin
- */
 public class Evaluation {
     private int idEvaluation;
-    private int id_session;
+    private int idModule;
+    private int idSession;
     private Date dateDebutEval;
     private int idFormateur;
     private String intitule;
+    private String nom_module;
+    private String nom_formateur;
+    private String nom_formation;
+    private float note;
+    private String commentaire;
 
     public Evaluation() {
     }
 
-    public Evaluation(int id_session, Date dateDebutEval, int idFormateur, String intitule) {
-        this.id_session = id_session;
-        this.dateDebutEval = dateDebutEval;
+    public Evaluation(int idModule, int idFormateur, int idSession, String intitule, Date dateDebutEval) {
+        this.idModule = idModule;
         this.idFormateur = idFormateur;
+        this.idSession = idSession;
         this.intitule = intitule;
+        this.dateDebutEval = dateDebutEval;  
+    }
+
+    public Evaluation(Date dateDebutEval, String intitule, String nom_module, String nom_formateur,float note, String commentaire) {
+        this.dateDebutEval = dateDebutEval;
+        this.intitule = intitule;
+        this.nom_module = nom_module;
+        this.nom_formateur = nom_formateur;
+        this.note = note;
+        this.commentaire = commentaire;
+    }
+
+    public Evaluation(int idEvaluation, Date dateDebutEval, String intitule, String nom_module, String nom_formation) {
+        this.idEvaluation = idEvaluation;
+        this.dateDebutEval = dateDebutEval;
+        this.intitule = intitule;
+        this.nom_module = nom_module;
+        this.nom_formation = nom_formation;
+    }
+
+    public String getNom_formation() {
+        return nom_formation;
+    }
+
+    public void setNom_formation(String nom_formation) {
+        this.nom_formation = nom_formation;
     }
     
-    
+    public int getIdModule() {
+        return idModule;
+    }
+
+    public void setIdModule(int idModule) {
+        this.idModule = idModule;
+    }
 
     public int getIdEvaluation() {
         return idEvaluation;
@@ -39,12 +72,12 @@ public class Evaluation {
         this.idEvaluation = idEvaluation;
     }
 
-    public int getId_session() {
-        return id_session;
+    public int getIdSession() {
+        return idSession;
     }
 
-    public void setId_session(int id_session) {
-        this.id_session = id_session;
+    public void setIdSession(int idSession) {
+        this.idSession = idSession;
     }
 
     public Date getDateDebutEval() {
@@ -70,7 +103,20 @@ public class Evaluation {
     public void setIntitule(String intitule) {
         this.intitule = intitule;
     }
-    
-    
-    
+    public String getNom_module() {
+        return nom_module;
+    }
+
+    public void setNom_module(String nom_module) {
+        this.nom_module = nom_module;
+    }
+
+    public String getNom_formateur() {
+        return nom_formateur;
+    }
+
+    public void setNom_formateur(String nom_formateur) {
+        this.nom_formateur = nom_formateur;
+    }
+
 }
