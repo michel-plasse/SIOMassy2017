@@ -64,7 +64,7 @@ public class PersonneDao implements PersonneHome {
         Personne result = null;
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM agriotes2017.personne WHERE id_personne =" + id + ";");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM personne WHERE id_personne =" + id + ";");
         if (rs.next()) {
             result = new Personne(id,
                     rs.getString("nom"), 
@@ -174,6 +174,21 @@ public class PersonneDao implements PersonneHome {
                     rs.getBoolean("est_formateur"));
         }
         return result;
+    }
+    
+    public ArrayList<Personne> findByEtat() throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT nom, prenom FROM membre_promotion WHERE id_etat_candidature = 6");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(
+                    resultat.getString("nom"), 
+                    resultat.getString("prenom"));
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
     }
 
     @Override

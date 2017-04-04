@@ -1,11 +1,24 @@
-<%-- 
-    Document   : espacePersonnelFormateur
-    Created on : 31 mars 2017, 11:46:38
-    Author     : Xavier Claude PASSER
---%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="p" tagdir="/WEB-INF/tags"%>
-<p:header titre="Espace personnel formateur"/>
-<p>Il n'y a personne :p </p>
-    </body>
-</html>
+
+<div id = "formateur-form">
+    <div id="formateur-formBox">
+        <img height="100" width="100" src="image/trombi/<c:out value="${user.photo}"/>"/>
+    </div>
+    <div>
+        <div id="formateur-form">
+            <div id="formateur-formBox" height="100">
+                ${user.prenom} ${user.nom}<br>
+                ${user.no_rue} ${user.rue}<br>
+                ${user.code_postal} ${user.ville}<br>
+                ${user.pays}<br>
+                ${user.email}
+            </div>
+            <div>
+                <a height="100" vertical-align="bottom" >Modifier profil</a>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</div>
+ 

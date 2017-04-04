@@ -38,8 +38,8 @@ BEGIN
 	(8, 'Dicoco', 'Margeriti', 'bgpenne@caramail.fr', '69', 'boulevard du chemin', '40100', 'Bologne', 'Italie', '+grandde14cm', 'plop', 'plop', 'plop' ,1);
 
 	INSERT INTO formateur (id_personne) VALUES
-    (7),
-    (8);
+                  (7),
+                  (8);
     
 	INSERT INTO etat_candidature (id_etat_candidature, libelle) VALUES
 	(1, 'reçu'),
@@ -60,14 +60,14 @@ BEGIN
 	
 	INSERT INTO candidature (id_personne, id_session, id_etat_candidature, date_effet) VALUES 
 	(1, 1, 1, '2018-01-15'), 
-        (2, 1, 2, '2018-01-18'), 
-        (3, 1, 3, '2018-02-03'),
-        (4, 1, 4, '2018-02-05'),
-        (5, 1, 5, '2018-02-25'),
-        (6, 1, 6, '2018-02-26'),
-        (1, 3, 4, '2018-02-26');
+                  (2, 1, 2, '2018-01-18'), 
+                  (3, 1, 3, '2018-02-03'),
+                  (4, 1, 4, '2018-02-05'),
+                  (5, 1, 5, '2018-02-25'),
+                  (6, 1, 6, '2018-02-26'),
+                  (1, 3, 4, '2018-02-26');
     COMMIT;
   END;
 END $$
 
-CALL agriotes2017_reset() $$	personne
+CALL agriotes2017_reset() $$	

@@ -123,7 +123,7 @@ WHERE
     est_valide = TRUE
 GROUP BY p.id_personne , nom , prenom , email , no_rue , rue , code_postal , ville , pays , mot_de_passe , no_tel , photo , token , est_valide;
 
-CREATE VIEW membre_pmembrepromotion AS
+CREATE VIEW membre_promotion AS
 SELECT 	personne.id_personne, nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, no_tel, photo, token, 
 		est_valide, session_formation.id_session, id_formation, date_debut, date_fin, est_ouverte, date_effet, id_etat_candidature FROM personne        
 INNER JOIN candidature ON personne.id_personne = candidature.id_personne
