@@ -23,7 +23,7 @@ public class NoteDao implements NoteHome{
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, note.getId_note());
             stmt.setDouble(2, note.getNote());
-            stmt.setString(5, note.getCommentaire());
+            stmt.setString(3, note.getCommentaire());
             stmt.executeUpdate();
             // Recuperer le id
             sql = "SELECT MAX(id_note) AS id FROM note";
