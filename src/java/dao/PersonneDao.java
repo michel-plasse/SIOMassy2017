@@ -172,6 +172,7 @@ public class PersonneDao implements PersonneHome {
                     rs.getString("no_tel"),
                     rs.getString("photo"),
                     rs.getBoolean("est_formateur"));
+                    rs.getObject(evaluation);
         }
         return result;
     }
