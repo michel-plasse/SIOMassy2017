@@ -16,6 +16,7 @@ public class Personne {
         private String no_tel;
         private String photo;
         private boolean est_formateur;
+        Evaluation evaluation;
 
 
 
@@ -87,7 +88,25 @@ public class Personne {
         this.mot_de_passe = mot_de_passe;
         this.photo = photo;
     }
+
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur, Evaluation evaluation) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.no_tel = no_tel;
+        this.photo = photo;
+        this.est_formateur = est_formateur;
+        this.evaluation = evaluation;
+    }
     
+        
         public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur) {
         this.id = id;
         this.nom = nom;
@@ -201,6 +220,14 @@ public class Personne {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(Evaluation evaluation) {
+        this.evaluation = evaluation;
     }
 
     @Override
