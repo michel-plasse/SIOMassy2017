@@ -70,4 +70,4 @@ BEGIN
   END;
 END $$
 
-CALL agriotes2017_reset() $$	personne
+CALL agriotes2017_reset() $$	
