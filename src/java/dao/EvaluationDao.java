@@ -26,12 +26,14 @@ public class EvaluationDao implements EvaluationHome{
     @Override
     public void insert(Evaluation objetAInserer) throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sqlstmt = "INSERT INTO evaluation ('id_session','date_evaluation','id_formateur','intitule') VALUES(?,?,?,?)";
+        String sqlstmt = "INSERT INTO evaluation ('id_module','id_formateur,'id_session','intitule','date_effet')"
+                + "VALUES(?,?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, objetAInserer.getId_session());
-        stmt.setDate(2, (Date) objetAInserer.getDateDebutEval());
-        stmt.setInt(3, objetAInserer.getIdFormateur());
+        stmt.setInt(1, objetAInserer.getIdModule());
+        stmt.setInt(2, objetAInserer.getIdFormateur());
+        stmt.setInt(3, objetAInserer.getIdSession());
         stmt.setString(4, objetAInserer.getIntitule());
+        stmt.setDate(5, (Date) objetAInserer.getDateDebutEval());
         stmt.executeUpdate();
     }
 
@@ -39,13 +41,24 @@ public class EvaluationDao implements EvaluationHome{
     public boolean delete(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        stmt.executeUpdate("DELETE FROM evaluation WHERE id_evaluation = "+id+";");
+        stmt.executeUpdate("DELETE FROM evaluation"
+                + " WHERE id_evaluation = "+id+";");
         return false;
     }
 
     @Override
     public boolean update(int idAncien, Evaluation nouveau) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        String sql = "UPDATE evaluation SET id_module = ?,id_formateur =?, id_session = ?, intitule = ?, date_effet = ?"
+                + "VALUES (?,?,?,?,?) WHERE id_evaluation = " + idAncien ;
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, nouveau.getIdModule());
+        stmt.setInt(1, nouveau.getIdFormateur());
+        stmt.setInt(1, nouveau.getIdSession());
+        stmt.setString(1, nouveau.getIntitule());
+        stmt.setDate(1, (Date) nouveau.getDateDebutEval());
+        stmt.executeUpdate();
+        return true;
     }
 
     @Override
@@ -68,24 +81,47 @@ public class EvaluationDao implements EvaluationHome{
     }
 
     @Override
-    public ArrayList<Evaluation> findAllEleve(int idEleve) throws SQLException {
-        ArrayList<Evaluation> lesEvalDeEleve = new ArrayList<Evaluation>();
+    public ArrayList<Evaluation> findAllEvalEleve(int idEleve) throws SQLException {
+        ArrayList<Evaluation> lesEvalDeEleve = new ArrayList();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT * FROM evaluation INNER JOIN candidature ON evaluation.id_session = candidature.id_session WHERE candidature.id_personne ="
-                            + idEleve + "AND candidature.id_etat_candidature = 3 ;");
+        ResultSet res =  stmt.executeQuery("SELECT module.nom,personne.nom ,evaluation.date_effet, evaluation.intitule FROM evaluation "
+                + "+ INNER JOIN candidature ON evaluation.id_session = candidature.id_session"
+                + "INNER JOIN module ON evaluation.id_module = module.id_module"
+                + "INNER JOIN personne ON evaluation.id_formateur = personne.id_personne"
+		+ "WHERE candidature.id_personne = "+idEleve+" AND candidature.id_etat_candidature = 3 ;");
         while (!res.isLast()) {
             res.next();
-            Evaluation eval = new Evaluation(res.getInt("id_session"), res.getDate("MANQUANT"), res.getInt("id_formateur"), res.getString("intitule"));
+            Evaluation eval = new Evaluation(
+                    res.getDate("evaluation.date_effet"),
+                    res.getString("evaluation.intitule"),
+                    res.getString("module.nom"),
+                    res.getString("personne.nom"));
             lesEvalDeEleve.add(eval);
         }
         return lesEvalDeEleve;
     }
 
     @Override
-    public ArrayList<Evaluation> findAllFormateur(int idFormateur) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Evaluation> findAllEvalFormateur(int idFormateur) throws SQLException {
+        ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res =  stmt.executeQuery("SELECT evaluation.id_evaluation, module.nom, formation.nom, evaluation.date_effet, evaluation.intitule FROM evaluation"
+                + "INNER JOIN module ON evaluation.id_module = module.id_module"
+                + "INNER JOIN session_formation ON evaluation.id_session = session_formation.id_session"
+                + "INNER JOIN formation ON session_formation.id_formation = formation.id_formation"
+		+ "WHERE id_formateur = "+idFormateur+" AND session_formation.est_ouverte = 0 ;");
+        while (!res.isLast()) {
+            res.next();
+            Evaluation eval = new Evaluation(
+                    res.getInt("evaluation.id-evaluation"),
+                    res.getDate("evaluation.date_effet"),
+                    res.getString("evaluation.intitule"),
+                    res.getString("module.nom"),
+                    res.getString("formation.nom"));
+            lesEvalDuFormateur.add(eval);
+        }
+        return lesEvalDuFormateur;
     }
-    
-    
 }
