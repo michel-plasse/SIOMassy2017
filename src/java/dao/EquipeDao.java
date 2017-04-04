@@ -10,7 +10,6 @@ import java.util.HashMap;
 import model.Equipe;
 import model.Personne;
 import model.Projet;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 
 public class EquipeDao implements EquipeHome<Equipe> {
@@ -32,7 +31,18 @@ public class EquipeDao implements EquipeHome<Equipe> {
     
     private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_projet = ?";
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
-
+    private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
+                                                                 + "AND ( id_personne NOT IN "
+                                                                 + "(SELECT id_personne FROM projet as p "
+                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_equipe "
+                                                                 + "INNER JOIN membre_equipe as me ON e.id_equipe = me.id_equipe "
+                                                                 + "WHERE p.id_projet = ? ) "
+                                                                 + "OR id_personne NOT IN "
+                                                                 + "(SELECT id_createur FROM projet as p "
+                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_projet "
+                                                                 + "WHERE p.id_projet = ? ) ";
+    
+    
     //private static final String SQL_UPDATE_EQUIPE = "UPDATE equipe"
     
     
@@ -241,6 +251,40 @@ public class EquipeDao implements EquipeHome<Equipe> {
         }
         
         return lesEquipes;
+    }
+
+    @Override
+    public ArrayList<Personne> findAllNotInTeam(Projet unProjet) throws SQLException {
+        
+        connection = ConnectionBd.getConnection();
+        PersonneDao personneDao = new PersonneDao();
+        PreparedStatement preparedStatementGetFreePeople = null;
+        ResultSet result = null;
+        ArrayList<Personne> personnesLibres = new ArrayList<Personne>();
+        
+        try {
+            preparedStatementGetFreePeople = initialisationRequetePreparee(connection, SQL_SELECT_FREEPEOPLE_BYSESSION, false, 
+                                                                       unProjet.getId(),
+                                                                       unProjet.getId(),
+                                                                       unProjet.getId());
+            
+            result = preparedStatementGetFreePeople.executeQuery();
+            while(result.next()) {
+                //récupération des informations sur les stagiaires sans equipe
+                Personne unePersonne = personneDao.findById(result.getInt(CHAMP_ID_PERSONNE));
+                personnesLibres.add(unePersonne);
+            }
+            
+            System.out.println("Récupération des stagiaires sans équipe : OK ..");
+            
+        }catch (SQLException e) {
+            System.out.println("Probleme avec la récupération des stagiaires sans équipe...");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(result,preparedStatementGetFreePeople, connection);
+        }
+        
+        return personnesLibres;  
     }
     
 }

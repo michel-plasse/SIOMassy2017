@@ -18,7 +18,12 @@
     <div class="clearfix section-grp"></div>   
     
     <div class="row-fluid">
-        <h3><c:out value="Liste des membres sans équipe" /></h3><br />    
+        <h3><c:out value="Liste des membres sans équipe" /></h3><br />  
+           <%-- <c:forEach items="${requestScope.stagiaires}" var="unStagiaire" >
+            <div class="col-md-4">
+            <span><c:out value="${unStagiaire.nom}" /> <c:out value="${unStagiaire.prenom}" /></span>
+            </div> 
+</c:forEach> --%>
     </div>
     </div>
 </div>

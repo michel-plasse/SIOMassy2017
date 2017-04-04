@@ -30,6 +30,7 @@ import model.Projet;
 public class ListerEquipesServlet extends HttpServlet {
     public static final String PARAM_ID_PROJET = "id_projet";
     public static final String ATT_EQUIPES = "equipes";
+    public static final String ATT_STAGIAIRES_LIBRES = "stagiaires";
     public static final String VUE_EQUIPES = "/WEB-INF/listedesequipes.jsp";
     public static final String ATT_TITLE = "title";
     public static final String ATT_TITLE_VALUE = "Liste des équipes";
@@ -87,17 +88,20 @@ public class ListerEquipesServlet extends HttpServlet {
         
         if(idProjet != null && isParsable) {
             ArrayList<Equipe> lesEquipesDuProjet = null;
+            ArrayList<Personne> lesStagiairesSansEquipe = null;
             //en attendant projetdao***
             Projet projetConsulte = new Projet(idProjet);
             //***
             EquipeDao equipeDao = new EquipeDao();
             try {
                 lesEquipesDuProjet = equipeDao.findAll(projetConsulte);
+                lesStagiairesSansEquipe = equipeDao.findAllNotInTeam(projetConsulte);
             } catch (SQLException ex) {
                 Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
+            request.setAttribute(ATT_STAGIAIRES_LIBRES, lesStagiairesSansEquipe);
             request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
             
             //check si les infos sont bien récupérées
