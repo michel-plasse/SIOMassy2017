@@ -87,7 +87,10 @@ public class Personne {
         this.mot_de_passe = mot_de_passe;
         this.photo = photo;
     }
+
+   
     
+        
         public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur) {
         this.id = id;
         this.nom = nom;
@@ -202,6 +205,7 @@ public class Personne {
     public void setToken(String token) {
         this.token = token;
     }
+
 
     @Override
     public int hashCode() {

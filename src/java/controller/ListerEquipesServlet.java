@@ -31,6 +31,8 @@ public class ListerEquipesServlet extends HttpServlet {
     public static final String PARAM_ID_PROJET = "id_projet";
     public static final String ATT_EQUIPES = "equipes";
     public static final String VUE_EQUIPES = "/WEB-INF/listedesequipes.jsp";
+    public static final String ATT_TITLE = "title";
+    public static final String ATT_TITLE_VALUE = "Liste des équipes";
     
 
     /**
@@ -96,6 +98,7 @@ public class ListerEquipesServlet extends HttpServlet {
             }
             
             request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
+            request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
             
             //check si les infos sont bien récupérées
             
