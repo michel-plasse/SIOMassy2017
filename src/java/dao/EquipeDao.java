@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.Equipe;
@@ -40,7 +41,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
                                                                  + "OR id_personne NOT IN "
                                                                  + "(SELECT id_createur FROM projet as p "
                                                                  + "INNER JOIN equipe as e ON p.id_projet = e.id_projet "
-                                                                 + "WHERE p.id_projet = ? ) ";
+                                                                 + "WHERE p.id_projet = ? ))";
     
     
     //private static final String SQL_UPDATE_EQUIPE = "UPDATE equipe"
@@ -263,12 +264,13 @@ public class EquipeDao implements EquipeHome<Equipe> {
         ArrayList<Personne> personnesLibres = new ArrayList<Personne>();
         
         try {
-            preparedStatementGetFreePeople = initialisationRequetePreparee(connection, SQL_SELECT_FREEPEOPLE_BYSESSION, false, 
-                                                                       unProjet.getId(),
-                                                                       unProjet.getId(),
-                                                                       unProjet.getId());
+            preparedStatementGetFreePeople = initialisationRequetePreparee(connection, SQL_SELECT_FREEPEOPLE_BYSESSION, false,
+                                                                            unProjet.getId(),
+                                                                            unProjet.getId(),
+                                                                            unProjet.getId());
             
             result = preparedStatementGetFreePeople.executeQuery();
+            
             while(result.next()) {
                 //récupération des informations sur les stagiaires sans equipe
                 Personne unePersonne = personneDao.findById(result.getInt(CHAMP_ID_PERSONNE));
