@@ -3,39 +3,37 @@
     Created on : 24 mars 2017, 14:25:33
     Author     : nate 
 --%>
+<script type="text/javascript" src="<c:url value="/inc/bootstrap/js/offcanvas.js"/>"></script>
+<div class="container" style="padding-left: 0px">
+    <div class="col-xs-4 col-sm-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
 
-<div class="col-md-2">
+            <a class="list-group-item active">Formation</a>
+            <c:forEach items="${requestScope.lesSessions}" var="uneSession">
+                <a href="<c:url value="trombinoscope">
+                       <c:param name="idSession" value="${uneSession.id_session}"/>
+                   </c:url>" class="list-group-item"><c:out value="${uneSession.nom}"/></a>
+            </c:forEach>
+        </div>
 
-    <ul class = "nav nav-pills nav-stacked">
-        <li>
-            <a href="#">Formation</a>
-        </li>
-        <c:forEach items="${requestScope.lesSessions}" var="uneSession">
-            <li>
-                <a href="#"><c:out value="${uneSession.nom}"/></a>
-            </li>
-        </c:forEach>
-        <li>
-            <a href="#">Formateurs</a>
-        </li>
-    </ul>
-</div>
+    </div>
+    <div class="row row-offcanvas row-offcanvas-left">
 
+        <div class="col-xs-12 col-sm-9" >
 
-<div class="container-fluid col-md-10">
-    <div class="row">
-        <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
-            <div class="col-md-3" style="padding-bottom: 25px;">
-                <b><span class="glyphicon glyphicon-user"></span>
-                    <c:out value="${unePersonne.nom}" />
-                    <c:out value="${unePersonne.prenom}" /></b><br>
-                <img height="200" width="200" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/><br>
-                <i class="fa fa-phone" aria-hidden="true"></i> <c:out value="${unePersonne.no_tel}"/><br>
-                <i class="fa fa-envelope" aria-hidden="true"></i> <c:out value="${unePersonne.email}"/>
+            <div class="row">
+                <c:forEach items="${requestScope.lesPersonnes}" var="unePersonne">
+                    <div class="col-xs-6 col-lg-4" style="padding-bottom: 25px">
+                        <b><span class="glyphicon glyphicon-user"></span>
+                            <c:out value="${unePersonne.nom}" />
+                            <c:out value="${unePersonne.prenom}" /></b>
+                        <p><img height="200" width="200" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/> </p>
+                        <p><i class="fa fa-phone" aria-hidden="true"></i> <c:out value="${unePersonne.no_tel}"/></p>
+                        <p><i class="fa fa-envelope" aria-hidden="true"></i> <c:out value="${unePersonne.email}"/></p>
+                    </div>
+                </c:forEach>
             </div>
-        </c:forEach>
+        </div>
+
     </div>
 </div>
-
-<div class="clearfix"></div>
-
