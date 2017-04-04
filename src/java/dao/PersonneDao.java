@@ -175,6 +175,21 @@ public class PersonneDao implements PersonneHome {
         }
         return result;
     }
+    
+    public ArrayList<Personne> findByEtat() throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT nom, prenom FROM membre_promotion WHERE id_etat_candidature = 6");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(
+                    resultat.getString("nom"), 
+                    resultat.getString("prenom"));
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
+    }
 
     @Override
     public int findIdFromToken(String token) throws SQLException {
