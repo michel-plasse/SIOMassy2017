@@ -17,6 +17,8 @@ public class Evaluation {
     private String nom_module;
     private String nom_formateur;
     private String nom_formation;
+    private float note;
+    private String commentaire;
 
     public Evaluation() {
     }
@@ -29,11 +31,13 @@ public class Evaluation {
         this.dateDebutEval = dateDebutEval;  
     }
 
-    public Evaluation(Date dateDebutEval, String intitule, String nom_module, String nom_formateur) {
+    public Evaluation(Date dateDebutEval, String intitule, String nom_module, String nom_formateur,float note, String commentaire) {
         this.dateDebutEval = dateDebutEval;
         this.intitule = intitule;
         this.nom_module = nom_module;
         this.nom_formateur = nom_formateur;
+        this.note = note;
+        this.commentaire = commentaire;
     }
 
     public Evaluation(int idEvaluation, Date dateDebutEval, String intitule, String nom_module, String nom_formation) {
