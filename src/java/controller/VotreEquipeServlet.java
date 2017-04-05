@@ -5,12 +5,6 @@
  */
 package controller;
 
-import static controller.ListerEquipesServlet.ATT_EQUIPES;
-import static controller.ListerEquipesServlet.ATT_STAGIAIRES_LIBRES;
-import static controller.ListerEquipesServlet.ATT_TITLE;
-import static controller.ListerEquipesServlet.ATT_TITLE_VALUE;
-import static controller.ListerEquipesServlet.PARAM_ID_PROJET;
-import static controller.ListerEquipesServlet.VUE_EQUIPES;
 import dao.EquipeDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +25,7 @@ import model.Projet;
  *
  * @author admin
  */
-@WebServlet(name = "VotreEquipeServlet", urlPatterns = {"/VotreEquipe"})
+@WebServlet(name = "VotreEquipeServlet", urlPatterns = {"/votreEquipe"})
 public class VotreEquipeServlet extends HttpServlet {
     
     public static final String PARAM_ID_EQUIPE = "id";

@@ -107,5 +107,12 @@ body {
 
 }
 
+.img-membre {
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+    border: 1px solid #c4c4c4;
+    margin-right: 10px;
+}
 
 /********* STYLE PAGES EQUIPES **********/
