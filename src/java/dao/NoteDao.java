@@ -19,11 +19,12 @@ public class NoteDao implements NoteHome{
             connection = ConnectionBd.getConnection();
             // Commencer une transaction
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO note (id_note, note, commentaire)" + " VALUES (?,?,?)";
+            String sql = "INSERT INTO note (id_personne, id_evaluation, note, commentaire)" + " VALUES (?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, note.getId_note());
-            stmt.setDouble(2, note.getNote());
-            stmt.setString(5, note.getCommentaire());
+            stmt.setObject(1, note.getEtudiant());
+            stmt.setObject(2, note.getEvaluation());
+            stmt.setDouble(3, note.getNote());
+            stmt.setString(4, note.getCommentaire());
             stmt.executeUpdate();
             // Recuperer le id
             sql = "SELECT MAX(id_note) AS id FROM note";

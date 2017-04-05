@@ -21,5 +21,5 @@ public interface EquipeHome<T> extends Dao<T>{
     public boolean ajouterMembre(T object, Personne unePersonne) throws SQLException;
     public boolean retirerMembre(T object, Personne unePersonne) throws SQLException;
     public ArrayList<T> findAll(Projet unProjet) throws SQLException;
-  
+    public ArrayList<Personne> findAllNotInTeam (Projet unProjet) throws SQLException; 
 }

@@ -5,12 +5,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.Equipe;
 import model.Personne;
 import model.Projet;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 
 public class EquipeDao implements EquipeHome<Equipe> {
@@ -30,9 +30,22 @@ public class EquipeDao implements EquipeHome<Equipe> {
     private static final String SQL_INSERT_MEMBER = "INSERT INTO membre_equipe(id_equipe,id_personne) VALUES (?,?)";
     private static final String SQL_DELETE_MEMBER = "DELETE FROM membre_equipe WHERE ( id_equipe = ? AND id_personne = ? )";
     
+    private static final String SQL_SELECT_EQUIPE = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_equipe = ?";
+
     private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_projet = ?";
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
-
+    private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
+                                                                 + "AND ( id_personne NOT IN "
+                                                                 + "(SELECT id_personne FROM projet as p "
+                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_equipe "
+                                                                 + "INNER JOIN membre_equipe as me ON e.id_equipe = me.id_equipe "
+                                                                 + "WHERE p.id_projet = ? ) "
+                                                                 + "OR id_personne NOT IN "
+                                                                 + "(SELECT id_createur FROM projet as p "
+                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_projet "
+                                                                 + "WHERE p.id_projet = ? ))";
+    
+    
     //private static final String SQL_UPDATE_EQUIPE = "UPDATE equipe"
     
     
@@ -111,7 +124,58 @@ public class EquipeDao implements EquipeHome<Equipe> {
 
     @Override
     public Equipe findById(int id) throws SQLException {
-        return null;
+        connection = ConnectionBd.getConnection();
+        PersonneDao personneDao = new PersonneDao();
+        PreparedStatement preparedStatementInfoEquipe = null;
+        ResultSet result = null;
+        Equipe equipe = new Equipe();
+        
+        try {
+            preparedStatementInfoEquipe = initialisationRequetePreparee(connection, SQL_SELECT_EQUIPE, false,id);
+            
+            result = preparedStatementInfoEquipe.executeQuery();
+            
+            if(result.next()) {
+                System.out.println("idEquipe valide, Récupération des infos...");
+                HashMap<Integer, Personne> lesMembres = new HashMap<Integer, Personne>();
+                Personne createur = personneDao.findById(result.getInt(CHAMP_ID_CREATEUR));
+                equipe.setCreateur(createur);
+                equipe.setDateCreation(result.getDate(CHAMP_DATE));
+                equipe.setId(id);
+                
+                PreparedStatement preparedStatementInfoMembres = null;
+                ResultSet resultMembres = null;
+                
+                try {
+                    preparedStatementInfoMembres = initialisationRequetePreparee(connection, SQL_SELECT_MEMBERS_BYTEAM, false, id);
+                    
+                    resultMembres = preparedStatementInfoMembres.executeQuery();
+                    
+                    while(resultMembres.next()) {
+                        Personne unMembreDeLequipe = personneDao.findById(resultMembres.getInt("id_personne"));
+                        lesMembres.put(unMembreDeLequipe.getId(), unMembreDeLequipe);   
+                    }
+                    
+                    equipe.setLesMembres(lesMembres);
+                    
+                }catch (SQLException e) {
+                    System.out.println("probleme récupération des infos membres...");
+                    throw e;
+                }finally{
+                    fermetureSilencieuse(preparedStatementInfoMembres);
+                }
+            }else{
+                System.out.println("probleme aucune equipe à l'id indiqué...");
+            }
+            
+        }catch (SQLException e) {
+            System.out.println("Probleme avec la récupération des infos de l'équipe...");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(result,preparedStatementInfoEquipe, connection);
+        }
+        
+        return equipe;  
     }
 
     @Override
@@ -241,6 +305,41 @@ public class EquipeDao implements EquipeHome<Equipe> {
         }
         
         return lesEquipes;
+    }
+
+    @Override
+    public ArrayList<Personne> findAllNotInTeam(Projet unProjet) throws SQLException {
+        
+        connection = ConnectionBd.getConnection();
+        PersonneDao personneDao = new PersonneDao();
+        PreparedStatement preparedStatementGetFreePeople = null;
+        ResultSet result = null;
+        ArrayList<Personne> personnesLibres = new ArrayList<Personne>();
+        
+        try {
+            preparedStatementGetFreePeople = initialisationRequetePreparee(connection, SQL_SELECT_FREEPEOPLE_BYSESSION, false,
+                                                                            unProjet.getId(),
+                                                                            unProjet.getId(),
+                                                                            unProjet.getId());
+            
+            result = preparedStatementGetFreePeople.executeQuery();
+            
+            while(result.next()) {
+                //récupération des informations sur les stagiaires sans equipe
+                Personne unePersonne = personneDao.findById(result.getInt(CHAMP_ID_PERSONNE));
+                personnesLibres.add(unePersonne);
+            }
+            
+            System.out.println("Récupération des stagiaires sans équipe : OK ..");
+            
+        }catch (SQLException e) {
+            System.out.println("Probleme avec la récupération des stagiaires sans équipe...");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(result,preparedStatementGetFreePeople, connection);
+        }
+        
+        return personnesLibres;  
     }
     
 }

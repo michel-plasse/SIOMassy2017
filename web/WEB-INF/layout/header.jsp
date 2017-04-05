@@ -6,24 +6,27 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Agriote</title>
+        <title>
+            Agriote<c:if test="${ !empty requestScope.title }"><c:out value=" - ${requestScope.title}" /></c:if>
+        </title>
+        
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
+        <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
     </head>
 
 <body>
 
    <div class="container">
-       
     <!--  #### CONTAINER #### -->
     
     
     <!--   BANNIERE -->
-    <div id="banner-div">
+<!--    <div id="banner-div">
         <div id="banner"></div>
-    </div>
+    </div>-->
     <!--  FIN BANNIERE  -->
     
     <!--    BARRE MENU-->

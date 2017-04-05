@@ -30,7 +30,48 @@ public class TrombinoscopeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+
+        SessionFormationDao dao = new SessionFormationDao();
+        try {
+            ArrayList<SessionFormation> lesSessions = dao.getSessionsOuvertes();
+            request.setAttribute("lesSessions", lesSessions);
+        } catch (SQLException e) {
+            System.out.println("Probleme recuperation liste session : " + e);
+        }
+
+        Integer idSession = null;
+        boolean parsable = false;
+        if (request.getParameter("idSession") != null) {
+            try {
+                idSession = Integer.parseInt(request.getParameter("idSession"));
+                parsable = true;
+
+            } catch (NumberFormatException e) {
+                System.err.println("Erreur id session");
+            }
+
+            if (parsable && idSession != null) {
+
+                PersonneDao pdao = new PersonneDao();
+
+                try {
+
+                    ArrayList<Personne> lesPersonnes = pdao.findBySession(idSession);
+                    request.setAttribute("lesPersonnes", lesPersonnes);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TrombinoscopeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("msgerreur", "Problème avec la base de données");
+                }
+                
+                this.getServletContext().getRequestDispatcher("/WEB-INF/trombinoscope.jsp").forward(request, response);
+
+            }
+            
+            this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);    
+
+        }
+        
+        this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);
 
     }
 
@@ -45,20 +86,6 @@ public class TrombinoscopeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PersonneDao pdao = new PersonneDao();
-        SessionFormationDao dao = new SessionFormationDao();
-        try {
-
-            ArrayList<SessionFormation> lesSessions = dao.getSessionsOuvertes();
-            request.setAttribute("lesSessions", lesSessions);
-            
-            ArrayList<Personne> lesPersonnes = pdao.findAll();
-            request.setAttribute("lesPersonnes", lesPersonnes);
-        } catch (SQLException ex) {
-            Logger.getLogger(TrombinoscopeServlet.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("msgerreur", "Problème avec la base de données");
-        }
-        request.getRequestDispatcher("/WEB-INF/trombinoscope.jsp").forward(request, response);
 
     }
 

@@ -15,7 +15,25 @@ public class Note{
     private Personne laPersonne;
     private double note;
     private String commentaire;
+    private Personne etudiant;
+    private Evaluation evaluation;
 
+    public Evaluation getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(Evaluation evaluation) {
+        this.evaluation = evaluation;
+    }
+    
+    public void setEtudiant(Personne etudiant) {
+        this.etudiant = etudiant;
+    }
+    
+    public Personne getEtudiant() {
+        return etudiant;
+    }
+    
     public int getId_note() {
         return id_note;
     }
@@ -56,10 +74,12 @@ public class Note{
         this.commentaire = commentaire;
     }
 
-    public Note(int id_note, double note, String commentaire) {
+    public Note(int id_note, double note, String commentaire, Personne etudiant, Evaluation evaluation) {
         this.id_note = id_note;
         this.note = note;
         this.commentaire = commentaire;
+        this.etudiant = etudiant;
+        this.evaluation = evaluation;
     }
 
     public Note() {
