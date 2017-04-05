@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Evaluation;
+import model.Module;
 
 /**
  *
@@ -29,9 +30,9 @@ public class EvaluationDao implements EvaluationHome{
         String sqlstmt = "INSERT INTO evaluation ('id_module','id_formateur,'id_session','intitule','date_effet')"
                 + "VALUES(?,?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, objetAInserer.getIdModule());
-        stmt.setInt(2, objetAInserer.getIdFormateur());
-        stmt.setInt(3, objetAInserer.getIdSession());
+        stmt.setInt(1, objetAInserer.getLeModule().getId());
+        stmt.setInt(2, objetAInserer.getLeFormateur().getId());
+        stmt.setInt(3, objetAInserer.getLaSession().getId_session());
         stmt.setString(4, objetAInserer.getIntitule());
         stmt.setDate(5, (Date) objetAInserer.getDateDebutEval());
         stmt.executeUpdate();
@@ -52,57 +53,23 @@ public class EvaluationDao implements EvaluationHome{
         String sql = "UPDATE evaluation SET id_module = ?,id_formateur =?, id_session = ?, intitule = ?, date_effet = ?"
                 + "VALUES (?,?,?,?,?) WHERE id_evaluation = " + idAncien ;
         PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, nouveau.getIdModule());
-        stmt.setInt(1, nouveau.getIdFormateur());
-        stmt.setInt(1, nouveau.getIdSession());
-        stmt.setString(1, nouveau.getIntitule());
-        stmt.setDate(1, (Date) nouveau.getDateDebutEval());
+        stmt.setInt(1, nouveau.getLeModule().getId());
+        stmt.setInt(2, nouveau.getLeFormateur().getId());
+        stmt.setInt(3, nouveau.getLaSession().getId_session());
+        stmt.setString(4, nouveau.getIntitule());
+        stmt.setDate(5, (Date) nouveau.getDateDebutEval());
         stmt.executeUpdate();
         return true;
     }
 
     @Override
     public Evaluation findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public ArrayList<Evaluation> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public ArrayList<Evaluation> findByEval() throws SQLException {
-        ArrayList<Evaluation> lesEleves = new ArrayList<Evaluation>();
-        connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet res = stmt.executeQuery("SELECT id_evaluation FROM evaluation");
-        
-        return lesEleves;
-    }
-
-    @Override
-    public ArrayList<Evaluation> findAllEvalEleve(int idEleve) throws SQLException {
-        ArrayList<Evaluation> lesEvalDeEleve = new ArrayList();
-        connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT module.nom,personne.nom ,evaluation.date_effet, evaluation.intitule, note.note, note.commentaire FROM evaluation "
-                + "+ INNER JOIN candidature ON evaluation.id_session = candidature.id_session"
-                + "INNER JOIN module ON evaluation.id_module = module.id_module"
-                + "INNER JOIN personne ON evaluation.id_formateur = personne.id_personne"
-                + "INNER JOIN note ON evaluation.id_evaluation = note.id_evaluation"
-		+ "WHERE candidature.id_personne = "+idEleve+" AND candidature.id_etat_candidature = 3 ;");
-        while (!res.isLast()) {
-            res.next();
-            Evaluation eval = new Evaluation(
-                    res.getDate("evaluation.date_effet"),
-                    res.getString("evaluation.intitule"),
-                    res.getString("module.nom"),
-                    res.getString("personne.nom"),
-                    res.getFloat("note.note"),
-                    res.getString("note.commentaire"));
-            lesEvalDeEleve.add(eval);
-        }
-        return lesEvalDeEleve;
     }
 
     @Override

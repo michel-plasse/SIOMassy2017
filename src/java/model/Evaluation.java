@@ -9,75 +9,37 @@ import java.util.Date;
 
 public class Evaluation {
     private int idEvaluation;
-    private int idModule;
-    private int idSession;
     private Date dateDebutEval;
-    private int idFormateur;
     private String intitule;
-    private String nom_module;
-    private String nom_formateur;
-    private String nom_formation;
-    private float note;
-    private String commentaire;
+    private Module leModule;
+    private Personne leFormateur;
+    private SessionFormation laSession;
 
     public Evaluation() {
     }
 
-    public Evaluation(int idModule, int idFormateur, int idSession, String intitule, Date dateDebutEval) {
-        this.idModule = idModule;
-        this.idFormateur = idFormateur;
-        this.idSession = idSession;
-        this.intitule = intitule;
-        this.dateDebutEval = dateDebutEval;  
-    }
-
-    public Evaluation(Date dateDebutEval, String intitule, String nom_module, String nom_formateur,float note, String commentaire) {
+    public Evaluation(Date dateDebutEval, String intitule, Module leModule, Personne leFormateur, SessionFormation laSession) {
         this.dateDebutEval = dateDebutEval;
         this.intitule = intitule;
-        this.nom_module = nom_module;
-        this.nom_formateur = nom_formateur;
-        this.note = note;
-        this.commentaire = commentaire;
+        this.leModule = leModule;
+        this.leFormateur = leFormateur;
+        this.laSession = laSession;
     }
 
-    public Evaluation(int idEvaluation, Date dateDebutEval, String intitule, String nom_module, String nom_formation) {
-        this.idEvaluation = idEvaluation;
-        this.dateDebutEval = dateDebutEval;
-        this.intitule = intitule;
-        this.nom_module = nom_module;
-        this.nom_formation = nom_formation;
+    public SessionFormation getLaSession() {
+        return laSession;
     }
 
-    public String getNom_formation() {
-        return nom_formation;
-    }
-
-    public void setNom_formation(String nom_formation) {
-        this.nom_formation = nom_formation;
+    public void setLaSession(SessionFormation laSession) {
+        this.laSession = laSession;
     }
     
-    public int getIdModule() {
-        return idModule;
-    }
-
-    public void setIdModule(int idModule) {
-        this.idModule = idModule;
-    }
-
     public int getIdEvaluation() {
         return idEvaluation;
     }
 
     public void setIdEvaluation(int idEvaluation) {
         this.idEvaluation = idEvaluation;
-    }
-
-    public int getIdSession() {
-        return idSession;
-    }
-
-    public void setIdSession(int idSession) {
-        this.idSession = idSession;
     }
 
     public Date getDateDebutEval() {
@@ -88,14 +50,6 @@ public class Evaluation {
         this.dateDebutEval = dateDebutEval;
     }
 
-    public int getIdFormateur() {
-        return idFormateur;
-    }
-
-    public void setIdFormateur(int idFormateur) {
-        this.idFormateur = idFormateur;
-    }
-
     public String getIntitule() {
         return intitule;
     }
@@ -103,20 +57,21 @@ public class Evaluation {
     public void setIntitule(String intitule) {
         this.intitule = intitule;
     }
-    public String getNom_module() {
-        return nom_module;
+
+    public Module getLeModule() {
+        return leModule;
     }
 
-    public void setNom_module(String nom_module) {
-        this.nom_module = nom_module;
+    public void setLeModule(Module leModule) {
+        this.leModule = leModule;
     }
 
-    public String getNom_formateur() {
-        return nom_formateur;
+    public Personne getLeFormateur() {
+        return leFormateur;
     }
 
-    public void setNom_formateur(String nom_formateur) {
-        this.nom_formateur = nom_formateur;
+    public void setLeFormateur(Personne leFormateur) {
+        this.leFormateur = leFormateur;
     }
 
 }

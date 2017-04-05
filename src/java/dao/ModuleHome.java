@@ -5,15 +5,12 @@
  */
 package dao;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import model.Evaluation;
+import model.Module;
 
 /**
  *
  * @author admin
  */
-public interface EvaluationHome extends Dao<Evaluation> {
+public interface ModuleHome extends Dao<Module> {
     
-    public ArrayList<Evaluation> findAllEvalFormateur(int idFormateur)throws SQLException ;
 }

@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Option;
@@ -16,7 +17,15 @@ public class OptionDao implements OptionHome{
 
     @Override
     public void insert(Option objetAInserer) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+         String sqlstmt = "INSERT INTO question ('id_option','id_question','option','est_correcte')"
+                + "VALUES(?,?,?,?)";
+        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
+        stmt.setInt(1, objetAInserer.getIdOption());
+        stmt.setInt(2, objetAInserer.getIdQuestion());
+        stmt.setString(3, objetAInserer.getOption());
+        stmt.setBoolean(4, objetAInserer.isEstCorrecte());
+        stmt.executeUpdate();
     }
 
     @Override

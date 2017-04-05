@@ -26,8 +26,8 @@ public class QuestionDao implements QuestionHome{
                 + "VALUES(?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, objetAInserer.getIdQuestion());
-        stmt.setInt(2, objetAInserer.getId());
-        stmt.setString(3, objetAInserer.getIntitule());
+        stmt.setInt(2, objetAInserer.getIdQcm());
+        stmt.setString(3, objetAInserer.getQuestion());
         stmt.executeUpdate();
     }
 
