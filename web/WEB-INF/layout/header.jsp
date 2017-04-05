@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
-            Agriote<c:if test="${ !empty requestScope.title }"><c:out value="- ${requestScope.title}" /></c:if>
+            Agriote<c:if test="${ !empty requestScope.title }"><c:out value=" - ${requestScope.title}" /></c:if>
         </title>
         
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
@@ -20,14 +20,13 @@
 <body>
 
    <div class="container">
-       
     <!--  #### CONTAINER #### -->
     
     
     <!--   BANNIERE -->
-    <div id="banner-div">
+<!--    <div id="banner-div">
         <div id="banner"></div>
-    </div>
+    </div>-->
     <!--  FIN BANNIERE  -->
     
     <!--    BARRE MENU-->

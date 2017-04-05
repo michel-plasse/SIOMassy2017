@@ -5,13 +5,17 @@
  */
 package controller;
 
+import static controller.ListerEquipesServlet.ATT_EQUIPES;
+import static controller.ListerEquipesServlet.ATT_STAGIAIRES_LIBRES;
+import static controller.ListerEquipesServlet.ATT_TITLE;
+import static controller.ListerEquipesServlet.ATT_TITLE_VALUE;
+import static controller.ListerEquipesServlet.PARAM_ID_PROJET;
+import static controller.ListerEquipesServlet.VUE_EQUIPES;
 import dao.EquipeDao;
-import dao.PersonneDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -19,24 +23,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.Equipe;
 import model.Personne;
 import model.Projet;
 
 /**
  *
- * @author ghisfix
+ * @author admin
  */
-@WebServlet(name = "ListerEquipesServlet", urlPatterns = {"/equipes"})
-public class ListerEquipesServlet extends HttpServlet {
-    public static final String PARAM_ID_PROJET = "id_projet";
-    public static final String ATT_EQUIPES = "equipes";
-    public static final String ATT_STAGIAIRES_LIBRES = "stagiaires";
-    public static final String VUE_EQUIPES = "/WEB-INF/listedesequipes.jsp";
-    public static final String ATT_TITLE = "title";
-    public static final String ATT_TITLE_VALUE = "Liste des équipes";
+@WebServlet(name = "VotreEquipeServlet", urlPatterns = {"/VotreEquipe"})
+public class VotreEquipeServlet extends HttpServlet {
     
+    public static final String PARAM_ID_EQUIPE = "id";
+    public static final String ATT_EQUIPE = "equipe";
+    public static final String VUE_EQUIPE = "/WEB-INF/votreequipe.jsp";
+    public static final String ATT_TITLE = "title";
+    public static final String ATT_TITLE_VALUE = "Votre Equipe";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,10 +57,10 @@ public class ListerEquipesServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListerEquipesServlet</title>");            
+            out.println("<title>Servlet VotreEquipeServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListerEquipesServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet VotreEquipeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -77,63 +79,34 @@ public class ListerEquipesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //***********FAKE CONNECTION POUR TEST**********//
-        
-        PersonneDao personneDao = new PersonneDao();
-        
-        Personne stagiaireQuiConsulte = null; 
-        try {
-            stagiaireQuiConsulte = new PersonneDao().findById(4);
-        } catch (SQLException ex) {
-            Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if(stagiaireQuiConsulte != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", stagiaireQuiConsulte);
-        }
-        
-        //*********************************************//
-        
-        String ParamIdProjet = request.getParameter(PARAM_ID_PROJET);
+        String ParamIdEquipe = request.getParameter(PARAM_ID_EQUIPE);
         Boolean isParsable = false;
-        Integer idProjet = null;
+        Integer idEquipe = null;
         
         try {
-            idProjet = Integer.parseInt(ParamIdProjet);
+            idEquipe = Integer.parseInt(ParamIdEquipe);
             isParsable = true;
         }catch(NumberFormatException e) {
-            System.out.println("id projet non valide : "+e);
+            System.out.println("id equipe non valide : "+e);
         }
         
-        if(idProjet != null && isParsable) {
-            ArrayList<Equipe> lesEquipesDuProjet = null;
-            ArrayList<Personne> lesStagiairesSansEquipe = null;
-            //en attendant projetdao***
-            Projet projetConsulte = new Projet(idProjet);
-            //***
+        
+        
+        if(idEquipe != null && isParsable) {
             EquipeDao equipeDao = new EquipeDao();
+            Equipe DetailEquipe = null;
+            
             try {
-                lesEquipesDuProjet = equipeDao.findAll(projetConsulte);
-                lesStagiairesSansEquipe = equipeDao.findAllNotInTeam(projetConsulte);
+                DetailEquipe = equipeDao.findById(idEquipe);
             } catch (SQLException ex) {
                 Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
-            request.setAttribute(ATT_STAGIAIRES_LIBRES, lesStagiairesSansEquipe);
+            request.setAttribute(ATT_EQUIPE, DetailEquipe);
             request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
             
-            //check si les infos sont bien récupérées
             
-//            for(Equipe equipe: lesEquipesDuProjet) {
-//                Collection<Personne> col = equipe.getLesMembres().values();
-//                for(Personne personne : col) {
-//                System.out.println(personne.getEmail());
-//                }
-//            }
-            
-            this.getServletContext().getRequestDispatcher(VUE_EQUIPES).forward(request, response);
+            this.getServletContext().getRequestDispatcher(VUE_EQUIPE).forward(request, response);
         }
         
         response.sendError(404, "Erreur, votre requête ne peut aboutir.");
@@ -163,4 +136,5 @@ public class ListerEquipesServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

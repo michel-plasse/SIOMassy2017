@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : admin
 */
 
+html {
+}
+body {
+    padding-top: 15px;
+}
 #banner-div {
     padding:10px;
     background-color: #efefef;
@@ -27,6 +32,7 @@ and open the template in the editor.
 }
 
 #main {
+    height: 100%;
     width: 100%;
     padding:10px;
     background-color: #efefef;
@@ -80,11 +86,25 @@ and open the template in the editor.
 
 
 /********* STYLE PAGES EQUIPES **********/
+#page-equipe {
+    position: relative;
+}
+
 
 .section-grp {
     border-bottom: thin solid black;
     padding-bottom:  15px;
     margin-bottom: 15px;
+}
+
+.dashboard-stud {
+    background-color: #c4c4c4;
+    color: white;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    border-top-left-radius: 5px;
+
 }
 
 
