@@ -5,7 +5,8 @@
                 <h3><c:out value="${requestScope.title}" /></h3><br />
                   <c:forEach items="${requestScope.equipes}" var="uneEquipe" >
                       <c:if test="${uneEquipe.createur.id == sessionScope.user.id}">
-                          <c:set var="statutStagiaire" value="1" scope="request" />
+                          <c:set var="statutStagiaire" value="1" scope="page" />
+                          <c:set var="idEquipe" value="${uneEquipe.id}" scope="page" />
                       </c:if>
                       <div class="col-md-4">
                         <div class="list-group">
@@ -13,6 +14,7 @@
                             <c:forEach items="${uneEquipe.lesMembres}" var="membre">
                                 <c:if test="${membre.value.id == sessionScope.user.id}">
                                     <c:set var="statutStagiaire" value="2" scope="request" />
+                                    <c:set var="idEquipe" value="${uneEquipe.id}" scope="page" />
                                 </c:if>
                                 <span class="list-group-item"><c:out value="${membre.value.prenom}" /> <c:out value="${membre.value.nom}" /></span>
                             </c:forEach>
@@ -41,16 +43,16 @@
             <div class="row-fluid">
                 <c:choose>
                     <c:when test="${requestScope.statutStagiaire == 1}">
-                        <a href="/">
+                        <a href="<c:url value="/votreEquipe"><c:param name="id" value="${idEquipe}" /></c:url>">
                             <div class="alert alert-info">
                             Vous êtes le créateur d'une équipe,<strong> Accéder à sa gestion en cliquant ici</strong>
                             </div>
                         </a>
                     </c:when>
                     <c:when test="${requestScope.statutStagiaire == 2}">
-                        <a href="/">
+                        <a href="<c:url value="/votreEquipe"><c:param name="id" value="${idEquipe}" /></c:url>">
                             <div class="alert alert-info">
-                            Vous êtes membre d'une équipe,<strong> Accéder au détail (coordonnées) en cliquant ici</strong>
+                            Vous êtes membre d'une équipe,<strong> Accéder aux détails (coordonnées) en cliquant ici</strong>
                             </div>
                         </a>
                     </c:when>
@@ -62,7 +64,7 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        vous n'avez rien à faire ici
+                        Formateur ?
                     </c:otherwise>
                 </c:choose>
             </div>

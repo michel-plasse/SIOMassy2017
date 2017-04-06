@@ -34,7 +34,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
 
     private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_projet = ?";
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
-    private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
+    private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne, nom, prenom, email FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
                                                                  + "AND ( id_personne NOT IN "
                                                                  + "(SELECT id_personne FROM projet as p "
                                                                  + "INNER JOIN equipe as e ON p.id_projet = e.id_equipe "
@@ -326,7 +326,12 @@ public class EquipeDao implements EquipeHome<Equipe> {
             
             while(result.next()) {
                 //récupération des informations sur les stagiaires sans equipe
-                Personne unePersonne = personneDao.findById(result.getInt(CHAMP_ID_PERSONNE));
+                //Personne unePersonne = personneDao.findById(result.getInt(CHAMP_ID_PERSONNE));
+                Personne unePersonne = new Personne();
+                unePersonne.setId(result.getInt("id_personne"));
+                unePersonne.setNom(result.getString("nom"));
+                unePersonne.setPrenom(result.getString("prenom"));
+                unePersonne.setEmail(result.getString("email"));
                 personnesLibres.add(unePersonne);
             }
             
