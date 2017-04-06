@@ -9,22 +9,33 @@ import java.util.Date;
 
 public class Evaluation {
     private int idEvaluation;
-    private Date dateDebutEval;
-    private String intitule;
     private Module leModule;
     private Personne leFormateur;
     private SessionFormation laSession;
+    private Date dateDebutEval;
+    private String intitule;
+    
 
     public Evaluation() {
     }
 
-    public Evaluation(Date dateDebutEval, String intitule, Module leModule, Personne leFormateur, SessionFormation laSession) {
-        this.dateDebutEval = dateDebutEval;
-        this.intitule = intitule;
+    public Evaluation(Module leModule, Personne leFormateur, SessionFormation laSession, Date dateDebutEval, String intitule) {
         this.leModule = leModule;
         this.leFormateur = leFormateur;
         this.laSession = laSession;
+        this.dateDebutEval = dateDebutEval;
+        this.intitule = intitule;
     }
+
+    public Evaluation(int idEvaluation, Module leModule, Personne leFormateur, SessionFormation laSession, Date dateDebutEval, String intitule) {
+        this.idEvaluation = idEvaluation;
+        this.leModule = leModule;
+        this.leFormateur = leFormateur;
+        this.laSession = laSession;
+        this.dateDebutEval = dateDebutEval;
+        this.intitule = intitule;
+    }
+
 
     public SessionFormation getLaSession() {
         return laSession;

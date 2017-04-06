@@ -64,7 +64,26 @@ public class EvaluationDao implements EvaluationHome{
 
     @Override
     public Evaluation findById(int id) throws SQLException {
-        
+        connection = ConnectionBd.getConnection();
+        Evaluation evaluation = null;
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
+        String sql = "SELECT id_evaluation, id_module, id_formateur, id_session, intitule, date_effet FROM evaluation"
+                + "WHERE id_evaluation = ? ";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, id);
+        ResultSet res = stmt.executeQuery(sql);
+        if(res.next()){
+            evaluation = new Evaluation(
+                    res.getInt("id_evaluation"),
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
+        }
+        return evaluation;
     }
 
     @Override
@@ -75,21 +94,20 @@ public class EvaluationDao implements EvaluationHome{
     @Override
     public ArrayList<Evaluation> findAllEvalFormateur(int idFormateur) throws SQLException {
         ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT evaluation.id_evaluation, module.nom, formation.nom, evaluation.date_effet, evaluation.intitule FROM evaluation"
-                + "INNER JOIN module ON evaluation.id_module = module.id_module"
-                + "INNER JOIN session_formation ON evaluation.id_session = session_formation.id_session"
-                + "INNER JOIN formation ON session_formation.id_formation = formation.id_formation"
-		+ "WHERE id_formateur = "+idFormateur+" AND session_formation.est_ouverte = 0 ;");
-        while (!res.isLast()) {
-            res.next();
+        ResultSet res =  stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
+		+ "WHERE id_formateur = "+idFormateur+" AND date_effet > NOW() ;");
+        while (res.next()){
             Evaluation eval = new Evaluation(
-                    res.getInt("evaluation.id-evaluation"),
-                    res.getDate("evaluation.date_effet"),
-                    res.getString("evaluation.intitule"),
-                    res.getString("module.nom"),
-                    res.getString("formation.nom"));
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
             lesEvalDuFormateur.add(eval);
         }
         return lesEvalDuFormateur;

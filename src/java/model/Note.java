@@ -11,8 +11,6 @@ package model;
  */
 public class Note{
     private int id_note;
-    private Evaluation uneEvaluation;
-    private Personne laPersonne;
     private double note;
     private String commentaire;
     private Personne etudiant;
@@ -40,22 +38,6 @@ public class Note{
 
     public double getNote() {
         return note;
-    }
-
-    public Evaluation getUneEvaluation() {
-        return uneEvaluation;
-    }
-
-    public void setUneEvaluation(Evaluation uneEvaluation) {
-        this.uneEvaluation = uneEvaluation;
-    }
-
-    public Personne getLaPersonne() {
-        return laPersonne;
-    }
-
-    public void setLaPersonne(Personne laPersonne) {
-        this.laPersonne = laPersonne;
     }
 
     public String getCommentaire() {

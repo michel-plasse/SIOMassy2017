@@ -28,17 +28,22 @@ public class SessionFormationDao implements SessionHome {
         
         connection = ConnectionBd.getConnection();
         Statement statement = connection.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,est_ouverte FROM formation INNER JOIN session_formation "
-        + "ON session_formation.id_formation = formation.id_formation WHERE id_session="+id+";");
+        SessionFormation session = null;
+        ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,est_ouverte"
+                + " FROM formation INNER JOIN session_formation "
+                + "ON session_formation.id_formation = formation.id_formation "
+                + "WHERE id_session="+id+";");
 
-        if(resultat != null) {
-            resultat.next();
-            SessionFormation a = new SessionFormation(resultat.getInt("id_session"), resultat.getString("nom"), resultat.getString("description"), resultat.getDate("date_debut"),
-                        resultat.getDate("date_fin"), resultat.getBoolean("est_ouverte"));
-
-            return a;
+        if(resultat.next()) {
+            session = new SessionFormation(
+                    resultat.getInt("id_session"),
+                    resultat.getString("nom"),
+                    resultat.getString("description"),
+                    resultat.getDate("date_debut"),
+                    resultat.getDate("date_fin"),
+                    resultat.getBoolean("est_ouverte"));
         }
-        return null;
+        return session;
     }
 
     @Override

@@ -63,10 +63,9 @@ public class NoteDao implements NoteHome{
     }  
 
     @Override
-    public ArrayList<Note> findByIdNoteEval(int id) throws SQLException {
+    public ArrayList<Note> findByIdEleveNoteEval(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         EvaluationDao evaluationDao = new EvaluationDao();
-        PersonneDao personneDao = new PersonneDao();
         ArrayList<Note> lesNotes = new ArrayList<>();
         String sql = "SELECT id_evaluation, note, commentaire FROM note WHERE id_personne = ? ";
         PreparedStatement stmt = connection.prepareStatement(sql);
@@ -74,7 +73,7 @@ public class NoteDao implements NoteHome{
         ResultSet res = stmt.executeQuery();
         while(res.next()){
             Note laNote = new Note();
-                    laNote.setUneEvaluation(evaluationDao.findById(res.getInt("id_evaluation")));
+                    laNote.setEvaluation(evaluationDao.findById(res.getInt("id_evaluation")));
                     laNote.setNote(res.getDouble("note"));
                     laNote.setCommentaire(res.getString("commentaire"));
             lesNotes.add(laNote);

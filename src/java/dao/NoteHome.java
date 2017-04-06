@@ -6,6 +6,6 @@ import model.Note;
 
 public interface NoteHome extends Dao <Note> {
     
-    public ArrayList<Note> findByIdNoteEval(int id) throws SQLException;
+    public ArrayList<Note> findByIdEleveNoteEval(int id) throws SQLException;
     
 }
