@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Qcm;
@@ -22,8 +23,8 @@ public class QcmDao implements QcmHome{
                 + "VALUES(?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, objetAInserer.getIdQcm());
-        stmt.setInt(2, objetAInserer.getIdFormateur());
-        stmt.setInt(3, objetAInserer.getIdModule());
+        stmt.setInt(2, objetAInserer.getFormateur().getId());
+        stmt.setInt(3, objetAInserer.getModule().getId());
         stmt.setString(4, objetAInserer.getIntitule());
         stmt.executeUpdate();
     }
@@ -40,7 +41,22 @@ public class QcmDao implements QcmHome{
 
     @Override
     public Qcm findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        Qcm qcm = null;
+        PersonneDao personneDao = new PersonneDao();
+        ModuleDao moduleDao = new ModuleDao();
+        String sqlstmt = "SELECT id_qcm, id_formateur, id_module , intitule FROM qcm "
+                 + "WHERE id_qcm = ? ";
+        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
+        stmt.setInt(1, id);
+        ResultSet res = stmt.executeQuery(sqlstmt);
+        if (res.next()){
+            qcm = new Qcm(res.getInt("id_qcm"),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    moduleDao.findById(res.getInt("id_module")),
+                    res.getString("intitule"));
+        }
+        return qcm;
     }
 
     @Override

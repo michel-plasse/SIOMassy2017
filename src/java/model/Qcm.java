@@ -12,16 +12,17 @@ package model;
 public class Qcm {
     
     private int idQcm;
-    private int idFormateur;
-    private int idModule;
+    private Personne formateur;
+    private Module module;
     private String intitule;
 
     public Qcm() {
     }
 
-    public Qcm(int idFormateur, int idModule, String intitule) {
-        this.idFormateur = idFormateur;
-        this.idModule = idModule;
+    public Qcm(int idQcm, Personne formateur, Module module, String intitule) {
+        this.idQcm = idQcm;
+        this.formateur = formateur;
+        this.module = module;
         this.intitule = intitule;
     }
 
@@ -33,20 +34,20 @@ public class Qcm {
         this.idQcm = idQcm;
     }
 
-    public int getIdFormateur() {
-        return idFormateur;
+    public Personne getFormateur() {
+        return formateur;
     }
 
-    public void setIdFormateur(int idFormateur) {
-        this.idFormateur = idFormateur;
+    public void setFormateur(Personne formateur) {
+        this.formateur = formateur;
     }
 
-    public int getIdModule() {
-        return idModule;
+    public Module getModule() {
+        return module;
     }
 
-    public void setIdModule(int idModule) {
-        this.idModule = idModule;
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public String getIntitule() {
@@ -56,6 +57,5 @@ public class Qcm {
     public void setIntitule(String intitule) {
         this.intitule = intitule;
     }
-    
-    
+
 }

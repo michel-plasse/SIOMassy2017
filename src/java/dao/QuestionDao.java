@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Question;
@@ -26,7 +27,7 @@ public class QuestionDao implements QuestionHome{
                 + "VALUES(?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, objetAInserer.getIdQuestion());
-        stmt.setInt(2, objetAInserer.getIdQcm());
+        stmt.setInt(2, objetAInserer.getQcm().getIdQcm());
         stmt.setString(3, objetAInserer.getQuestion());
         stmt.executeUpdate();
     }
@@ -43,7 +44,21 @@ public class QuestionDao implements QuestionHome{
 
     @Override
     public Question findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        Question question = null;
+        QcmDao qcmDao = new QcmDao();
+         String sqlstmt = "SELECT id_qcm, question FROM question"
+                + "WHERE id_question = ? ";
+        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        ResultSet res = stmt.executeQuery(sqlstmt);
+        if (res.next()){
+            question = new Question(qcmDao.findById(
+                    res.getInt("id_qcm")),
+                    res.getString("question"));
+        }
+        return question;
     }
 
     @Override

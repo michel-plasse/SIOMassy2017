@@ -12,15 +12,15 @@ package model;
 public class Option {
     
     private int idOption;
-    private int idQuestion;
+    private Question question;
     private String option;
     private boolean estCorrecte;
 
     public Option() {
     }
 
-    public Option(int idQuestion, String option, boolean estCorrecte) {
-        this.idQuestion = idQuestion;
+    public Option(Question question, String option, boolean estCorrecte) {
+        this.question = question;
         this.option = option;
         this.estCorrecte = estCorrecte;
     }
@@ -35,12 +35,12 @@ public class Option {
         this.idOption = idOption;
     }
 
-    public int getIdQuestion() {
-        return idQuestion;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setIdQuestion(int idQuestion) {
-        this.idQuestion = idQuestion;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
     public String getOption() {

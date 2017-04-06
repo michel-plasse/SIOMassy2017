@@ -7,6 +7,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Option;
@@ -22,7 +23,7 @@ public class OptionDao implements OptionHome{
                 + "VALUES(?,?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, objetAInserer.getIdOption());
-        stmt.setInt(2, objetAInserer.getIdQuestion());
+        stmt.setInt(2, objetAInserer.getQuestion().getIdQuestion());
         stmt.setString(3, objetAInserer.getOption());
         stmt.setBoolean(4, objetAInserer.isEstCorrecte());
         stmt.executeUpdate();
@@ -40,7 +41,22 @@ public class OptionDao implements OptionHome{
 
     @Override
     public Option findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        Option option = null;
+        QuestionDao questionDao = new QuestionDao();
+         String sqlstmt = "SELECT id_option, id_question, option, est_correcte FROM option"
+                + "WHERE id_option = ? ";
+        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        ResultSet res = stmt.executeQuery(sqlstmt);
+        if (res.next()){
+            option = new Option(
+                    questionDao.findById(res.getInt("id_question")),
+                    res.getString("option"),
+                    res.getBoolean("est_correcte"));
+        }
+        return option;
     }
 
     @Override

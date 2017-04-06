@@ -12,14 +12,14 @@ package model;
 public class Question {
     
     private int idQuestion;
-    private int idQcm;
+    private Qcm qcm;
     private String question;
 
     public Question() {
     }
 
-    public Question(int idQcm, String question) {
-        this.idQcm = idQcm;
+    public Question(Qcm qcm, String question) {
+        this.qcm = qcm;
         this.question = question;
     }
 
@@ -32,12 +32,12 @@ public class Question {
         this.idQuestion = idQuestion;
     }
 
-    public int getIdQcm() {
-        return idQcm;
+    public Qcm getQcm() {
+        return qcm;
     }
 
-    public void setIdQcm(int idQcm) {
-        this.idQcm = idQcm;
+    public void setQcm(Qcm qcm) {
+        this.qcm = qcm;
     }
 
     public String getQuestion() {
