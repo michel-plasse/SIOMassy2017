@@ -32,6 +32,7 @@ import model.Projet;
 public class ListerEquipesServlet extends HttpServlet {
     public static final String PARAM_ID_PROJET = "id_projet";
     public static final String ATT_EQUIPES = "equipes";
+    public static final String ATT_IDPROJET = "idProjet";
     public static final String ATT_STAGIAIRES_LIBRES = "stagiaires";
     public static final String VUE_EQUIPES = "/WEB-INF/equipe/index.jsp";
     public static final String ATT_TITLE = "title";
@@ -47,7 +48,7 @@ public class ListerEquipesServlet extends HttpServlet {
         
         Personne stagiaireQuiConsulte = null; 
         try {
-            stagiaireQuiConsulte = new PersonneDao().findById(1);
+            stagiaireQuiConsulte = new PersonneDao().findById(6);
         } catch (SQLException ex) {
             Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,6 +85,7 @@ public class ListerEquipesServlet extends HttpServlet {
                 Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            request.setAttribute(ATT_IDPROJET, idProjet);
             request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
             request.setAttribute(ATT_STAGIAIRES_LIBRES, lesStagiairesSansEquipe);
             request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);

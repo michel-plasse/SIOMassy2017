@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Equipe;
 import model.Personne;
+import model.Projet;
 
 /**
  *
@@ -40,6 +42,8 @@ public class GererEquipeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //HashMap<String,String[]> messages = new HashMap<String, String[]>();
         
         HttpSession session = request.getSession();
         
@@ -94,13 +98,142 @@ public class GererEquipeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        PrintWriter out = response.getWriter();
-        
-        out.print(request.getParameter("modifier"));
-        out.print("...");
-        out.print(request.getAttribute("manage"));
-        out.print("...");
-        
+//        PrintWriter out = response.getWriter();
+//        out.print(request.getParameter("modifier"));
+//        out.print("...");
+//        out.print(request.getParameter("supprimer"));
+//        out.print("...");
+//       
+          HttpSession session = request.getSession();
+          
+          if(request.getParameter("create") != null) {
+              Integer idProjet = null;
+              
+              try {
+                      idProjet = Integer.parseInt(request.getParameter("idProjet"));
+                      
+              } catch (NumberFormatException ex) {
+                 Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+              }
+              
+              if (idProjet != null) {
+                EquipeDao equipeDao = new EquipeDao();
+                Projet projet = new Projet(idProjet);
+                Personne createurNv = (Personne) session.getAttribute(PARAM_USER);
+                boolean utilisateurValide = false;
+                
+                //*******/!\ foireux, pour check si user valide et sans equipe****
+                ArrayList<Personne> stagiairesSansEquipe = null;
+                  try {
+                      stagiairesSansEquipe = equipeDao.findAllNotInTeam(projet);
+                  } catch (SQLException ex) {
+                      Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                  
+                for(Personne stagiaire : stagiairesSansEquipe) {
+                    if(stagiaire.getId() == createurNv.getId()){
+                        utilisateurValide = true;
+                    }
+                }
+                //****************/!\foireux*******************
+                
+                if (utilisateurValide) {
+                    Equipe nouvelleEquipe = new Equipe();
+                    nouvelleEquipe.setCreateur(createurNv);
+                    nouvelleEquipe.setUnProjet(projet);
+                    Integer idEquipeNv = null;
+                    
+                    try {
+                        idEquipeNv = equipeDao.insertReturnId(nouvelleEquipe);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (idEquipeNv != null) {
+                        response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/gerer?id=" + idEquipeNv);
+                    }
+                }
+              }
+              
+              response.sendError(404, "Probleme creation équipe");
+          }
+          
+          if(request.getParameter(PARAM_ID) != null && session.getAttribute(PARAM_USER) != null) {
+            Integer idEquipe = null;
+            try {
+                idEquipe = Integer.parseInt(request.getParameter(PARAM_ID));
+            }catch (NumberFormatException e) {
+                System.out.println("id equipe non valide : " + e);
+            }
+            
+            
+            if (idEquipe != null ) {
+                EquipeDao equipeDao = new EquipeDao();
+                Equipe equipe = null;
+                
+                try {
+                    equipe = equipeDao.findById(idEquipe);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if (equipe != null) {
+                    
+                    Personne createur = (Personne) session.getAttribute(PARAM_USER);
+
+                    if (equipe.getCreateur().getId() == createur.getId()) {
+
+                        if (request.getParameter("modifier") != null) {
+                            int compteurAjout = 0;
+                            int compteurSupp = 0;
+                            String[] ajouts = request.getParameterValues("add");
+                            String[] suppressions = request.getParameterValues("delete");
+
+                            if(ajouts != null) {
+                                for(String ajout : ajouts) {
+                                    try {
+                                        equipeDao.ajouterMembre(idEquipe, Integer.parseInt(ajout));
+                                        compteurAjout ++;
+                                    } catch  (NumberFormatException | SQLException ex) {
+                                        Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } 
+                            }
+
+                            if (suppressions != null) {
+                                for(String suppression : suppressions) {
+                                    try {
+                                        equipeDao.retirerMembre(idEquipe, Integer.parseInt(suppression));
+                                        compteurSupp ++;
+                                    } catch (NumberFormatException | SQLException ex) {
+                                        Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                            }
+                            //message feedback ? envoi compteur?
+                            request.setAttribute("compteurAjout", compteurAjout);
+                            request.setAttribute("compteurSupp", compteurSupp);
+
+                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/gerer?id="+idEquipe);
+                        }
+
+                        if(request.getParameter("supprimer") != null) {
+                            try {
+                                equipeDao.delete(idEquipe);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                            //message confirmation?
+                            String idProjet = request.getParameter("idProjet");
+
+                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/index?id_projet="+idProjet);
+                        }
+
+                    }
+                }
+            }
+          }
+
     }
 
     /**

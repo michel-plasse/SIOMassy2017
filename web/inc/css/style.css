@@ -113,6 +113,10 @@ body {
     overflow-y: scroll;  
 }
 
+.underline-hover:hover {
+    text-decoration: underline;
+}
+
 /********* STYLE PAGES EQUIPES **********/
 
 /* Style espace formateur */

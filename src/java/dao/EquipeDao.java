@@ -51,12 +51,13 @@ public class EquipeDao implements EquipeHome<Equipe> {
     
     
     @Override
-    public void insert(Equipe uneEquipe) throws SQLException {
+    public int insertReturnId(Equipe uneEquipe) throws SQLException {
 
         connection = ConnectionBd.getConnection();
         connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
         ResultSet idGenerated = null;
+        Integer idEquipeNv = null;
         
         try {
             preparedStatement = initialisationRequetePreparee(connection, SQL_INSERT, true, 
@@ -65,11 +66,10 @@ public class EquipeDao implements EquipeHome<Equipe> {
             preparedStatement.executeUpdate();
             
             idGenerated = preparedStatement.getGeneratedKeys();
-            
+
             if (idGenerated.next()) {
-                uneEquipe.setId(idGenerated.getInt(1));
-                uneEquipe.setDateCreation(idGenerated.getDate(4));
-                System.out.println("Nouvelle equipe créée : " + uneEquipe);
+                idEquipeNv = idGenerated.getInt(1);
+                System.out.println("Nouvelle equipe créée : " + idEquipeNv);
             }
             connection.commit();
             System.out.println("Nouvelle equipe insérée en BDD..");
@@ -83,7 +83,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
             fermeturesSilencieuses(idGenerated, preparedStatement, connection);
             
         }
-        
+        return idEquipeNv;
     }
 
     @Override
@@ -189,7 +189,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
     }
 
     @Override
-    public boolean ajouterMembre(Equipe uneEquipe, Personne unePersonne) throws SQLException {
+    public boolean ajouterMembre(int idEquipe, int idPersonne) throws SQLException {
         connection = ConnectionBd.getConnection();
         connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
@@ -197,14 +197,14 @@ public class EquipeDao implements EquipeHome<Equipe> {
         
         try {
             preparedStatement = initialisationRequetePreparee(connection, SQL_INSERT_MEMBER, false, 
-                                                              uneEquipe.getId(),
-                                                              unePersonne.getId());
+                                                              idEquipe,
+                                                              idPersonne);
             int result = preparedStatement.executeUpdate();
 
             if (result != 0) {
                 connection.commit();
                 isAdd = true;
-                System.out.println(unePersonne.getPrenom() + " ajouté à l'équipe de " +uneEquipe.getCreateur().getPrenom());
+                System.out.println(idPersonne+ " ajouté à l'équipe " +idEquipe);
             }
             
         }catch (SQLException e) {
@@ -220,7 +220,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
     }
 
     @Override
-    public boolean retirerMembre(Equipe uneEquipe, Personne unePersonne) throws SQLException {
+    public boolean retirerMembre(int idEquipe, int idPersonne) throws SQLException {
         connection = ConnectionBd.getConnection();
         connection.setAutoCommit(false);
         PreparedStatement preparedStatement = null;
@@ -228,14 +228,14 @@ public class EquipeDao implements EquipeHome<Equipe> {
         
         try {
             preparedStatement = initialisationRequetePreparee(connection, SQL_DELETE_MEMBER, false, 
-                                                              uneEquipe.getId(),
-                                                              unePersonne.getId());
+                                                              idEquipe,
+                                                              idPersonne);
             int result = preparedStatement.executeUpdate();
 
             if (result != 0) {
                 connection.commit();
                 isDelete = true;
-                System.out.println(unePersonne.getPrenom() + " retiré de l'équipe de " +uneEquipe.getCreateur().getPrenom());
+                System.out.println(idPersonne + " retiré de l'équipe de " +idEquipe);
             }
             
         }catch (SQLException e) {
@@ -350,6 +350,11 @@ public class EquipeDao implements EquipeHome<Equipe> {
         }
         
         return personnesLibres;  
+    }
+
+    @Override
+    public void insert(Equipe objetAInserer) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

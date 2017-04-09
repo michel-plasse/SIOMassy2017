@@ -44,27 +44,28 @@
                 <c:choose>
                     <c:when test="${pageScope.statutStagiaire == 1}">
                         <a href="<c:url value="/equipe/gerer"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
-                            <div class="alert alert-info">
+                            <div class="alert alert-info text-center">
                             Vous êtes le créateur d'une équipe,<strong> Accéder à sa gestion en cliquant ici</strong>
                             </div>
                         </a>
                     </c:when>
                     <c:when test="${pageScope.statutStagiaire == 2}">
                         <a href="<c:url value="/equipe/details"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
-                            <div class="alert alert-info">
+                            <div class="alert alert-info text-center">
                             Vous êtes membre d'une équipe,<strong> Accéder aux détails (coordonnées) en cliquant ici</strong>
                             </div>
                         </a>
                     </c:when>
                     <c:when test="${pageScope.statutStagiaire == 3}">
-                        <a href="/">
-                            <div class="alert alert-info">
-                            Vous ne faites actuellement pas encore parti d'une équipe,<strong> N'attendez plus ! et créer la votre en cliquant ici</strong>
-                            </div>
-                        </a>
+                        <form name="newteam" method="POST" action="<c:url value="/equipe/gerer" />" >
+                            <input type="hidden" name="idProjet" value="${requestScope.idProjet}" />
+                            <button type="submit" class="col-md-12 alert alert-info underline-hover" name="create" value="1">
+                                Vous ne faites actuellement pas encore parti d'une équipe,<strong> N'attendez plus ! et créer la votre en cliquant ici</strong>
+                            </button>
+                        </form>
                     </c:when>
                     <c:otherwise>
-                        Formateur ?
+                        Formateur ? <c:out value="${pageScope.statutStagiaire}" />
                     </c:otherwise>
                 </c:choose>
             </div>
