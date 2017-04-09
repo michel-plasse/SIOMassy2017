@@ -69,14 +69,7 @@ body {
     position: absolute;
 }
 
-#formateur-form{
-    display: flex;
-}
 
-#formateur-formBox{
-    padding-right: 15px;
-    height: 100px;
-}
 
 .item-menu:hover {
     background: #54acf5;
@@ -121,3 +114,35 @@ body {
 }
 
 /********* STYLE PAGES EQUIPES **********/
+
+/* Style espace formateur */
+
+#formateur-form{
+    display: flex;
+}
+
+#display-box1{
+    display: flex;
+    padding: 15px 0px 15px 0px;
+    justify-content: space-between;
+    width: 420px;
+}
+
+#display-box2{
+    display: flex;
+    padding: 15px 0px 15px 0px;
+    justify-content: space-between;
+    width: 640px;
+}
+
+#formateur-formBox{
+    padding-right: 15px;
+    height: 100px;
+}
+
+#boiteParDefaut{
+    width: 200px;
+    height: 100px;
+    border: 1px solid black;
+    padding: 15px;
+}
