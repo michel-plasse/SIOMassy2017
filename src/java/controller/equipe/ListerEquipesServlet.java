@@ -48,7 +48,7 @@ public class ListerEquipesServlet extends HttpServlet {
         
         Personne stagiaireQuiConsulte = null; 
         try {
-            stagiaireQuiConsulte = new PersonneDao().findById(6);
+            stagiaireQuiConsulte = new PersonneDao().findById(17);
         } catch (SQLException ex) {
             Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

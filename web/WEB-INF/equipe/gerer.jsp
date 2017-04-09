@@ -45,7 +45,11 @@
                         <br />
                         <button type="reset" class="btn btn-info">Réinitialiser</button><br />
                         <br />
-                        <button name="supprimer" class="btn btn-danger" value="1">Supprimer l'équipe</button>  
+                        <button name="supprimer" class="btn btn-danger" value="1">Supprimer l'équipe</button><br />
+                        <br />
+                        <a class="btn btn-default" href="<c:url value="/equipe/index" ><c:param name="id_projet" value="${requestScope.equipeGeree.unProjet.id}" /></c:url>">
+                        Retour à la liste des équipes
+                        </a>
                     </fieldset>
                 </div>
                 <div class="clearfix"></div>

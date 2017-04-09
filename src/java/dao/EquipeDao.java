@@ -40,12 +40,12 @@ public class EquipeDao implements EquipeHome<Equipe> {
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
     
     private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne, nom, prenom, email FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
-                                                                 + "AND ( id_personne NOT IN "
+                                                                 + "AND ( id_personne <> ALL "
                                                                  + "(SELECT id_personne FROM projet as p "
-                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_equipe "
+                                                                 + "INNER JOIN equipe as e ON p.id_projet = e.id_projet "
                                                                  + "INNER JOIN membre_equipe as me ON e.id_equipe = me.id_equipe "
                                                                  + "WHERE p.id_projet = ? ) "
-                                                                 + "OR id_personne NOT IN "
+                                                                 + "AND id_personne <> ALL "
                                                                  + "(SELECT id_createur FROM projet as p "
                                                                  + "INNER JOIN equipe as e ON p.id_projet = e.id_projet "
                                                                  + "WHERE p.id_projet = ? ))";
