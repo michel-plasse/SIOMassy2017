@@ -33,7 +33,7 @@
                         <c:set var="statutStagiaire" value="3" scope="page" />
                     </c:if>
                     <div class="col-md-4">
-                    <span class="list-group-item"><c:out value="${unStagiaire.nom}" /> <c:out value="${unStagiaire.prenom}" /></span>
+                    <span class="list-group-item"><c:out value="${unStagiaire.prenom}" /> <c:out value="${unStagiaire.nom}" /></span>
                     </div> 
                    </c:forEach> 
             </div>

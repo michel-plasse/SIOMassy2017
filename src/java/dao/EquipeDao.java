@@ -24,16 +24,21 @@ public class EquipeDao implements EquipeHome<Equipe> {
     private static final String CHAMP_DATE = "date_creation";
 
     private static final String SQL_INSERT = "INSERT INTO equipe(id_createur, id_projet, date_creation) VALUES (?,?,NOW())";
+    
     private static final String SQL_DELETE = "DELETE FROM equipe WHERE id_equipe = ?";
+    
     private static final String SQL_SELECT_TEAM = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_equipe = ?";
     
     private static final String SQL_INSERT_MEMBER = "INSERT INTO membre_equipe(id_equipe,id_personne) VALUES (?,?)";
+    
     private static final String SQL_DELETE_MEMBER = "DELETE FROM membre_equipe WHERE ( id_equipe = ? AND id_personne = ? )";
     
     private static final String SQL_SELECT_EQUIPE = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_equipe = ?";
 
     private static final String SQL_SELECT_ALL_BYPROJECT = "SELECT id_equipe, id_createur, id_projet, date_creation FROM equipe WHERE id_projet = ?";
+    
     private static final String SQL_SELECT_MEMBERS_BYTEAM = "SELECT id_personne FROM membre_equipe WHERE id_equipe = ? ";
+    
     private static final String SQL_SELECT_FREEPEOPLE_BYSESSION = "SELECT id_personne, nom, prenom, email FROM membre_promotion WHERE id_session = (SELECT id_session FROM projet WHERE id_projet = ? ) "
                                                                  + "AND ( id_personne NOT IN "
                                                                  + "(SELECT id_personne FROM projet as p "

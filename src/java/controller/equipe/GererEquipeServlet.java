@@ -153,8 +153,6 @@ public class GererEquipeServlet extends HttpServlet {
                     }
                 }
               }
-              
-              response.sendError(404, "Probleme creation équipe");
           }
           
           if(request.getParameter(PARAM_ID) != null && session.getAttribute(PARAM_USER) != null) {
