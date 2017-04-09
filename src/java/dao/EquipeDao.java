@@ -143,6 +143,11 @@ public class EquipeDao implements EquipeHome<Equipe> {
                 equipe.setDateCreation(result.getDate(CHAMP_DATE));
                 equipe.setId(id);
                 
+                
+                //en attendant projetDao
+                equipe.setUnProjet((new Projet(result.getInt("id_projet"))));
+                //***********************
+                
                 PreparedStatement preparedStatementInfoMembres = null;
                 ResultSet resultMembres = null;
                 

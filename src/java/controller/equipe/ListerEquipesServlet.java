@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.equipe;
 
 import dao.EquipeDao;
 import dao.PersonneDao;
@@ -28,51 +28,15 @@ import model.Projet;
  *
  * @author ghisfix
  */
-@WebServlet(name = "ListerEquipesServlet", urlPatterns = {"/equipes"})
+@WebServlet(name = "ListerEquipesServlet", urlPatterns = {"/equipe/index"})
 public class ListerEquipesServlet extends HttpServlet {
     public static final String PARAM_ID_PROJET = "id_projet";
     public static final String ATT_EQUIPES = "equipes";
     public static final String ATT_STAGIAIRES_LIBRES = "stagiaires";
-    public static final String VUE_EQUIPES = "/WEB-INF/listedesequipes.jsp";
+    public static final String VUE_EQUIPES = "/WEB-INF/equipe/index.jsp";
     public static final String ATT_TITLE = "title";
     public static final String ATT_TITLE_VALUE = "Liste des équipes";
     
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ListerEquipesServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ListerEquipesServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -83,7 +47,7 @@ public class ListerEquipesServlet extends HttpServlet {
         
         Personne stagiaireQuiConsulte = null; 
         try {
-            stagiaireQuiConsulte = new PersonneDao().findById(4);
+            stagiaireQuiConsulte = new PersonneDao().findById(1);
         } catch (SQLException ex) {
             Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -140,18 +104,9 @@ public class ListerEquipesServlet extends HttpServlet {
         
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

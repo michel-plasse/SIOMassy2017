@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.equipe;
 
+import controller.equipe.ListerEquipesServlet;
 import dao.EquipeDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,12 +26,12 @@ import model.Projet;
  *
  * @author admin
  */
-@WebServlet(name = "VotreEquipeServlet", urlPatterns = {"/votreEquipe"})
-public class VotreEquipeServlet extends HttpServlet {
+@WebServlet(name = "VotreEquipeServlet", urlPatterns = {"/equipe/details"})
+public class DetailsEquipeServlet extends HttpServlet {
     
     public static final String PARAM_ID_EQUIPE = "id";
     public static final String ATT_EQUIPE = "equipe";
-    public static final String VUE_EQUIPE = "/WEB-INF/votreequipe.jsp";
+    public static final String VUE_EQUIPE = "/WEB-INF/equipe/details.jsp";
     public static final String ATT_TITLE = "title";
     public static final String ATT_TITLE_VALUE = "Votre Equipe";
 

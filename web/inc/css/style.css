@@ -115,4 +115,9 @@ body {
     margin-right: 10px;
 }
 
+.sized-box {
+    height: 300px;
+    overflow-y: scroll;  
+}
+
 /********* STYLE PAGES EQUIPES **********/
