@@ -56,7 +56,6 @@ public class CreerQcmServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String question = request.getParameter("question");
-        String question = request.getParameter("question");
     }
 
     @Override

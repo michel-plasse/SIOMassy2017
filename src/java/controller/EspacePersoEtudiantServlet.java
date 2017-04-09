@@ -48,7 +48,7 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
         Personne user = (Personne) maSession.getAttribute("user");  
         EvaluationDao eval = new EvaluationDao();
         try {
-            ArrayList<Evaluation> evaluation = eval.findAllEvalEleve(user.getId());
+            //ArrayList<Evaluation> evaluation = eval.findAllEvalEleve(user.getId());
             maSession.setAttribute("eval", evaluation);
             if (user == null) {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);

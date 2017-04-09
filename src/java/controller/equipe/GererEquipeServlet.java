@@ -185,7 +185,7 @@ public class GererEquipeServlet extends HttpServlet {
                             int compteurSupp = 0;
                             String[] ajouts = request.getParameterValues("add");
                             String[] suppressions = request.getParameterValues("delete");
-
+                            //ajout de nouveaux membres
                             if(ajouts != null) {
                                 for(String ajout : ajouts) {
                                     try {
@@ -196,7 +196,7 @@ public class GererEquipeServlet extends HttpServlet {
                                     }
                                 } 
                             }
-
+                            //retirer des memnres de l'equipe
                             if (suppressions != null) {
                                 for(String suppression : suppressions) {
                                     try {

@@ -43,12 +43,12 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="item-menu"><a href="<c:url value="/"/>">Accueil</a></li>
-              <li class="item-menu"><a href="<c:url value="sessionsOuvertes"/>">Formations</a></li>
-              <li class="item-menu"><a href="<c:url value="trombinoscope"/>">Trombinoscope</a></li>
+              <li class="item-menu"><a href="<c:url value="/sessionsOuvertes"/>">Formations</a></li>
+              <li class="item-menu"><a href="<c:url value="/trombinoscope"/>">Trombinoscope</a></li>
               <li class="item-menu"><a href="<c:url value="/"/>">Nous Contacter</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="<c:url value="login"/>">Espace Personnel</a></li>
+              <li class="active"><a href="<c:url value="/login"/>">Espace Personnel</a></li>
             </ul>
           </div>
         </div>
