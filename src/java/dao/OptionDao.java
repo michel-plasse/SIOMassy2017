@@ -21,20 +21,28 @@ public class OptionDao implements OptionHome{
     private static String CHAMP_OPTION = "option";
     private static String CHAMP_EST_CORRECTE = "est_correcte";
             
-    
-    private static String SQL_SELECT_OPTION_FOR_QUESTION = "SELECT id_option,id_question,option,est_correcte FROM option WHERE id_question=?";
+    private static String SQL_INSERT_OPTION = "INSERT INTO question ('id_option','id_question','option','est_correcte') VALUES(?,?,?,?)";
+    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_option,id_question,option,est_correcte FROM option WHERE id_question=?";
 
     @Override
     public void insert(Option objetAInserer) throws SQLException {
+        
+        connection.setAutoCommit(false);
         connection = ConnectionBd.getConnection();
-         String sqlstmt = "INSERT INTO question ('id_option','id_question','option','est_correcte')"
-                + "VALUES(?,?,?,?)";
-        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, objetAInserer.getIdOption());
-        stmt.setInt(2, objetAInserer.getQuestion().getIdQuestion());
-        stmt.setString(3, objetAInserer.getOption());
-        stmt.setBoolean(4, objetAInserer.isEstCorrecte());
-        stmt.executeUpdate();
+        PreparedStatement stmt = null;
+        try {
+            initialisationRequetePreparee(connection, SQL_INSERT_OPTION, false,
+                    objetAInserer.getIdOption(),
+                    objetAInserer.getQuestion().getIdQuestion(),
+                    objetAInserer.getOption(),
+                    objetAInserer.isEstCorrecte());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            connection.rollback();
+            System.out.println("Problème SQL => Rollback.");
+            throw e;
+        }
+        
     }
 
     @Override
@@ -82,7 +90,7 @@ public class OptionDao implements OptionHome{
         
         try {
             
-            stmt = initialisationRequetePreparee(connection, SQL_SELECT_OPTION_FOR_QUESTION, false, idQuestion);
+            stmt = initialisationRequetePreparee(connection, SQL_SELECT_OPTION_BY_QUESTION, false, idQuestion);
             res = stmt.executeQuery();
             while(res.next()){
                Option option = new Option(questionDao.findById(idQuestion), res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
