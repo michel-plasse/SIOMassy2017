@@ -1,32 +1,25 @@
 package model;
 
 public class Personne {
-	private int id;	
-	private String nom;
-	private String prenom;
-        private String email;
-	private String no_rue;
-	private String rue;
-	private String code_postal;
-	private String ville;
-	private String pays;
-	private String mot_de_passe;
-	private String token;
-        private boolean inscriptionValide;
-        private String no_tel;
-        private String photo;
-        private boolean est_formateur;
 
+    private int id;
+    private String nom;
+    private String prenom;
+    private String email;
+    private String no_rue;
+    private String rue;
+    private String code_postal;
+    private String ville;
+    private String pays;
+    private String mot_de_passe;
+    private String token;
+    private boolean inscriptionValide;
+    private String no_tel;
+    private String photo;
+    private boolean est_formateur;
 
-
-    public boolean isInscriptionValide() {
-        return inscriptionValide;
-    }
-
-    public void setInscriptionValide(boolean inscriptionValide) {
-        this.inscriptionValide = inscriptionValide;
-    }
-
+    
+    
     public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo) {
         this.id = id;
         this.nom = nom;
@@ -42,8 +35,6 @@ public class Personne {
         this.photo = photo;
     }
 
-    
-    
     public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String token, boolean inscriptionValide, String no_tel, String photo) {
         this.id = id;
         this.nom = nom;
@@ -60,8 +51,8 @@ public class Personne {
         this.no_tel = no_tel;
         this.photo = photo;
     }
-    
-        public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe) {
+
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe) {
         this.id = id;
         this.email = email;
         this.nom = nom;
@@ -72,26 +63,25 @@ public class Personne {
         this.ville = ville;
         this.pays = pays;
         this.mot_de_passe = mot_de_passe;
-    }
-    
-    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String photo) {
-        this.id = id;
-        this.email = email;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.no_rue = no_rue;
-        this.rue = rue;
-        this.code_postal = code_postal;
-        this.ville = ville;
-        this.pays = pays;
-        this.mot_de_passe = mot_de_passe;
-        this.photo = photo;
     }
 
-   
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel) {
+        this.id = id;
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.no_tel = no_tel;
+    }
     
-        
-        public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur) {
+    
+
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -107,15 +97,13 @@ public class Personne {
         this.est_formateur = est_formateur;
     }
 
-
-    
-    public Personne(String nom, String prenom){
+    public Personne(String nom, String prenom) {
         this.nom = nom;
         this.prenom = prenom;
     }
-    
-    public Personne(){
-       
+
+    public Personne() {
+
     }
 
     public String getNom() {
@@ -206,6 +194,13 @@ public class Personne {
         this.token = token;
     }
 
+    public boolean isInscriptionValide() {
+        return inscriptionValide;
+    }
+
+    public void setInscriptionValide(boolean inscriptionValide) {
+        this.inscriptionValide = inscriptionValide;
+    }
 
     @Override
     public int hashCode() {
@@ -239,15 +234,15 @@ public class Personne {
             return false;
         }
         return true;
-        }
+    }
 
-        public String getPhoto() {
-            return photo;
-        }
+    public String getPhoto() {
+        return photo;
+    }
 
-        public void setPhoto(String photo) {
-            this.photo = photo;
-        }
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public String getNo_tel() {
         return no_tel;
@@ -263,19 +258,11 @@ public class Personne {
 
     public void setEst_formateur(boolean est_formateur) {
         this.est_formateur = est_formateur;
-    }    
-        
+    }
 
     @Override
     public String toString() {
         return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';
     }
-
-
-
-
-
-	
-	
 
 }
