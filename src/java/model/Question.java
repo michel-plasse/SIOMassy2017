@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author admin
@@ -12,32 +14,28 @@ package model;
 public class Question {
     
     private int idQuestion;
-    private Qcm qcm;
     private String question;
+    private ArrayList<Option> lesOptions;
 
     public Question() {
     }
 
-    public Question(Qcm qcm, String question) {
-        this.qcm = qcm;
-        this.question = question;
+    public Question(int idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
-    
+    public Question(int idQuestion, String question, ArrayList<Option> lesOptions) {
+        this.idQuestion = idQuestion;
+        this.question = question;
+        this.lesOptions = lesOptions;
+    }
+
     public int getIdQuestion() {
         return idQuestion;
     }
 
     public void setIdQuestion(int idQuestion) {
         this.idQuestion = idQuestion;
-    }
-
-    public Qcm getQcm() {
-        return qcm;
-    }
-
-    public void setQcm(Qcm qcm) {
-        this.qcm = qcm;
     }
 
     public String getQuestion() {
@@ -47,7 +45,13 @@ public class Question {
     public void setQuestion(String question) {
         this.question = question;
     }
-    
-    
+
+    public ArrayList<Option> getLesOptions() {
+        return lesOptions;
+    }
+
+    public void setLesOptions(ArrayList<Option> lesOptions) {
+        this.lesOptions = lesOptions;
+    }
     
 }
