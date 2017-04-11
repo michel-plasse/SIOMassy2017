@@ -1,29 +1,26 @@
 
-<p><img height="200" width="200" src="image/trombi/<c:out value="${user.photo}"/>"/><br>
-    ${user.prenom} ${user.nom} 
+<p><img height="200" width="200" src="image/trombi/${user.photo}"/><br/>
+    ${user.prenom} ${user.nom}</p>
 
-    <table class="table">	
-    <th>Date</th>
-    <th>Intitulé</th>
-    <th>Module</th>
-    <th>Formateur</th>
-    <th>Note</th>
-    <th>Commentaire</th>
-
-    <c:forEach items="${requestScope.eval}" var="uneEval">
+<table class="table">	
+    <tr>
+        <th>Date</th>
+        <th>Intitulé</th>
+        <th>Module</th>
+        <th>Formateur</th>
+        <th>Note</th>
+        <th>Commentaire</th>
+    </tr>
+    <c:forEach items="${requestScope.lesnotes}" var="note">
         <tr>
-            <td><c:out value="${eval.date_effet}" /></td>
-            <td><c:out value="${eval.intitule}" /></td>
-            <td><c:out value="${eval.nom}" /></td>
-            <td><c:out value="${eval.nom}" /></td>
-            <td><c:out value="${eval.note}" /></td>
-            <td><c:out value="${eval.commentaire}" /></td>
+            <td><c:out value="${note.date_effet}" /></td>
+            <td><c:out value="${note.intitule}" /></td>
+            <td><c:out value="${note.nom}" /></td>
+            <td><c:out value="${note.nom}" /></td>
+            <td><c:out value="${note.note}" /></td>
+            <td><c:out value="${note.commentaire}" /></td>
 
         </tr>  
     </c:forEach>
-
-
 </table>
-
-</p>
 
