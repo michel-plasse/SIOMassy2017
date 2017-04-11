@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.Before;
 
 import model.Personne;
+import model.TokenGenerator;
 
 public class PersonneDaoTest {
 
@@ -36,10 +37,12 @@ public class PersonneDaoTest {
                 "une rue",
                 "12345",
                 "Triffouillis les oies",
-                "France", "Je sais faire miaou moi aussi");
+                "France", "Je sais faire miaou moi aussi", "0123456789");
+        TokenGenerator token = new TokenGenerator();
+        instance.setToken(token.Token());
         dao.insert(instance);
-        assertEquals(9, instance.getId());
-        Personne result = dao.findById(9);
+        assertEquals(110, instance.getId());
+        Personne result = dao.findById(110);
         assertEquals(instance, result);
     }
 

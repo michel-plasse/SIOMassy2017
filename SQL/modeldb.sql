@@ -130,6 +130,36 @@ INNER JOIN candidature ON personne.id_personne = candidature.id_personne
 INNER JOIN session_formation ON candidature.id_session = session_formation.id_session
 WHERE id_etat_candidature = 6;
 
+DELIMITER $$
+
+DROP TRIGGER IF EXISTS auto_insert_notes$$
+Create trigger auto_insert_notes
+AFTER INSERT ON evaluation
+FOR EACH ROW
+BEGIN
+    DECLARE est_termine BOOLEAN DEFAULT FALSE;
+    DECLARE v_id_personne INT;
+	-- Trouver les etudiants evalues
+    DECLARE lignes CURSOR FOR 
+    SELECT id_personne 
+    FROM candidature
+    WHERE id_session = NEW.id_session AND id_etat_candidature=6; -- inscrit
+	-- Boucler sur ces etudiants
+    OPEN lignes;
+    BEGIN
+		-- Sortir du bloc BEGIN quand on atteind la fin du curseur
+		DECLARE EXIT HANDLER FOR NOT FOUND SET est_termine = TRUE;
+		REPEAT
+			-- Recuperer les etudiants ligne a ligne
+			FETCH lignes INTO v_id_personne;
+            -- Inserer la note de cet etudiant
+			INSERT INTO note(id_evaluation, id_personne) VALUES(NEW.id_evaluation, v_id_personne);
+		UNTIL est_termine
+        END REPEAT;
+	 END;
+	 CLOSE lignes;
+END $$
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

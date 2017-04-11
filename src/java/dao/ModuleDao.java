@@ -17,8 +17,8 @@ import model.Module;
  * @author admin
  */
 public class ModuleDao implements ModuleHome {
-    
-    private Connection connection ; 
+
+    private Connection connection;
 
     @Override
     public void insert(Module objetAInserer) throws SQLException {
@@ -39,17 +39,32 @@ public class ModuleDao implements ModuleHome {
     public Module findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT id_module, nom FROM module"
-		+ "WHERE id_module = "+id+";");
-        Module leModule = new Module(
-                res.getInt("id_module"),
-                res.getString("nom"));
-        return leModule;
+        Module leModule = null;
+        ResultSet res = stmt.executeQuery("SELECT id_module, nom FROM module"
+                + " WHERE id_module = " + id);
+
+        if (res.next()) {
+            leModule = new Module(
+                    res.getInt("id_module"),
+                    res.getString("nom"));
+        }
+        return leModule; 
     }
 
     @Override
     public ArrayList<Module> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ArrayList<Module> result = new ArrayList<>();
+        ResultSet res = stmt.executeQuery("SELECT id_module, nom FROM module");
+
+        while (res.next()) {
+            Module leModule = new Module(
+                    res.getInt("id_module"),
+                    res.getString("nom"));
+            result.add(leModule);
+        }
+        return result;
     }
-    
+
 }

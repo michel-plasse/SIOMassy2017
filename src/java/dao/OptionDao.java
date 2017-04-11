@@ -11,22 +11,38 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Option;
+import static dao.DAOUtilitaire.*;
 
 public class OptionDao implements OptionHome{
     
     private Connection connection ;
+    private static String CHAMP_ID_OPTION = "id_option";
+    private static String CHAMP_ID_QUESTION = "id_question";
+    private static String CHAMP_OPTION = "option";
+    private static String CHAMP_EST_CORRECTE = "est_correcte";
+            
+    private static String SQL_INSERT_OPTION = "INSERT INTO question ('id_option','id_question','option','est_correcte') VALUES(?,?,?,?)";
+    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_option,id_question,option,est_correcte FROM option WHERE id_question=?";
 
     @Override
     public void insert(Option objetAInserer) throws SQLException {
+        
+        connection.setAutoCommit(false);
         connection = ConnectionBd.getConnection();
-         String sqlstmt = "INSERT INTO question ('id_option','id_question','option','est_correcte')"
-                + "VALUES(?,?,?,?)";
-        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, objetAInserer.getIdOption());
-        stmt.setInt(2, objetAInserer.getQuestion().getIdQuestion());
-        stmt.setString(3, objetAInserer.getOption());
-        stmt.setBoolean(4, objetAInserer.isEstCorrecte());
-        stmt.executeUpdate();
+        PreparedStatement stmt = null;
+        try {
+            initialisationRequetePreparee(connection, SQL_INSERT_OPTION, false,
+                    objetAInserer.getIdOption(),
+                    objetAInserer.getQuestion().getIdQuestion(),
+                    objetAInserer.getOption(),
+                    objetAInserer.isEstCorrecte());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            connection.rollback();
+            System.out.println("Problème SQL => Rollback.");
+            throw e;
+        }
+        
     }
 
     @Override
@@ -62,6 +78,33 @@ public class OptionDao implements OptionHome{
     @Override
     public ArrayList<Option> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Option> findByIdQuestion(int idQuestion) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet res = null;
+        ArrayList<Option> lesReponses = new ArrayList<>();
+        QuestionDao questionDao = new QuestionDao();
+        
+        try {
+            
+            stmt = initialisationRequetePreparee(connection, SQL_SELECT_OPTION_BY_QUESTION, false, idQuestion);
+            res = stmt.executeQuery();
+            while(res.next()){
+               Option option = new Option(questionDao.findById(idQuestion), res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
+               option.setIdOption(res.getInt(CHAMP_ID_OPTION));
+               lesReponses.add(option);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("probleme récupération des reponses pour la question...");
+            throw e;
+        } finally{
+            fermeturesSilencieuses(res, stmt, connection);
+        }
+        return lesReponses;
     }
     
 }
