@@ -20,6 +20,10 @@ public class Question {
     public Question() {
     }
 
+    public Question(int idQuestion) {
+        this.idQuestion = idQuestion;
+    }
+
     public Question(int idQuestion, String question, ArrayList<Option> lesOptions) {
         this.idQuestion = idQuestion;
         this.question = question;

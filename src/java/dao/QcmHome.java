@@ -5,12 +5,16 @@
  */
 package dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Qcm;
 
 /**
  *
  * @author admin
  */
-public interface QcmHome extends Dao<Qcm> {
+public interface QcmHome<T> extends Dao<T> {
+    
+    public ArrayList<T> findAll() throws SQLException;
     
 }

@@ -89,10 +89,11 @@ public class TrombinoscopeServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession maSession = request.getSession(true);
         Personne user = (Personne) maSession.getAttribute("user");
+        
         if (user == null) {
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
         } else {
-            String[] emails = request.getParameterValues("email");
+            String[] email = request.getParameterValues("email");
             request.getRequestDispatcher("WEB-INF/emailTrombinoscope.jsp").forward(request, response);
         }
 
