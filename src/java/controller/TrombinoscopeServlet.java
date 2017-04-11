@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Personne;
 import model.SessionFormation;
 
@@ -62,15 +63,15 @@ public class TrombinoscopeServlet extends HttpServlet {
                     Logger.getLogger(TrombinoscopeServlet.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("msgerreur", "Problème avec la base de données");
                 }
-                
+
                 this.getServletContext().getRequestDispatcher("/WEB-INF/trombinoscope.jsp").forward(request, response);
 
             }
-            
-            this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);    
+
+            this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);
 
         }
-        
+
         this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);
 
     }
@@ -86,6 +87,14 @@ public class TrombinoscopeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession maSession = request.getSession(true);
+        Personne user = (Personne) maSession.getAttribute("user");
+        if (user == null) {
+            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+        } else {
+            String[] emails = request.getParameterValues("email");
+            request.getRequestDispatcher("WEB-INF/emailTrombinoscope.jsp").forward(request, response);
+        }
 
     }
 
