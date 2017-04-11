@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Question;
 
 /**
@@ -15,4 +16,5 @@ import model.Question;
 public interface QuestionHome<T> extends Dao<T>{
     
     public void insert(int id, T nouvelleQuestion) throws SQLException;
+    public ArrayList<T> findAll(int idQcm) throws SQLException;
 }
