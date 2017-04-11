@@ -51,12 +51,13 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             // Pas connecté
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
-            NoteDao daoNote = new NoteDao();
+            
             //EvaluationDao daoEval = new EvaluationDao();
             
-            try {               
-                //lesNotes = daoNote.findByIdEleveNoteEval(user.getId());
-                maSession.setAttribute("lesnotes", lesNotes);
+            try {
+                NoteDao daoNote = new NoteDao();
+                ArrayList<Note> lesNotes = daoNote.findByIdEleveNoteEval(user.getId());
+                maSession.setAttribute("lesNotes", lesNotes);
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
