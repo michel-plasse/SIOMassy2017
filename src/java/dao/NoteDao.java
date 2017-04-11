@@ -26,7 +26,7 @@ public class NoteDao implements NoteHome{
             stmt.setDouble(3, note.getNote());
             stmt.setString(4, note.getCommentaire());
             stmt.executeUpdate();
-            // Recuperer le id
+            // Recuperer l'id
             sql = "SELECT MAX(id_note) AS id FROM note";
             Statement lecture = connection.createStatement();
             ResultSet rs = lecture.executeQuery(sql);
@@ -66,7 +66,7 @@ public class NoteDao implements NoteHome{
     public ArrayList<Note> findByIdEleveNoteEval(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         EvaluationDao evaluationDao = new EvaluationDao();
-        ArrayList<Note> lesNotes = new ArrayList<>();
+        ArrayList<Note> lesNotes = new ArrayList();
         String sql = "SELECT id_evaluation, note, commentaire FROM note WHERE id_personne = ? ";
         PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
