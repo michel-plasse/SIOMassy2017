@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.Properties;
+import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -23,6 +24,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Personne;
 import outils.ServeurSMTP;
 
 /**
@@ -52,17 +55,23 @@ public class TrombinoscopeEmailServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String expediteur = request.getParameter("expediteur");
+        HttpSession maSession = request.getSession(true);
+        Personne user = (Personne) maSession.getAttribute("user");
+        
+        String expediteur = user.getEmail();
+        String emailExp = user.getNom()+" "+user.getPrenom()+" "+expediteur;
+ 
         String destinataire = request.getParameter("destinataire");
         String sujet = request.getParameter("sujet");
         String corps = request.getParameter("email");
         
+        InternetAddress unExpediteur = new InternetAddress(expediteur, emailExp);
 
         try {
                     
             MimeMessage msg = ServeurSMTP.newEmail(expediteur, destinataire, sujet);
             msg.setContent(corps, "text/html; charset=utf-8");
+            msg.setFrom(unExpediteur);
             javax.mail.Transport.send(msg);
             
             request.setAttribute("message", "Votre email a bien été envoyé");
@@ -80,7 +89,7 @@ public class TrombinoscopeEmailServlet extends HttpServlet {
             request.setAttribute("message", ex.getMessage());
             request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
         }
-
+        
         request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
     }
 

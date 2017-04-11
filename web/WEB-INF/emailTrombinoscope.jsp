@@ -10,7 +10,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Expéditeur</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="expediteur" value="<c:out value="${user.prenom} ${user.nom} ${user.email} "/>"disabled>
+                <input type="text" class="form-control" name="expediteur" value="${user.prenom} ${user.nom} ${user.email} " disabled>
             </div>
         </div>
 
