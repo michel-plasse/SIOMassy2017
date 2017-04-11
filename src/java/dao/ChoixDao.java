@@ -10,32 +10,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Option;
+import model.Choix;
 import static dao.DAOUtilitaire.*;
 
-public class OptionDao implements OptionHome{
+public class ChoixDao implements ChoixHome{
     
     private Connection connection ;
-    private static String CHAMP_ID_OPTION = "id_option";
+    private static String CHAMP_ID_OPTION = "id_choix";
     private static String CHAMP_ID_QUESTION = "id_question";
-    private static String CHAMP_OPTION = "option";
-    private static String CHAMP_EST_CORRECTE = "est_correcte";
+    private static String CHAMP_OPTION = "choix";
+    private static String CHAMP_EST_CORRECTE = "est_correct";
             
-    private static String SQL_INSERT_OPTION = "INSERT INTO question ('id_option','id_question','option','est_correcte') VALUES(?,?,?,?)";
-    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_option,id_question,option,est_correcte FROM option WHERE id_question=?";
+    private static String SQL_INSERT_OPTION = "INSERT INTO question ('id_choix','id_question','choix','est_correct') VALUES(?,?,?,?)";
+    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_choix,id_question,choix,est_correct FROM choix WHERE id_question=?";
 
     @Override
-    public void insert(Option objetAInserer) throws SQLException {
+    public void insert(Choix objetAInserer) throws SQLException {
         
         connection.setAutoCommit(false);
         connection = ConnectionBd.getConnection();
         PreparedStatement stmt = null;
         try {
             initialisationRequetePreparee(connection, SQL_INSERT_OPTION, false,
-                    objetAInserer.getIdOption(),
+                    objetAInserer.getIdChoix(),
                     objetAInserer.getQuestion().getIdQuestion(),
-                    objetAInserer.getOption(),
-                    objetAInserer.isEstCorrecte());
+                    objetAInserer.getChoix(),
+                    objetAInserer.isEstCorrect());
             stmt.executeUpdate();
         } catch (Exception e) {
             connection.rollback();
@@ -51,41 +51,41 @@ public class OptionDao implements OptionHome{
     }
 
     @Override
-    public boolean update(int idAncien, Option nouveau) throws SQLException {
+    public boolean update(int idAncien, Choix nouveau) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Option findById(int id) throws SQLException {
+    public Choix findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
-        Option option = null;
+        Choix choix = null;
         QuestionDao questionDao = new QuestionDao();
-         String sqlstmt = "SELECT id_option, id_question, option, est_correcte FROM option"
-                + "WHERE id_option = ? ";
+         String sqlstmt = "SELECT id_choix, id_question, choix, est_correct FROM choix"
+                + "WHERE id_choix = ? ";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, id);
         stmt.executeUpdate();
         ResultSet res = stmt.executeQuery(sqlstmt);
         if (res.next()){
-            option = new Option(
+            choix = new Choix(
                     questionDao.findById(res.getInt("id_question")),
-                    res.getString("option"),
-                    res.getBoolean("est_correcte"));
+                    res.getString("choix"),
+                    res.getBoolean("est_correct"));
         }
-        return option;
+        return choix;
     }
 
     @Override
-    public ArrayList<Option> findAll() throws SQLException {
+    public ArrayList<Choix> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Option> findByIdQuestion(int idQuestion) throws SQLException {
+    public ArrayList<Choix> findByIdQuestion(int idQuestion) throws SQLException {
         connection = ConnectionBd.getConnection();
         PreparedStatement stmt = null;
         ResultSet res = null;
-        ArrayList<Option> lesReponses = new ArrayList<>();
+        ArrayList<Choix> lesReponses = new ArrayList<>();
         QuestionDao questionDao = new QuestionDao();
         
         try {
@@ -93,9 +93,9 @@ public class OptionDao implements OptionHome{
             stmt = initialisationRequetePreparee(connection, SQL_SELECT_OPTION_BY_QUESTION, false, idQuestion);
             res = stmt.executeQuery();
             while(res.next()){
-               Option option = new Option(questionDao.findById(idQuestion), res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
-               option.setIdOption(res.getInt(CHAMP_ID_OPTION));
-               lesReponses.add(option);
+               Choix choix = new Choix(questionDao.findById(idQuestion), res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
+               choix.setIdOption(res.getInt(CHAMP_ID_OPTION));
+               lesReponses.add(choix);
             }
             
         } catch (SQLException e) {

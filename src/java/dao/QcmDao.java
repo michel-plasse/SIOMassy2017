@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import model.Option;
+import model.Choix;
 import model.Qcm;
 import model.Question;
 
@@ -48,8 +48,8 @@ public class QcmDao implements QcmHome<Qcm> {
                 String sqlQuestion = "INSERT INTO question(id_qcm,question) VALUES(?,?)";
                 ResultSet resQuest = null;
                 PreparedStatement preparedStatementQuestion = connection.prepareStatement(sqlQuestion, Statement.RETURN_GENERATED_KEYS);
-                String sqlOption = "INSERT INTO question (id_question, option, est_correcte) VALUES(?,?,?)";
-                PreparedStatement preparedStatementOption = connection.prepareStatement(sqlOption);
+                String sqlChoix = "INSERT INTO choix (id_question, libelle, est_correcte) VALUES(?,?,?)";
+                PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
 
                 for (Question uneQuestion : nouveauQcm.getLesQuestions()) {
                     preparedStatementQuestion.setInt(1, resQcm.getInt("id_qcm"));
@@ -58,11 +58,11 @@ public class QcmDao implements QcmHome<Qcm> {
                     resQuest = preparedStatementQuestion.getGeneratedKeys();
 
                     if (resQuest.next()) {
-                        for (Option uneOption : uneQuestion.getLesOptions()) {
-                            preparedStatementOption.setInt(1, resQuest.getInt("id_question"));
-                            preparedStatementOption.setString(2, uneOption.getOption());
-                            preparedStatementOption.setBoolean(3, uneOption.isEstCorrecte());
-                            preparedStatementOption.executeUpdate();
+                        for (Choix unChoix : uneQuestion.getLesOptions()) {
+                            preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
+                            preparedStatementChoix.setString(2, unChoix.getChoix());
+                            preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
+                            preparedStatementChoix.executeUpdate();
                         }
 
                     }
@@ -96,10 +96,10 @@ public class QcmDao implements QcmHome<Qcm> {
     @Override
     public Qcm findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, op.id_option, op.option, op.est_correcte "
+        String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_option, ch.option, ch.est_correcte "
                 + "FROM qcm as qc "
                 + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
-                + "INNER JOIN option as op ON qu.id_question = op.id_question "
+                + "INNER JOIN choix as ch ON qu.id_question = op.id_question "
                 + "WHERE id_qcm = ?";
 
         PreparedStatement preparedStatement = null;
@@ -109,11 +109,21 @@ public class QcmDao implements QcmHome<Qcm> {
         try {
             preparedStatement = initialisationRequetePreparee(connection, sql, false, id);
             int idQuestion = -1;
+            Question uneQuestion = null;
             res = preparedStatement.executeQuery();
             while (res.next()) {
-                if (rs.getInt("id_question") != idQuestion) {
-                    
+                if (res.getInt("qu.id_question") != idQuestion) {
+                    uneQuestion = new Question();
+                    uneQuestion.setIdQuestion(res.getInt("qu.id_question"));
+                    uneQuestion.setQuestion(res.getString("qu.question"));
+                    uneQuestion.setLesOptions(new ArrayList<>());
+                    idQuestion = res.getInt("qu.id_question");
                 }
+                
+                Choix uneOption = new Choix();
+                uneOption.setIdOption(res.getInt("op.id_option"));
+                uneOption.setChoix(res.getString("op.option"));
+                uneOption.setEstCorrecte(res.getBoolean("op.est_correct"));
             }
 
         } catch (SQLException e) {

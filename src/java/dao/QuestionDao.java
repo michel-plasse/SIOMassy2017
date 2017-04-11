@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Option;
+import model.Choix;
 import model.Question;
 
 /**
@@ -40,8 +40,8 @@ public class QuestionDao implements QuestionHome<Question>{
             idGenerated = preparedStatement.getGeneratedKeys();
             
             if(idGenerated.next()) {
-                OptionDao optionDao = new OptionDao();
-                for(Option uneOption : nouvelleQuestion.getLesOptions()) {
+                ChoixDao optionDao = new ChoixDao();
+                for(Choix uneOption : nouvelleQuestion.getLesOptions()) {
                     uneOption.setQuestion(new Question(idGenerated.getInt(1)));
                     optionDao.insert(uneOption);
                 }
@@ -106,7 +106,7 @@ public class QuestionDao implements QuestionHome<Question>{
             lesQuestions = new ArrayList<>();
             
             while (resQuestions.next()) {
-                OptionDao optionDao = new OptionDao();
+                ChoixDao optionDao = new ChoixDao();
                 Question uneQuestion = new Question();
                 uneQuestion.setIdQuestion(resQuestions.getInt("id_question"));
                 uneQuestion.setQuestion(resQuestions.getString("question"));

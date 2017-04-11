@@ -15,7 +15,7 @@ public class Question {
     
     private int idQuestion;
     private String question;
-    private ArrayList<Option> lesOptions;
+    private ArrayList<Choix> lesOptions;
 
     public Question() {
     }
@@ -24,7 +24,7 @@ public class Question {
         this.idQuestion = idQuestion;
     }
 
-    public Question(int idQuestion, String question, ArrayList<Option> lesOptions) {
+    public Question(int idQuestion, String question, ArrayList<Choix> lesOptions) {
         this.idQuestion = idQuestion;
         this.question = question;
         this.lesOptions = lesOptions;
@@ -46,11 +46,11 @@ public class Question {
         this.question = question;
     }
 
-    public ArrayList<Option> getLesOptions() {
+    public ArrayList<Choix> getLesOptions() {
         return lesOptions;
     }
 
-    public void setLesOptions(ArrayList<Option> lesOptions) {
+    public void setLesOptions(ArrayList<Choix> lesOptions) {
         this.lesOptions = lesOptions;
     }
     
