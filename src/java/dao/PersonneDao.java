@@ -23,7 +23,7 @@ public class PersonneDao implements PersonneHome {
             // Commencer une transaction
             connection.setAutoCommit(false);
             String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, no_tel, token)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());

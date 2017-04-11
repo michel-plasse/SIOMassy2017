@@ -41,7 +41,7 @@ public class InscrireServlet extends HttpServlet {
         // Nom
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
-        // String no_phone = request.getParameter("no_phone");
+        String no_phone = request.getParameter("no_phone");
 
         // Adresse
         String no_rue = request.getParameter("no_rue");
@@ -91,7 +91,7 @@ public class InscrireServlet extends HttpServlet {
         if (champsrenseignes) {
             try {
                 Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
-                        pays, password);
+                        pays, password, no_phone);
                 PersonneDao dao = new PersonneDao();
                 TokenGenerator token = new TokenGenerator();
                 personneAjoutee.setToken(token.Token());
