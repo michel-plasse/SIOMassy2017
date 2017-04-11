@@ -9,9 +9,13 @@ BEGIN
   -- Vider les tables en repositionnant à 1 leur auto-incrément
   TRUNCATE TABLE candidature;
   TRUNCATE TABLE etat_candidature;
+  TRUNCATE TABLE formateur;
   TRUNCATE TABLE formation;
   TRUNCATE TABLE personne;
   TRUNCATE TABLE session_formation;
+  TRUNCATE TABLE module;
+  TRUNCATE TABLE evaluation;
+  TRUNCATE TABLE note;
   -- Réasactiver contraintes de clé étrangère
   SET FOREIGN_KEY_CHECKS = 1;
 
@@ -38,8 +42,8 @@ BEGIN
 	(8, 'Dicoco', 'Margeriti', 'bgpenne@caramail.fr', '69', 'boulevard du chemin', '40100', 'Bologne', 'Italie', '+grandde14cm', 'plop', 'plop', 'plop' ,1);
 
 	INSERT INTO formateur (id_personne) VALUES
-                  (7),
-                  (8);
+    (7),
+    (8);
     
 	INSERT INTO etat_candidature (id_etat_candidature, libelle) VALUES
 	(1, 'reçu'),
@@ -54,18 +58,38 @@ BEGIN
 	(2, 'BTS IRIS', 'la formation qu''il te faut !');
 
 	INSERT INTO session_formation (id_session, id_formation, date_debut, date_fin, est_ouverte) VALUES 
-	(1, 1, '2017-05-01', '2018-04-15', 1),
+	(1, 1, '2017-05-01', '2017-02-15', 1),
 	(2, 1, '2016-06-01', '2017-05-08', 0),
 	(3, 2, '2017-04-03', '2018-04-02', 1);
 	
 	INSERT INTO candidature (id_personne, id_session, id_etat_candidature, date_effet) VALUES 
-	(1, 1, 1, '2018-01-15'), 
-                  (2, 1, 2, '2018-01-18'), 
-                  (3, 1, 3, '2018-02-03'),
-                  (4, 1, 4, '2018-02-05'),
-                  (5, 1, 5, '2018-02-25'),
-                  (6, 1, 6, '2018-02-26'),
-                  (1, 3, 4, '2018-02-26');
+	(1, 1, 1, '2017-01-15'), 
+	(2, 1, 2, '2018-01-18'), 
+	(3, 1, 3, '2018-02-03'),
+	(4, 1, 4, '2018-02-05'),
+	(5, 1, 5, '2018-02-25'),
+	(6, 1, 6, '2018-02-26'),
+	(1, 3, 4, '2018-02-26');
+    
+    INSERT INTO module (id_module, nom) VALUES
+	('1', 'Mathématiques'),
+    ('2', 'Français'),
+    ('3', 'Histoire'),
+    ('4', 'Informatique');
+        
+	INSERT INTO evaluation (id_evaluation, id_module, id_formateur, id_session, intitule, date_effet) VALUES
+    ('1', '1', '7', '1', 'Evaluation Maths', '2017-03-17 14:00:00'),
+    ('2', '4', '7', '1', 'Informatique E4', '2017-05-18 09:30:00'),
+    ('3', '2', '8', '1', 'Français Eval-1', '2017-04-08 08:30:00'),
+    ('4', '3', '8', '1', 'Histoire DST', '2017-03-05 15:00:00');
+    
+    INSERT INTO note (id_note, id_evaluation, id_personne, commentaire) VALUES
+    ('1', '2', '1', '','à venir.'),
+    ('2', '1', '1', '15', 'Bon travail.'),
+    ('3', '3', '1', '12', 'Assez bien.'),
+    ('4', '4', '1', '8', 'Peut mieux faire.');
+        
+    
     COMMIT;
   END;
 END $$
