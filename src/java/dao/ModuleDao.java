@@ -39,11 +39,15 @@ public class ModuleDao implements ModuleHome {
     public Module findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
+        Module leModule = null;
         ResultSet res =  stmt.executeQuery("SELECT id_module, nom FROM module"
-		+ "WHERE id_module = "+id+";");
-        Module leModule = new Module(
+		+ " WHERE id_module = "+id);
+        
+        if(res.next()) {
+        leModule = new Module(
                 res.getInt("id_module"),
                 res.getString("nom"));
+        }
         return leModule;
     }
 
