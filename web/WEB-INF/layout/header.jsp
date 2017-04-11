@@ -53,7 +53,12 @@
                                 </c:if></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><a href="<c:url value="/login"/>">Connection</a></li>
+                            <li class="active"><c:if test='${sessionScope.user == null}'>
+                                    <a href="<c:url value="/login" />">Connexion</a>
+                                </c:if>
+                                <c:if test="${sessionScope.user != null}">
+                                    <a href="<c:url value="/Deconnexion" />">Déconnexion</a>
+                                </c:if>
                         </ul>
                     </div>
                 </div>
