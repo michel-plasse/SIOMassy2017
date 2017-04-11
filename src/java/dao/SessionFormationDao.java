@@ -32,7 +32,7 @@ public class SessionFormationDao implements SessionHome {
         ResultSet resultat = statement.executeQuery("SELECT id_session,nom,description,date_debut,date_fin,est_ouverte"
                 + " FROM formation INNER JOIN session_formation "
                 + "ON session_formation.id_formation = formation.id_formation "
-                + "WHERE id_session="+id+";");
+                + "WHERE id_session="+id);
 
         if(resultat.next()) {
             session = new SessionFormation(

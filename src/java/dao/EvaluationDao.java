@@ -5,7 +5,7 @@
  */
 package dao;
 
-
+import static dao.DAOUtilitaire.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,9 +20,9 @@ import model.Module;
  *
  * @author admin
  */
-public class EvaluationDao implements EvaluationHome{
-    
-    private Connection connection ; 
+public class EvaluationDao implements EvaluationHome {
+
+    private Connection connection;
 
     @Override
     public void insert(Evaluation objetAInserer) throws SQLException {
@@ -43,7 +43,7 @@ public class EvaluationDao implements EvaluationHome{
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("DELETE FROM evaluation"
-                + " WHERE id_evaluation = "+id+";");
+                + " WHERE id_evaluation = " + id + ";");
         return false;
     }
 
@@ -51,7 +51,7 @@ public class EvaluationDao implements EvaluationHome{
     public boolean update(int idAncien, Evaluation nouveau) throws SQLException {
         connection = ConnectionBd.getConnection();
         String sql = "UPDATE evaluation SET id_module = ?,id_formateur =?, id_session = ?, intitule = ?, date_effet = ?"
-                + "VALUES (?,?,?,?,?) WHERE id_evaluation = " + idAncien ;
+                + "VALUES (?,?,?,?,?) WHERE id_evaluation = " + idAncien;
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, nouveau.getLeModule().getId());
         stmt.setInt(2, nouveau.getLeFormateur().getId());
@@ -69,12 +69,13 @@ public class EvaluationDao implements EvaluationHome{
         ModuleDao moduleDao = new ModuleDao();
         PersonneDao personneDao = new PersonneDao();
         SessionFormationDao sessionDao = new SessionFormationDao();
-        String sql = "SELECT id_evaluation, id_module, id_formateur, id_session, intitule, date_effet FROM evaluation"
-                + "WHERE id_evaluation = ? ";
+        String sql = "SELECT id_evaluation, id_module, id_formateur, id_session, intitule, date_effet FROM evaluation WHERE id_evaluation = ?";
+
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
-        ResultSet res = stmt.executeQuery(sql);
-        if(res.next()){
+
+        ResultSet res = stmt.executeQuery();
+        if (res.next()) {
             evaluation = new Evaluation(
                     res.getInt("id_evaluation"),
                     moduleDao.findById(res.getInt("id_module")),
@@ -99,9 +100,9 @@ public class EvaluationDao implements EvaluationHome{
         SessionFormationDao sessionDao = new SessionFormationDao();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res =  stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
-		+ "WHERE id_formateur = "+idFormateur+" AND date_effet > NOW() ;");
-        while (res.next()){
+        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
+                + "WHERE id_formateur = " + idFormateur + " AND date_effet > NOW() ;");
+        while (res.next()) {
             Evaluation eval = new Evaluation(
                     moduleDao.findById(res.getInt("id_module")),
                     personneDao.findById(res.getInt("id_formateur")),
