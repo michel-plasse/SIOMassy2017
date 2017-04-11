@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static dao.DAOUtilitaire.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,20 +17,21 @@ import model.Question;
  *
  * @author admin
  */
-public class QuestionDao implements QuestionHome{
+public class QuestionDao implements QuestionHome<Question>{
     
     private Connection connection ;
 
     @Override
-    public void insert(Question objetAInserer) throws SQLException {
+    public void insert(int id, Question nouvelleQuestion) throws SQLException {
         connection = ConnectionBd.getConnection();
-         String sqlstmt = "INSERT INTO question ('id_question','id_qcm','question')"
-                + "VALUES(?,?,?)";
-        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, objetAInserer.getIdQuestion());
-        stmt.setInt(2, objetAInserer.getQcm().getIdQcm());
-        stmt.setString(3, objetAInserer.getQuestion());
-        stmt.executeUpdate();
+        
+        PreparedSt
+        
+    }
+
+    @Override
+    public void insert(Question objetAInserer) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -44,21 +46,7 @@ public class QuestionDao implements QuestionHome{
 
     @Override
     public Question findById(int id) throws SQLException {
-        connection = ConnectionBd.getConnection();
-        Question question = null;
-        QcmDao qcmDao = new QcmDao();
-         String sqlstmt = "SELECT id_qcm, question FROM question"
-                + "WHERE id_question = ? ";
-        PreparedStatement stmt = connection.prepareStatement(sqlstmt);
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
-        ResultSet res = stmt.executeQuery(sqlstmt);
-        if (res.next()){
-            question = new Question(qcmDao.findById(
-                    res.getInt("id_qcm")),
-                    res.getString("question"));
-        }
-        return question;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -66,4 +54,5 @@ public class QuestionDao implements QuestionHome{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+
 }
