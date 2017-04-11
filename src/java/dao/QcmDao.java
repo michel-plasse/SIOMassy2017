@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Choix;
+import model.Formateur;
 import model.Qcm;
 import model.Question;
 
@@ -26,7 +27,7 @@ public class QcmDao implements QcmHome<Qcm> {
     }
 
     @Override
-    public void insert(Qcm nouveauQcm) throws SQLException {
+    public void insert(int idFormateur, int idModule, Qcm nouveauQcm) throws SQLException {
         connection = ConnectionBd.getConnection();
         connection.setAutoCommit(false);
         String sql = "INSERT INTO (id_formateur,id_module,intitule,valide) VALUES (?,?,?,?)";
@@ -35,8 +36,8 @@ public class QcmDao implements QcmHome<Qcm> {
 
         try {
             preparedStatement = initialisationRequetePreparee(connection, sql, true,
-                    nouveauQcm.getFormateur().getId(),
-                    nouveauQcm.getModule(),
+                    idFormateur,
+                    idModule,
                     nouveauQcm.getIntitule(),
                     nouveauQcm.isValide());
 
@@ -48,7 +49,7 @@ public class QcmDao implements QcmHome<Qcm> {
                 String sqlQuestion = "INSERT INTO question(id_qcm,question) VALUES(?,?)";
                 ResultSet resQuest = null;
                 PreparedStatement preparedStatementQuestion = connection.prepareStatement(sqlQuestion, Statement.RETURN_GENERATED_KEYS);
-                String sqlChoix = "INSERT INTO choix (id_question, libelle, est_correcte) VALUES(?,?,?)";
+                String sqlChoix = "INSERT INTO choix (id_question, libelle, est_correct) VALUES(?,?,?)";
                 PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
 
                 for (Question uneQuestion : nouveauQcm.getLesQuestions()) {
@@ -58,7 +59,7 @@ public class QcmDao implements QcmHome<Qcm> {
                     resQuest = preparedStatementQuestion.getGeneratedKeys();
 
                     if (resQuest.next()) {
-                        for (Choix unChoix : uneQuestion.getLesOptions()) {
+                        for (Choix unChoix : uneQuestion.getLesChoix()) {
                             preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
                             preparedStatementChoix.setString(2, unChoix.getChoix());
                             preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
@@ -96,39 +97,66 @@ public class QcmDao implements QcmHome<Qcm> {
     @Override
     public Qcm findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_option, ch.option, ch.est_correcte "
+        String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_choix, ch.libelle, ch.est_correct "
                 + "FROM qcm as qc "
                 + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
-                + "INNER JOIN choix as ch ON qu.id_question = op.id_question "
-                + "WHERE id_qcm = ?";
+                + "INNER JOIN choix as ch ON qu.id_question = ch.id_question "
+                + "WHERE qc.id_qcm = ?";
 
         PreparedStatement preparedStatement = null;
         ResultSet res = null;
-        ArrayList<Question> questions = new ArrayList<>();
+        Qcm unQcm = null;
 
         try {
             preparedStatement = initialisationRequetePreparee(connection, sql, false, id);
+            res = preparedStatement.executeQuery();
+            
             int idQuestion = -1;
             Question uneQuestion = null;
-            res = preparedStatement.executeQuery();
+            Choix unChoix;
+            ArrayList<Question> questions = new ArrayList<>();
+            
             while (res.next()) {
                 if (res.getInt("qu.id_question") != idQuestion) {
                     uneQuestion = new Question();
                     uneQuestion.setIdQuestion(res.getInt("qu.id_question"));
                     uneQuestion.setQuestion(res.getString("qu.question"));
-                    uneQuestion.setLesOptions(new ArrayList<>());
+                    ArrayList<Choix> lesChoix = new ArrayList<>();
+                    uneQuestion.setLesChoix(lesChoix);
+                    questions.add(uneQuestion);
                     idQuestion = res.getInt("qu.id_question");
                 }
                 
-                Choix uneOption = new Choix();
-                uneOption.setIdOption(res.getInt("op.id_option"));
-                uneOption.setChoix(res.getString("op.option"));
-                uneOption.setEstCorrecte(res.getBoolean("op.est_correct"));
+                unChoix = new Choix();
+                unChoix.setIdChoix(res.getInt("ch.id_choix"));
+                unChoix.setChoix(res.getString("ch.libelle"));
+                unChoix.setEstCorrect(res.getBoolean("ch.est_correct"));
+                
+                if (uneQuestion != null){
+                uneQuestion.getLesChoix().add(unChoix);
+                }
+                
+                if(res.isLast()){
+                    unQcm = new Qcm();
+                    unQcm.setIdQcm(res.getInt("qc.id_qcm"));
+                    unQcm.setIntitule("qc.intitule");
+                    unQcm.setValide(res.getBoolean("qc.valide"));
+                    unQcm.setLesQuestions(questions);
+                }
             }
 
         } catch (SQLException e) {
-
+            System.out.println("Problème SQL rencontré lors de la récupération des données du QCM");
+            throw e;
+        } finally {
+            fermeturesSilencieuses(res, preparedStatement, connection);
         }
+        return unQcm;
+    }
+
+    @Override
+    public void insert(Qcm objetAInserer) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

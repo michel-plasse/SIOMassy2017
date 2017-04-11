@@ -41,7 +41,7 @@ public class QuestionDao implements QuestionHome<Question>{
             
             if(idGenerated.next()) {
                 ChoixDao optionDao = new ChoixDao();
-                for(Choix uneOption : nouvelleQuestion.getLesOptions()) {
+                for(Choix uneOption : nouvelleQuestion.getLesChoix()) {
                     uneOption.setQuestion(new Question(idGenerated.getInt(1)));
                     optionDao.insert(uneOption);
                 }
@@ -110,7 +110,7 @@ public class QuestionDao implements QuestionHome<Question>{
                 Question uneQuestion = new Question();
                 uneQuestion.setIdQuestion(resQuestions.getInt("id_question"));
                 uneQuestion.setQuestion(resQuestions.getString("question"));
-                uneQuestion.setLesOptions(optionDao.findByIdQuestion(resQuestions.getInt("id_question")));
+                uneQuestion.setLesChoix(optionDao.findByIdQuestion(resQuestions.getInt("id_question")));
                 lesQuestions.add(uneQuestion);
             }
 
