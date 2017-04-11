@@ -47,18 +47,18 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
         HttpSession maSession = request.getSession(true);
         Personne user = (Personne) maSession.getAttribute("user");  
         EvaluationDao eval = new EvaluationDao();
-        try {
-            //ArrayList<Evaluation> evaluation = eval.findAllEvalEleve(user.getId());
-            maSession.setAttribute("eval", evaluation);
-            if (user == null) {
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            }
-           // else {
-          //  request.getRequestDispatcher( "/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
-        //}
-        } catch (SQLException ex) {
-            Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            //ArrayList<Evaluation> evaluation = eval.findAllEvalEleve(user.getId());
+//            maSession.setAttribute("eval", evaluation);
+//            if (user == null) {
+//            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+//            }
+//           // else {
+//          //  request.getRequestDispatcher( "/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
+//        //}
+//        } catch (SQLException ex) {
+//            Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
 }
