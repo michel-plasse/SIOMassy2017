@@ -260,8 +260,8 @@ BEGIN
     ('3', '2', '8', '1', 'Français Eval-1', '2017-04-08 08:30:00'),
     ('4', '3', '8', '1', 'Histoire DST', '2017-03-05 15:00:00');
     
-    INSERT INTO note (id_note, id_evaluation, id_personne, commentaire) VALUES
-    ('1', '2', '1', '','à venir.'),
+    INSERT INTO note (id_note, id_evaluation, id_personne, note, commentaire) VALUES
+    ('1', '2', '1', null,'à venir.'),
     ('2', '1', '1', '15', 'Bon travail.'),
     ('3', '3', '1', '12', 'Assez bien.'),
     ('4', '4', '1', '8', 'Peut mieux faire.');
