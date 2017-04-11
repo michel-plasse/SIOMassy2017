@@ -5,12 +5,16 @@
  */
 package dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Question;
 
 /**
  *
  * @author admin
  */
-public interface QuestionHome extends Dao<Question>{
+public interface QuestionHome<T> extends Dao<T>{
     
+    public void insert(int id, T nouvelleQuestion) throws SQLException;
+    public ArrayList<T> findAll(int idQcm) throws SQLException;
 }

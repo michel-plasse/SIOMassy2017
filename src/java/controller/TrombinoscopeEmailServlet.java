@@ -6,12 +6,24 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Properties;
+import javax.mail.AuthenticationFailedException;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.Session;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import outils.ServeurSMTP;
 
 /**
  *
@@ -29,7 +41,6 @@ public class TrombinoscopeEmailServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -39,33 +50,52 @@ public class TrombinoscopeEmailServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/Email/").forward(request, response);
+
+        String expediteur = request.getParameter("expediteur");
+        String destinataire = request.getParameter("destinataire");
+        String sujet = request.getParameter("sujet");
+        String corps = request.getParameter("email");
+        
+
+        try {
+                    
+            MimeMessage msg = ServeurSMTP.newEmail(expediteur, destinataire, sujet);
+            msg.setContent(corps, "text/html; charset=utf-8");
+            javax.mail.Transport.send(msg);
+            
+            request.setAttribute("message", "Votre email a bien été envoyé");
+
+        } catch (AuthenticationFailedException ex) {
+
+            request.setAttribute("message", "Authentication failed");
+            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+
+        } catch (AddressException ex) {
+            request.setAttribute("message", "Wrong email address");
+            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+
+        } catch (MessagingException ex) {
+            request.setAttribute("message", ex.getMessage());
+            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+        }
+
+        request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 }

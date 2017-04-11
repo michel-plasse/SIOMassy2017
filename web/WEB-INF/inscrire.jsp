@@ -27,6 +27,11 @@
 				<td>Prénom : </td>
 				<td><input type="text" name="prenom"><span> ${prenom}</span></td>
 			</tr>
+                        
+                        <tr>
+				<td>Téléphone : </td>
+				<td><input type="text" name="no_phone"></td>
+			</tr>
 
 				<td><h3>Adresse :</h1></td>
 			</tr>
@@ -54,8 +59,8 @@
 						<option value="AutreEurope">Autre pays (Europe)</option>
 						<option value="AutreAfrique">Autre pays (Afrique)</option>
                                                 <option value='AutreAsie'>Autre pays (Asie)</option>
-                                                <option value='AutreAmÃ©rique'>Autre pays (AmÃ©rique)</option>
-                                                <option value='AutreOcÃ©anie'>Autre pays (OcÃ©anie)</option>
+                                                <option value='AutreAmérique'>Autre pays (Amérique)</option>
+                                                <option value='AutreOcéanie'>Autre pays (Océanie)</option>
 				</select></td>
 			</tr>
 
