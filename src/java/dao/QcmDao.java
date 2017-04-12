@@ -139,7 +139,7 @@ public class QcmDao implements QcmHome<Qcm> {
                 if(res.isLast()){
                     unQcm = new Qcm();
                     unQcm.setIdQcm(res.getInt("qc.id_qcm"));
-                    unQcm.setIntitule("qc.intitule");
+                    unQcm.setIntitule(res.getString("qc.intitule"));
                     unQcm.setValide(res.getBoolean("qc.valide"));
                     unQcm.setLesQuestions(questions);
                 }
