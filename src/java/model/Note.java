@@ -64,6 +64,12 @@ public class Note{
         this.evaluation = evaluation;
     }
 
+    public Note(int id_note, double note, String commentaire) {
+        this.id_note = id_note;
+        this.note = note;
+        this.commentaire = commentaire;
+    }
+
     public Note() {
     }
     

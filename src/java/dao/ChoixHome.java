@@ -7,14 +7,14 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Option;
+import model.Choix;
 
 /**
  *
  * @author admin
  */
-public interface OptionHome extends Dao <Option>{
+public interface ChoixHome extends Dao <Choix>{
     
-    public ArrayList<Option> findByIdQuestion(int idQuestion)throws SQLException;
+    public ArrayList<Choix> findByIdQuestion(int idQuestion)throws SQLException;
     
 }
