@@ -29,10 +29,10 @@
                                 <c:out value="${unePersonne.nom}" />
                                 <c:out value="${unePersonne.prenom}" /></b>
                                 <p>
-                                    <c:if test="${empty unePersonne.photo}"> 
+                                    <c:if test="${empty fn:trim(unePersonne.photo)}"> 
                                         <img height="200" width="200" src="image/trombi/portrait.jpg"/></p>
                                     </c:if>
-                                    <c:if test="${not empty unePersonne.photo}">
+                                    <c:if test="${not empty fn:trim(unePersonne.photo)}">
                                         <img height="200" width="200" src="image/trombi/<c:out value="${unePersonne.photo}"/>"/></p>
                                     </c:if>
                             <p><i class="fa fa-phone" aria-hidden="true"></i> <c:out value="${unePersonne.no_tel}"/></p>
