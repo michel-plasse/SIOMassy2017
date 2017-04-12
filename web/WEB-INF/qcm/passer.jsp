@@ -3,18 +3,19 @@
     
     <div class="clearfix"></div>
     <br />
-    <form action="<c:url value="/passerqcm" />" method="POST">
     <div class="col-md-10 col-md-offset-1">
+        <form action="<c:url value="/passerqcm" />" method="POST">
         <c:forEach items="${requestScope.qcm.lesQuestions}" var="q">
             <div class="panel panel-primary">
                 <div class="panel-heading"><b>#Q - <c:out value="${q.question}" /></b></div>
                 <div class="panel-body">
                     <c:forEach items="${q.lesChoix}" var="c" >
-                        <input type="checkbox" name="${q.idQuestion}" id="${c.idChoix}" value="${c.idChoix}" /><label for="${c.idChoix}"><c:out value="${c.choix}" /></label><br />
+                        <input type="checkbox" name="${q.idQuestion}" id="${c.key}" value="${c.key}" /><label for="${c.key}"><c:out value="${c.value.choix}" /></label><br />
                     </c:forEach>
                 </div>
             </div>
         </c:forEach>
+        <div class="alert alert-warning">Attention, vous ne pouvez passer ce Quizz qu'une seule fois. Vos réponses ne pourrons pas être modifiées après validation.</div>
         <div class="col-md-6 pull-right">
             <div class="col-md-6">
             <button class="btn btn-block btn-primary" type="reset" name="reset">Réinitialiser</button>
@@ -23,8 +24,9 @@
             <button class="btn btn-block btn-primary" type="submit" name="valider" value="1">Valider</button>
             </div>
         </div>
+        <input type="hidden" name="idQcm" value="${requestScope.qcm.idQcm}" />
+        </form>
     </div>
-    </form>
     <div class="clearfix"></div>
     <br />
 </div>

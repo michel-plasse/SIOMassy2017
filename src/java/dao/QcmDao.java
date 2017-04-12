@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import model.Choix;
 import model.Formateur;
 import model.Qcm;
@@ -59,7 +60,7 @@ public class QcmDao implements QcmHome<Qcm> {
                     resQuest = preparedStatementQuestion.getGeneratedKeys();
 
                     if (resQuest.next()) {
-                        for (Choix unChoix : uneQuestion.getLesChoix()) {
+                        for (Choix unChoix : uneQuestion.getLesChoix().values()) {
                             preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
                             preparedStatementChoix.setString(2, unChoix.getChoix());
                             preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
@@ -121,7 +122,7 @@ public class QcmDao implements QcmHome<Qcm> {
                     uneQuestion = new Question();
                     uneQuestion.setIdQuestion(res.getInt("qu.id_question"));
                     uneQuestion.setQuestion(res.getString("qu.question"));
-                    ArrayList<Choix> lesChoix = new ArrayList<>();
+                    HashMap<Integer,Choix> lesChoix = new HashMap<>();
                     uneQuestion.setLesChoix(lesChoix);
                     questions.add(uneQuestion);
                     idQuestion = res.getInt("qu.id_question");
@@ -133,7 +134,7 @@ public class QcmDao implements QcmHome<Qcm> {
                 unChoix.setEstCorrect(res.getBoolean("ch.est_correct"));
                 
                 if (uneQuestion != null){
-                uneQuestion.getLesChoix().add(unChoix);
+                uneQuestion.getLesChoix().put(unChoix.getIdChoix(),unChoix);
                 }
                 
                 if(res.isLast()){
