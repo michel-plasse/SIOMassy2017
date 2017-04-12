@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Formateur extends Personne {
     
-       public Formateur(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
+    public Formateur(int id, String nom, String prenom, String email, String no_rue, String nom_rue, String code_postal, String ville, String pays, String password) {
         super(id, nom, prenom, email, no_rue, nom_rue, code_postal, ville, pays, password);
     }
     
