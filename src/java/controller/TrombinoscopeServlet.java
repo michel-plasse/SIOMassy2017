@@ -33,16 +33,20 @@ public class TrombinoscopeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         SessionFormationDao dao = new SessionFormationDao();
+        
         try {
             ArrayList<SessionFormation> lesSessions = dao.getSessionsOuvertes();
             request.setAttribute("lesSessions", lesSessions);
+            
         } catch (SQLException e) {
             System.out.println("Probleme recuperation liste session : " + e);
         }
 
         Integer idSession = null;
         boolean parsable = false;
+        
         if (request.getParameter("idSession") != null) {
+            
             try {
                 idSession = Integer.parseInt(request.getParameter("idSession"));
                 parsable = true;
@@ -56,24 +60,22 @@ public class TrombinoscopeServlet extends HttpServlet {
                 PersonneDao pdao = new PersonneDao();
 
                 try {
-
                     ArrayList<Personne> lesPersonnes = pdao.findBySession(idSession);
                     request.setAttribute("lesPersonnes", lesPersonnes);
+                    
                 } catch (SQLException ex) {
+                    
                     Logger.getLogger(TrombinoscopeServlet.class.getName()).log(Level.SEVERE, null, ex);
                     request.setAttribute("msgerreur", "Problème avec la base de données");
                 }
 
                 this.getServletContext().getRequestDispatcher("/WEB-INF/trombinoscope.jsp").forward(request, response);
-
             }
 
             this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);
-
         }
 
         this.getServletContext().getRequestDispatcher("/trombinoscope?idSession=1").forward(request, response);
-
     }
 
     /**
@@ -87,16 +89,16 @@ public class TrombinoscopeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         HttpSession maSession = request.getSession(true);
         Personne user = (Personne) maSession.getAttribute("user");
         
         if (user == null) {
             request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+            
         } else {
             String[] email = request.getParameterValues("email");
             request.getRequestDispatcher("WEB-INF/emailTrombinoscope.jsp").forward(request, response);
         }
-
     }
-
 }
