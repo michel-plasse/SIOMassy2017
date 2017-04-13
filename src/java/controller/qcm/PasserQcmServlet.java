@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.qcm;
 
-import dao.QcmDao;
+import dao.qcm.QcmDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ import model.Question;
  *
  * @author ghisfix
  */
-@WebServlet(name = "PasserQcmServlet", urlPatterns = {"/passerqcm"})
+@WebServlet(name = "PasserQcmServlet", urlPatterns = {"/qcm/passer"})
 public class PasserQcmServlet extends HttpServlet {
 
     public static final String VUE_PASSER = "/WEB-INF/qcm/passer.jsp";
@@ -38,7 +38,7 @@ public class PasserQcmServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
 //        QcmDao qcmDao = new QcmDao();
 //        Qcm unQcm = null;
 //        
@@ -57,60 +57,71 @@ public class PasserQcmServlet extends HttpServlet {
 //                }
 //            }
 //        }
+        HttpSession session = request.getSession();
 
-          HttpSession session = request.getSession();
-          
-          if (session.getAttribute("user") != null) {
-              Integer idQcm = null;
-              
-              try {
-                  idQcm = Integer.parseInt(request.getParameter("id"));
-              }catch (NumberFormatException e) {
-                  System.out.println("Id QCM invalide");
-              }
-              
-              if (idQcm != null) {
-                  QcmDao qcmDao = new QcmDao();
-                  Qcm unQcm = null;
-                  
-                  try {
-                      unQcm = qcmDao.findById(idQcm);
-                  } catch (SQLException ex) {
-                      Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-                  
-                  if(unQcm != null) {
-                      request.setAttribute("qcm", unQcm);
-                      request.setAttribute("title", "Quizz : " + unQcm.getIntitule());
-                      this.getServletContext().getRequestDispatcher(VUE_PASSER).forward(request, response);
-                  }
-              }
-              
-          }
-          
-          response.sendError(403);
-        
+        if (session.getAttribute("user") != null) {
+            Personne user = (Personne) session.getAttribute("user");
+            Integer idQcm = null;
+
+            try {
+                idQcm = Integer.parseInt(request.getParameter("id"));
+            } catch (NumberFormatException e) {
+                System.out.println("Id QCM invalide");
+            }
+
+            if (idQcm != null) {
+                QcmDao qcmDao = new QcmDao();
+                Qcm unQcm = null;
+                int isAlreadyDone = 0;
+
+                try {
+                    isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                if (isAlreadyDone == -1) {
+                    try {
+                        unQcm = qcmDao.findById(idQcm);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (unQcm != null) {
+                        request.setAttribute("qcm", unQcm);
+                        request.setAttribute("title", "Quizz : " + unQcm.getIntitule());
+                        this.getServletContext().getRequestDispatcher(VUE_PASSER).forward(request, response);
+                    }
+                }else{
+                    response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/resultat?id=" +idQcm);
+                }
+
+            }
+
+        }
+
+        response.sendError(403);
+
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession();
-        
-        if(session.getAttribute("user") != null) {
+
+        if (session.getAttribute("user") != null) {
             Personne user = (Personne) session.getAttribute("user");
             String idQcmPasse = request.getParameter("idQcm");
             Integer idQcm = null;
-            
+
             try {
                 idQcm = Integer.parseInt(idQcmPasse);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Erreur id QCM invalide");
             }
-            
-            if(idQcm != null) {
+
+            if (idQcm != null) {
                 QcmDao qcmDao = new QcmDao();
                 Qcm qcmPasse = null;
                 try {
@@ -118,48 +129,47 @@ public class PasserQcmServlet extends HttpServlet {
                 } catch (SQLException ex) {
                     Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                if(qcmPasse != null) {
+
+                if (qcmPasse != null) {
                     float compteurBonnesRep = 0;
                     float nbBonnesRep = 0;
                     int note;
-                    for(Question q : qcmPasse.getLesQuestions()) {
+                    for (Question q : qcmPasse.getLesQuestions()) {
                         nbBonnesRep += q.getNbBonnesRep();
-                        if(request.getParameterValues(String.valueOf(q.getIdQuestion())) != null ){
-                        String[] repsQuest = request.getParameterValues(String.valueOf(q.getIdQuestion()));
-                        for(String r : repsQuest) {
-                            int rep = Integer.parseInt(r);
-                            q.getLesChoix().get(rep).setEstChoisi(true);
-                            if(q.getLesChoix().get(rep).isEstCorrect()){
-                                compteurBonnesRep++;
-                            }else if(!q.getLesChoix().get(rep).isEstCorrect()){
-                                compteurBonnesRep--;
+                        if (request.getParameterValues(String.valueOf(q.getIdQuestion())) != null) {
+                            String[] repsQuest = request.getParameterValues(String.valueOf(q.getIdQuestion()));
+                            for (String r : repsQuest) {
+                                int rep = Integer.parseInt(r);
+                                q.getLesChoix().get(rep).setEstChoisi(true);
+                                if (q.getLesChoix().get(rep).isEstCorrect()) {
+                                    compteurBonnesRep++;
+                                } else if (!q.getLesChoix().get(rep).isEstCorrect()) {
+                                    compteurBonnesRep--;
+                                }
                             }
                         }
-                       }
                     }
-                    if (nbBonnesRep<0){
+                    if (nbBonnesRep < 0) {
                         nbBonnesRep = 0;
                     }
-                    
+
                     try {
-                        qcmDao.insertPassage(user.getId(),qcmPasse);
+                        qcmDao.insertPassage(user.getId(), qcmPasse);
                     } catch (SQLException ex) {
                         Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
-                    note = (int)((compteurBonnesRep/nbBonnesRep)*100);
-                    
+
+                    note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
+
                     request.setAttribute("note", note);
                     request.setAttribute("qcmPasse", qcmPasse);
-                    
+
                     this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
-                
+
                 }
-                
-                
+
             }
-            
+
         }
     }
 
