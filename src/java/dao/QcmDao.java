@@ -160,4 +160,106 @@ public class QcmDao implements QcmHome<Qcm> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void insertPassage(int idUser, Qcm qcmRepsChoisies) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        connection.setAutoCommit(false);
+        String sql = "INSERT INTO passage_qcm(id_qcm,id_personne,date_passage, est_finie) VALUES (?,?,NOW(),?)";
+        PreparedStatement preparedStatement = null;
+        ResultSet idPassage = null;
+        try{
+            preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, qcmRepsChoisies.getIdQcm());
+            preparedStatement.setInt(2, idUser);
+            preparedStatement.setBoolean(3, true);
+
+            preparedStatement.executeUpdate();
+            idPassage = preparedStatement.getGeneratedKeys();
+
+            if(idPassage.next()){
+                String sqlChoix = "INSERT INTO reponse(id_question,id_passage_qcm,id_choix) VALUES (?,?,?)";
+                PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
+                for(Question q : qcmRepsChoisies.getLesQuestions()){
+                    for(Choix c : q.getLesChoix().values()) {
+                        if(c.isEstChoisi()) {
+                            preparedStatementChoix.setInt(1, q.getIdQuestion());
+                            preparedStatementChoix.setInt(2, idPassage.getInt(1));
+                            preparedStatementChoix.setInt(3, c.getIdChoix());
+
+                            preparedStatementChoix.executeUpdate();
+                        }
+                    }
+                }
+            }
+            
+            connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            System.out.println("Problème enregistrement des réponses du QCM");
+            throw e;
+        }finally {
+            connection.setAutoCommit(true);
+            fermeturesSilencieuses(idPassage, preparedStatement, connection);
+        }
+        
+    }
+
+    @Override
+    public ArrayList<Integer> findAnsByIdPassage(int idUser, int idQcm) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT r.id_choix FROM passage_qcm AS pq "
+                   + "INNER JOIN reponse AS r ON pq.id_passage_qcm = r.id_passage_qcm "
+                   + "WHERE id_qcm = ? AND id_personne = ?";
+        
+        ArrayList<Integer> returnListeIdChoix = new ArrayList<>();
+        ResultSet idChoix = null;
+        PreparedStatement preparedStatement = null;
+        
+        try{
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idQcm);
+            preparedStatement.setInt(2, idUser);
+            idChoix = preparedStatement.executeQuery();
+            
+            while(idChoix.next()) {
+                returnListeIdChoix.add(idChoix.getInt("id_choix"));
+            }
+            
+        }catch (SQLException e) {
+            System.out.println("Problème récupération des réponses du QCM");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(idChoix, preparedStatement, connection);
+        }
+        
+        return returnListeIdChoix;
+    }
+
+    @Override
+    public int isAlreadyDone(int idUser, int idQcm) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT id_passage_qcm FROM passage_qcm WHERE id_personne = ? AND id_qcm = ?";
+        int rep = -1;
+        PreparedStatement preparedStatement = null;
+        ResultSet res = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idUser);
+            preparedStatement.setInt(2, idQcm);
+            
+            res = preparedStatement.executeQuery();
+            
+            if(res.next()) {
+                rep = res.getInt("id_passage");
+            }
+        }catch (SQLException e) {
+            System.out.println("Probleme check isAlreadyDone QCM");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(res, preparedStatement, connection);
+        }
+        
+        return rep;
+    }
+
 }

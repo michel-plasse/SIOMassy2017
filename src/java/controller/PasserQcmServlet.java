@@ -141,7 +141,13 @@ public class PasserQcmServlet extends HttpServlet {
                     if (nbBonnesRep<0){
                         nbBonnesRep = 0;
                     }
-                    //qcmDao.insertPassage(user.getId(),qcmPasse.getIdQcm(),lesReponses);
+                    
+                    try {
+                        qcmDao.insertPassage(user.getId(),qcmPasse);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
                     note = (int)((compteurBonnesRep/nbBonnesRep)*100);
                     
                     request.setAttribute("note", note);

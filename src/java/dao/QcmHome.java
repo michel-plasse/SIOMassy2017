@@ -16,7 +16,9 @@ import model.Qcm;
 public interface QcmHome<T> extends Dao<T> {
     
     public void insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
-    
+    public void insertPassage (int idUser, T qcmRepsChoisies) throws SQLException;
+    public ArrayList<Integer> findAnsByIdPassage (int idUser, int idQcm) throws SQLException;
+    public int isAlreadyDone(int idUser, int idQcm) throws SQLException;
     @Override
     public ArrayList<T> findAll() throws SQLException;
     
