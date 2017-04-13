@@ -92,16 +92,14 @@ public class PasserQcmServlet extends HttpServlet {
                         request.setAttribute("title", "Quizz : " + unQcm.getIntitule());
                         this.getServletContext().getRequestDispatcher(VUE_PASSER).forward(request, response);
                     }
-                }else{
-                    response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/resultat?id=" +idQcm);
+                } else {
+                    response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/resultat?id=" + idQcm);
                 }
 
             }
-
+        } else {
+            response.sendError(403);
         }
-
-        response.sendError(403);
-
     }
 
     @Override
@@ -123,54 +121,67 @@ public class PasserQcmServlet extends HttpServlet {
 
             if (idQcm != null) {
                 QcmDao qcmDao = new QcmDao();
-                Qcm qcmPasse = null;
+                int isAlreadyDone = 0;
                 try {
-                    qcmPasse = qcmDao.findById(idQcm);
+                    isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
                 } catch (SQLException ex) {
                     Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                if (qcmPasse != null) {
-                    float compteurBonnesRep = 0;
-                    float nbBonnesRep = 0;
-                    int note;
-                    for (Question q : qcmPasse.getLesQuestions()) {
-                        nbBonnesRep += q.getNbBonnesRep();
-                        if (request.getParameterValues(String.valueOf(q.getIdQuestion())) != null) {
-                            String[] repsQuest = request.getParameterValues(String.valueOf(q.getIdQuestion()));
-                            for (String r : repsQuest) {
-                                int rep = Integer.parseInt(r);
-                                q.getLesChoix().get(rep).setEstChoisi(true);
-                                if (q.getLesChoix().get(rep).isEstCorrect()) {
-                                    compteurBonnesRep++;
-                                } else if (!q.getLesChoix().get(rep).isEstCorrect()) {
-                                    compteurBonnesRep--;
-                                }
-                            }
-                        }
-                    }
-                    if (nbBonnesRep < 0) {
-                        nbBonnesRep = 0;
-                    }
-
+                if (isAlreadyDone == -1) {
+                    Qcm qcmPasse = null;
                     try {
-                        qcmDao.insertPassage(user.getId(), qcmPasse);
+                        qcmPasse = qcmDao.findById(idQcm);
                     } catch (SQLException ex) {
                         Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
+                    if (qcmPasse != null) {
+                        float compteurBonnesRep = 0;
+                        float nbBonnesRep = 0;
+                        int note;
+                        for (Question q : qcmPasse.getLesQuestions()) {
+                            nbBonnesRep += q.getNbBonnesRep();
+                            if (request.getParameterValues(String.valueOf(q.getIdQuestion())) != null) {
+                                String[] repsQuest = request.getParameterValues(String.valueOf(q.getIdQuestion()));
+                                for (String r : repsQuest) {
+                                    int rep = Integer.parseInt(r);
+                                    q.getLesChoix().get(rep).setEstChoisi(true);
+                                    if (q.getLesChoix().get(rep).isEstCorrect()) {
+                                        compteurBonnesRep++;
+                                    } else if (!q.getLesChoix().get(rep).isEstCorrect()) {
+                                        compteurBonnesRep--;
+                                    }
+                                }
+                            }
+                        }
+                        if (nbBonnesRep < 0) {
+                            nbBonnesRep = 0;
+                        }
 
-                    request.setAttribute("note", note);
-                    request.setAttribute("qcmPasse", qcmPasse);
+                        try {
+                            qcmDao.insertPassage(user.getId(), qcmPasse);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
 
-                    this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
+                        note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
 
+                        request.setAttribute("note", note);
+                        request.setAttribute("qcmPasse", qcmPasse);
+
+                        this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
+
+                    }
+
+                } else {
+                    response.sendRedirect(this.getServletContext().getContextPath() + "qcm/resultat?id=" + idQcm);
                 }
-
             }
 
+        } else {
+            response.sendError(403);
         }
+
     }
 
     /**

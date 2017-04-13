@@ -6,7 +6,6 @@
 package dao.qcm;
 
 import dao.ConnectionBd;
-import dao.qcm.QcmHome;
 import static dao.DAOUtilitaire.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +14,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import model.Choix;
-import model.Formateur;
 import model.Qcm;
 import model.Question;
 
@@ -104,7 +104,8 @@ public class QcmDao implements QcmHome<Qcm> {
                 + "FROM qcm as qc "
                 + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
                 + "INNER JOIN choix as ch ON qu.id_question = ch.id_question "
-                + "WHERE qc.id_qcm = ?";
+                + "WHERE qc.id_qcm = ? "
+                + "ORDER BY id_question";
 
         PreparedStatement preparedStatement = null;
         ResultSet res = null;
@@ -207,13 +208,13 @@ public class QcmDao implements QcmHome<Qcm> {
     }
 
     @Override
-    public ArrayList<Integer> findAnsByIdPassage(int idUser, int idQcm) throws SQLException {
+    public HashSet<Integer> findAnsByIdPassage(int idUser, int idQcm) throws SQLException {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT r.id_choix FROM passage_qcm AS pq "
                    + "INNER JOIN reponse AS r ON pq.id_passage_qcm = r.id_passage_qcm "
                    + "WHERE id_qcm = ? AND id_personne = ?";
         
-        ArrayList<Integer> returnListeIdChoix = new ArrayList<>();
+        HashSet<Integer> returnListeIdChoix = new HashSet<>();
         ResultSet idChoix = null;
         PreparedStatement preparedStatement = null;
         
@@ -252,7 +253,7 @@ public class QcmDao implements QcmHome<Qcm> {
             res = preparedStatement.executeQuery();
             
             if(res.next()) {
-                rep = res.getInt("id_passage");
+                rep = res.getInt("id_passage_qcm");
             }
         }catch (SQLException e) {
             System.out.println("Probleme check isAlreadyDone QCM");

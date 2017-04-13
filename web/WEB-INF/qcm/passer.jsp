@@ -10,7 +10,7 @@
             une mauvaise réponse entraine le retrait d'un point, l'absence de réponse n'ôte pas de point.
         </div>
 
-        <form action="<c:url value="/passerqcm" />" method="POST">
+        <form action="<c:url value="/qcm/passer"><c:param name="id" value="${requestScope.qcm.idQcm}" /></c:url>" method="POST">
         <c:forEach items="${requestScope.qcm.lesQuestions}" var="q">
             <div class="panel panel-primary">
                 <div class="panel-heading">
