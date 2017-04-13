@@ -1,12 +1,19 @@
 <div class="col-md-12 qcm">
-    <div class="col-md-10 text-center">
+    <div class="col-md-10 text-center col-md-offset-1">
         <h2>Quizz : <c:out value="${requestScope.qcmPasse.intitule}" /></h2>
-        <div class="col-md-3 pull-right"><c:out value="${requestScope.note}/100" /></div>
     </div>
-    
     <div class="clearfix"></div>
     <br />
     <div class="col-md-10 col-md-offset-1">
+        <div class="alert alert-info">
+            <b>Rappel des règles de notation :</b>
+            une mauvaise réponse entraine le retrait d'un point, l'absence de réponse n'ôte pas de point.
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="col-md-3 label label-danger pull-right">
+            <h1><c:out value="Score : ${requestScope.note}%" /></h1>
+        </div>
         <c:forEach items="${requestScope.qcmPasse.lesQuestions}" var="q">
             <div class="panel panel-primary">
                 <div class="panel-heading"><b>#Q - <c:out value="${q.question}" /></b></div>
