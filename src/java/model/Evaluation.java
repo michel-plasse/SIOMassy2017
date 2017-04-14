@@ -5,7 +5,7 @@
  */
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Evaluation {
     private int idEvaluation;
@@ -19,6 +19,15 @@ public class Evaluation {
     public Evaluation() {
     }
 
+    public Evaluation(int idEvaluation, Module leModule, Personne leFormateur, Date dateDebutEval, String intitule) {
+        this.idEvaluation = idEvaluation;
+        this.leModule = leModule;
+        this.leFormateur = leFormateur;
+        this.dateDebutEval = dateDebutEval;
+        this.intitule = intitule;
+    }
+    
+    
     public Evaluation(Module leModule, Personne leFormateur, SessionFormation laSession, Date dateDebutEval, String intitule) {
         this.leModule = leModule;
         this.leFormateur = leFormateur;
@@ -35,7 +44,6 @@ public class Evaluation {
         this.dateDebutEval = dateDebutEval;
         this.intitule = intitule;
     }
-
 
     public SessionFormation getLaSession() {
         return laSession;
