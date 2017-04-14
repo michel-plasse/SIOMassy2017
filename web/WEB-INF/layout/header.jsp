@@ -47,7 +47,7 @@
                             <li class="item-menu"><a href="<c:url value="/sessionsOuvertes"/>">Formations</a></li>
                             <li class="item-menu"><a href="<c:url value="/trombinoscope"/>">Trombinoscope</a></li>
                             <li class="item-menu"><c:if test='${user.est_formateur eq false}'>
-                                    <a href="<c:url value="/EspacePersoEtudiant" />">Espace Personnel</a>
+                                    <a href="<c:url value="/espacePersoEtudiant" />">Espace Personnel</a>
                                 </c:if>
                                 <c:if test="${user.est_formateur eq true}">
                                     <a href="<c:url value="/EspacePersoFormateur" />">Espace Personnel</a>

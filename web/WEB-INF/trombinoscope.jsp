@@ -6,7 +6,7 @@
 <script type="text/javascript" src="<c:url value="/inc/bootstrap/js/offcanvas.js"/>"></script>
 <div class="container" style="padding-left: 0px">
     <div class="col-xs-4 col-sm-2 sidebar-offcanvas" id="sidebar">
-        <div class="list-group">
+        <div class="list-group" id="listeformations">
 
             <a class="list-group-item active">Formation</a>
             <c:forEach items="${requestScope.lesSessions}" var="uneSession">
@@ -42,6 +42,7 @@
                     </c:forEach>
                 </div>
                 <p><input type="submit" value='Envoyer un email aux personnes sélectionnées'></p>
+                <p><input type="submit" onClick="window.print()">
             </form>
         </div>
 
