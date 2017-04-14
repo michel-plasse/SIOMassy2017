@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -15,15 +16,19 @@ public class Question {
     
     private int idQuestion;
     private String question;
-    private ArrayList<Option> lesOptions;
+    private HashMap<Integer,Choix> lesChoix;
 
     public Question() {
     }
 
-    public Question(int idQuestion, String question, ArrayList<Option> lesOptions) {
+    public Question(int idQuestion) {
+        this.idQuestion = idQuestion;
+    }
+
+    public Question(int idQuestion, String question, HashMap<Integer,Choix> lesChoix) {
         this.idQuestion = idQuestion;
         this.question = question;
-        this.lesOptions = lesOptions;
+        this.lesChoix = lesChoix;
     }
 
     public int getIdQuestion() {
@@ -42,12 +47,21 @@ public class Question {
         this.question = question;
     }
 
-    public ArrayList<Option> getLesOptions() {
-        return lesOptions;
+    public HashMap<Integer,Choix> getLesChoix() {
+        return lesChoix;
     }
 
-    public void setLesOptions(ArrayList<Option> lesOptions) {
-        this.lesOptions = lesOptions;
+    public void setLesChoix(HashMap<Integer,Choix> lesChoix) {
+        this.lesChoix = lesChoix;
     }
     
+    public int getNbBonnesRep(){
+        int nbBonnesRep = 0;
+        for(Choix c : lesChoix.values()){
+            if(c.isEstCorrect()) {
+                nbBonnesRep++;
+            }
+        }
+        return nbBonnesRep;
+    }
 }

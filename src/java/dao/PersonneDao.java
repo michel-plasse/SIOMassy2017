@@ -23,7 +23,7 @@ public class PersonneDao implements PersonneHome {
             // Commencer une transaction
             connection.setAutoCommit(false);
             String sql = "INSERT INTO personne (nom, prenom, email, no_rue, rue, code_postal, ville, pays, mot_de_passe, no_tel, token)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?, ?)";
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -186,6 +186,28 @@ public class PersonneDao implements PersonneHome {
             Personne p = new Personne(
                     resultat.getString("nom"), 
                     resultat.getString("prenom"));
+            
+            p.setId(resultat.getInt("id_personne"));
+            
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
+    }
+    
+    public ArrayList<Personne> findBySession() throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT m.nom, m.prenom FROM evaluation"
+                + "INNER JOIN formateur ON evaluation.id_formateur = formateur.id_personne"
+                + "INNER JOIN personne p ON formateur.id_personne = p.id_personne"
+                + "INNER JOIN membre m ON p.id_personne = m.id_personne"
+                + "WHERE est_formateur = 0 AND id_evaluation = 1;");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(
+                resultat.getString("nom"),
+                resultat.getString("prenom"));
             
             p.setId(resultat.getInt("id_personne"));
             

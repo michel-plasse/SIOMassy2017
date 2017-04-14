@@ -152,3 +152,19 @@ body {
 }
 
 /********* STYLE PAGES QCM **********/
+
+.qcm input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.green {
+    color: #41d41c;
+}
+
+.red {
+    color: #e73036;
+}
+
+.score {
+    color: white;
+}

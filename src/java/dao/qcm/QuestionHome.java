@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dao.qcm;
 
+import dao.Dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Option;
+import model.Question;
 
 /**
  *
  * @author admin
  */
-public interface OptionHome extends Dao <Option>{
+public interface QuestionHome<T> extends Dao<T>{
     
-    public ArrayList<Option> findByIdQuestion(int idQuestion)throws SQLException;
-    
+    public void insert(int id, T nouvelleQuestion) throws SQLException;
+    public ArrayList<T> findAll(int idQcm) throws SQLException;
 }
