@@ -11,10 +11,10 @@
         <th>Note</th>
         <th>Commentaire</th>-->
     </tr>
-    <c:forEach items="${requestScope.lesNotes}" var="laNote">
+    <c:forEach items="${lesNotes}" var="laNote">
         <tr>
-            <td><c:out value="${laNote.note}" /></td>
-            <td><c:out value="${laNote.commentaire}" /></td>
+            <td>${laNote.note}</td>
+            <td>${laNote.commentaire}</td>
 
         </tr>  
     </c:forEach>
