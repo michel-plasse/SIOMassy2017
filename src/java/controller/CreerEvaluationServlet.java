@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,6 +92,7 @@ public class CreerEvaluationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         EvaluationDao evaluationDao = new EvaluationDao();
         ModuleDao moduleDao = new ModuleDao();
         Evaluation evaluation ;
@@ -98,23 +101,20 @@ public class CreerEvaluationServlet extends HttpServlet {
         Personne user = (Personne) maSession.getAttribute("user");
         String intitule = request.getParameter("intitule");
         int idSession = Integer.parseInt(request.getParameter("idSession"));
-        int idModule = Integer.parseInt(request.getParameter("idSession"));
+        int idModule = Integer.parseInt(request.getParameter("idModule"));
         
+        Module mod = new Module();
+        mod.setId(idModule);
+        
+        SessionFormation s = new SessionFormation();
+        s.setId_session(idSession);
         try {
             
             String date = request.getParameter("date");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mi:ss");
-            java.util.Date dateparsed = sdf.parse(date);
-            java.sql.Date sqldate = new java.sql.Date(dateparsed.getTime());
-            evaluationDao.insert(evaluation = new Evaluation(
-                    moduleDao.findById(idModule),
-                    user,
-                    sessionFormationDao.findById(idSession),
-                    sqldate,
-                    intitule));
+            evaluation = new Evaluation(mod,user,s,Date.valueOf(date),intitule);
+            evaluationDao.insert(evaluation);
+            System.out.println("eval ajoutée avec succés !!!!!!");
             
-        } catch (ParseException ex ) {
-            Logger.getLogger(CreerEvaluationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(CreerEvaluationServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
