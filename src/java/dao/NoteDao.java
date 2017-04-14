@@ -86,27 +86,28 @@ public class NoteDao implements NoteHome {
     public ArrayList<Note> findNoteById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         ArrayList<Note> lesNotes = new ArrayList();
-        String sql = "SELECT p.id_personne, p.prenom, p.nom, e.intitule, e.date_effet, e.intitule, m.nom, n.commentaire, n.note FROM personne p"
+        String sql = "SELECT p.id_personne, p.prenom, p.nom, e.id_evaluation, e.date_effet, e.intitule, m.id_module, m.nom, n.commentaire, n.note FROM personne p"
                 + " INNER JOIN formateur f ON p.id_personne = f.id_personne"
                 + " INNER JOIN evaluation e ON f.id_personne = e.id_formateur"
                 + " INNER JOIN module m ON e.id_module = m.id_module"
-                + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation;"
-                + " WHERE p.id_personne = ?";
+                + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation"
+                + " INNER JOIN personne pe ON n.id_personne = pe.id_personne"
+                + " WHERE pe.id_personne = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet res = stmt.executeQuery();
         while (res.next()) {
             Evaluation evaluation = new Evaluation(
-                    res.getInt("idEvaluation"),
-                    (Module)res.getObject("leModule"),
-                    (Formateur) res.getObject("leFormateur"),
-                    res.getDate("dateDebutEval"),
-                    res.getString("intitule")
+                    res.getInt("e.id_evaluation"),
+                    new Module(res.getInt("m.id_module"),res.getString("m.nom")),
+                    new Formateur(res.getInt("p.id_personne"), res.getString("p.nom"),res.getString("p.prenom")),
+                    res.getDate("e.date_effet"),
+                    res.getString("e.intitule")
               );
             Note laNote = new Note();
-            laNote.setEvaluation(res.getInt("idEvaluation"));
-            laNote.setNote(res.getDouble("note"));
-            laNote.setCommentaire(res.getString("commentaire"));
+            laNote.setEvaluation(evaluation);
+            laNote.setNote(res.getDouble("n.note"));
+            laNote.setCommentaire(res.getString("n.commentaire"));
             lesNotes.add(laNote);
         }
         return lesNotes;

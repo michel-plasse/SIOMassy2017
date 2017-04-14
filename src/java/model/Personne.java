@@ -102,6 +102,14 @@ public class Personne {
         this.prenom = prenom;
     }
 
+    public Personne(int id, String nom, String prenom) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+    
+    
+
     public Personne() {
 
     }

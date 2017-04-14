@@ -56,10 +56,10 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
 
             try {
 
-                ArrayList<Note> lesNotes = daoNote.findNoteById(1);
+                ArrayList<Note> lesNotes = daoNote.findNoteById(user.getId());
                 System.out.println("lesNotes : " + lesNotes.size());
                 maSession.setAttribute("lesNotes", lesNotes);
-                //System.out.println(daoNote.findByIdEleveNoteEval(1));
+                System.out.println(daoNote.findNoteById(1));
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
