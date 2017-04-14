@@ -29,7 +29,7 @@ import model.Personne;
  *
  * @author admin
  */
-@WebServlet(name = "EspacePersoEtudiant", urlPatterns = {"/EspacePersoEtudiant"})
+@WebServlet(name = "EspacePersoEtudiant", urlPatterns = {"/espacePersoEtudiant"})
 public class EspacePersoEtudiantServlet extends HttpServlet {
 
     /**
@@ -51,10 +51,15 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             // Pas connecté
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
-            NoteDao dao = new NoteDao();
+            NoteDao daoNote = new NoteDao();
+            //EvaluationDao daoEval = new EvaluationDao();
+
             try {
-                ArrayList<Note> note = dao.findByIdEleveNoteEval(user.getId());
-                maSession.setAttribute("lesnotes", note);
+
+                ArrayList<Note> lesNotes = daoNote.findNoteById(1);
+                System.out.println("lesNotes : " + lesNotes.size());
+                maSession.setAttribute("lesNotes", lesNotes);
+                //System.out.println(daoNote.findByIdEleveNoteEval(1));
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);
