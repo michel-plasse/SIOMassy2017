@@ -1,7 +1,7 @@
 <h1>Creer une Evaluation</h1>
 
-<form method="post">
-    <label for="nom">date :</label>&nbsp;<input type="datetime-local" name="date"/>
+<form method="post" >
+    <label for="nom">date :</label>&nbsp;<input type="date" name="date"/>
     <label for="nom">Module :</label>&nbsp;<select name="idModule">
         <c:forEach items="${modules}" var="unModule">
             <option value="${unModule.id}"> ${unModule.nom}</option>
