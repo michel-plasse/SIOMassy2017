@@ -193,6 +193,28 @@ public class PersonneDao implements PersonneHome {
         }
         return lesPersonnes;
     }
+    
+    public ArrayList<Personne> findBySession() throws SQLException {
+        connection = ConnectionBd.getConnection();
+        Statement canal = connection.createStatement();
+        ArrayList<Personne> lesPersonnes = new ArrayList();
+        ResultSet resultat = canal.executeQuery("SELECT m.nom, m.prenom FROM evaluation"
+                + "INNER JOIN formateur ON evaluation.id_formateur = formateur.id_personne"
+                + "INNER JOIN personne p ON formateur.id_personne = p.id_personne"
+                + "INNER JOIN membre m ON p.id_personne = m.id_personne"
+                + "WHERE est_formateur = 0 AND id_evaluation = 1;");
+        while (!resultat.isLast()) {
+            resultat.next();
+            Personne p = new Personne(
+                resultat.getString("nom"),
+                resultat.getString("prenom"));
+            
+            p.setId(resultat.getInt("id_personne"));
+            
+            lesPersonnes.add(p);
+        }
+        return lesPersonnes;
+    }
 
     @Override
     public int findIdFromToken(String token) throws SQLException {

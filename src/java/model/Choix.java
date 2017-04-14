@@ -14,6 +14,7 @@ public class Choix {
     private int idChoix;
     private String choix;
     private boolean estCorrect;
+    private boolean estChoisi;
 
     public Choix() {
     }
@@ -48,5 +49,14 @@ public class Choix {
     public void setEstCorrect(boolean estCorrect) {
         this.estCorrect = estCorrect;
     }
+
+    public boolean isEstChoisi() {
+        return estChoisi;
+    }
+
+    public void setEstChoisi(boolean estChoisi) {
+        this.estChoisi = estChoisi;
+    }
+    
     
 }
