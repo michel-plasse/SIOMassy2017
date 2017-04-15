@@ -50,6 +50,7 @@ public class RentrerNotesServlet extends HttpServlet {
         String[] notes = request.getParameterValues("note");
         String[] coms = request.getParameterValues("commentaire");
         assert notes.length >= coms.length;
+        
         for (int i = 0; i < notes.length; i++) {
             Integer id = Integer.parseInt(ids[i]);
             Double note = (notes[i].equals("")) ? null : Double.parseDouble(notes[i]);
