@@ -5,12 +5,10 @@
  */
 package controller.equipe;
 
-import dao.EquipeDao;
+import dao.equipe.EquipeDao;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Equipe;
 import model.Personne;
-import model.Projet;
 
 /**
  *
@@ -29,122 +26,122 @@ import model.Projet;
  */
 @WebServlet(name = "GererEquipeServlet", urlPatterns = {"/equipe/gerer"})
 public class GererEquipeServlet extends HttpServlet {
-    
+
     public static final String VUE = "/WEB-INF/equipe/gerer.jsp";
-    public static final String PARAM_ID = "id";
-    public static final String PARAM_USER = "user";
+    public static final String PARAM_ID_EQUIPE = "id";
     public static final String ATT_EQUIPE = "equipeGeree";
     public static final String ATT_STAGIAIRES_LIBRES = "stagiairesSansEquipe";
     public static final String ATT_TITLE = "title";
     public static final String ATT_TITLE_VALUE = "Gérer votre equipe";
-    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         //HashMap<String,String[]> messages = new HashMap<String, String[]>();
-        
         HttpSession session = request.getSession();
-        
-        if(request.getParameter(PARAM_ID) != null && session.getAttribute(PARAM_USER) != null) {
-            Integer idEquipe = null;
-            try {
-                idEquipe = Integer.parseInt(request.getParameter(PARAM_ID));
-            }catch (NumberFormatException e) {
-                System.out.println("id equipe non valide : " + e);
-            }
-            
-            if(idEquipe != null) {
-                Personne createurEquipe = (Personne) session.getAttribute(PARAM_USER);
-                EquipeDao equipeDao = new EquipeDao();
-                Equipe equipeAdministree = null;
+
+        if (session.getAttribute("user") != null) {
+            Personne createurEquipe = (Personne) session.getAttribute("user");
+
+            if (request.getParameter(PARAM_ID_EQUIPE) != null) {
+                Integer idEquipe = null;
                 try {
-                    equipeAdministree = equipeDao.findById(idEquipe);
-                    System.out.println("récup equipe : ok...");
-                } catch (SQLException ex) {
-                    Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    idEquipe = Integer.parseInt(request.getParameter(PARAM_ID_EQUIPE));
+                } catch (NumberFormatException e) {
+                    System.out.println("id equipe non valide : " + e);
                 }
-                
-                if (equipeAdministree != null) {
-                    if(equipeAdministree.getCreateur().getId() == createurEquipe.getId()) {
-                        ArrayList<Personne> stagiairesSansEquipe = null;
-                        try {
-                            stagiairesSansEquipe = equipeDao.findAllNotInTeam(equipeAdministree.getUnProjet());
-                        } catch (SQLException ex) {
-                            Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        
-                        request.setAttribute(ATT_EQUIPE, equipeAdministree);
-                        request.setAttribute(ATT_STAGIAIRES_LIBRES, stagiairesSansEquipe);
-                        request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
-                        
-                        this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
-                        
-                    }
+
+                if (idEquipe != null) {
+                    EquipeDao equipeDao = new EquipeDao();
+                    Equipe equipeAdministree = null;
                     
+                    try {
+                        equipeAdministree = equipeDao.findById(idEquipe);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if (equipeAdministree != null) {
+                        if (equipeAdministree.getCreateur().getId() == createurEquipe.getId()) {
+                            ArrayList<Personne> stagiairesSansEquipe = null;
+                            
+                            try {
+                                stagiairesSansEquipe = equipeDao.findAllNotInTeam(equipeAdministree.getIdProjet());
+                            } catch (SQLException ex) {
+                                Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                                
+                            request.setAttribute(ATT_EQUIPE, equipeAdministree);
+                            request.setAttribute(ATT_STAGIAIRES_LIBRES, stagiairesSansEquipe);
+                            request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
+
+                            this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+
+                        }
+
+                    } else {
+                        response.sendError(403, "erreur ID, il ne s'agit pas de votre équipe");
+                    }
+
                 }
-                
+
             }
-            
- 
+        }else{
+            response.sendRedirect(this.getServletContext().getContextPath() + "/login");
         }
-        
-        response.sendError(404);
- 
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
 //        PrintWriter out = response.getWriter();
 //        out.print(request.getParameter("modifier"));
 //        out.print("...");
 //        out.print(request.getParameter("supprimer"));
 //        out.print("...");
 //       
-          HttpSession session = request.getSession();
-          
-          if(request.getParameter("create") != null) {
-              Integer idProjet = null;
-              
-              try {
-                      idProjet = Integer.parseInt(request.getParameter("idProjet"));
-                      
-              } catch (NumberFormatException ex) {
-                 Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
-              }
-              
-              if (idProjet != null) {
+        HttpSession session = request.getSession();
+
+        if (request.getParameter("create") != null) {
+            Integer idProjet = null;
+
+            try {
+                idProjet = Integer.parseInt(request.getParameter("idProjet"));
+
+            } catch (NumberFormatException ex) {
+                Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (idProjet != null) {
                 EquipeDao equipeDao = new EquipeDao();
-                Projet projet = new Projet(idProjet);
-                Personne createurNv = (Personne) session.getAttribute(PARAM_USER);
+                Personne createurNv = (Personne) session.getAttribute("user");
                 boolean utilisateurValide = false;
-                
+
                 //*******/!\ foireux, pour check si user valide et sans equipe****
                 ArrayList<Personne> stagiairesSansEquipe = null;
-                  try {
-                      stagiairesSansEquipe = equipeDao.findAllNotInTeam(projet);
-                  } catch (SQLException ex) {
-                      Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-                  
-                for(Personne stagiaire : stagiairesSansEquipe) {
-                    if(stagiaire.getId() == createurNv.getId()){
+                try {
+                    stagiairesSansEquipe = equipeDao.findAllNotInTeam(idProjet);
+                } catch (SQLException ex) {
+                    Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                for (Personne stagiaire : stagiairesSansEquipe) {
+                    if (stagiaire.getId() == createurNv.getId()) {
                         utilisateurValide = true;
                     }
                 }
                 //****************/!\foireux*******************
-                
+
                 if (utilisateurValide) {
                     Equipe nouvelleEquipe = new Equipe();
                     nouvelleEquipe.setCreateur(createurNv);
-                    nouvelleEquipe.setUnProjet(projet);
                     Integer idEquipeNv = null;
-                    
+
                     try {
-                        idEquipeNv = equipeDao.insertReturnId(nouvelleEquipe);
+                        idEquipeNv = equipeDao.insertReturnId(idProjet, nouvelleEquipe);
                     } catch (SQLException ex) {
                         Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -152,31 +149,30 @@ public class GererEquipeServlet extends HttpServlet {
                         response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/gerer?id=" + idEquipeNv);
                     }
                 }
-              }
-          }
-          
-          if(request.getParameter(PARAM_ID) != null && session.getAttribute(PARAM_USER) != null) {
+            }
+        }
+
+        if (request.getParameter(PARAM_ID_EQUIPE) != null && session.getAttribute("user") != null) {
             Integer idEquipe = null;
             try {
-                idEquipe = Integer.parseInt(request.getParameter(PARAM_ID));
-            }catch (NumberFormatException e) {
+                idEquipe = Integer.parseInt(request.getParameter(PARAM_ID_EQUIPE));
+            } catch (NumberFormatException e) {
                 System.out.println("id equipe non valide : " + e);
             }
-            
-            
-            if (idEquipe != null ) {
+
+            if (idEquipe != null) {
                 EquipeDao equipeDao = new EquipeDao();
                 Equipe equipe = null;
-                
+
                 try {
                     equipe = equipeDao.findById(idEquipe);
                 } catch (SQLException ex) {
                     Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 if (equipe != null) {
-                    
-                    Personne createur = (Personne) session.getAttribute(PARAM_USER);
+
+                    Personne createur = (Personne) session.getAttribute("user");
 
                     if (equipe.getCreateur().getId() == createur.getId()) {
 
@@ -186,22 +182,22 @@ public class GererEquipeServlet extends HttpServlet {
                             String[] ajouts = request.getParameterValues("add");
                             String[] suppressions = request.getParameterValues("delete");
                             //ajout de nouveaux membres
-                            if(ajouts != null) {
-                                for(String ajout : ajouts) {
+                            if (ajouts != null) {
+                                for (String ajout : ajouts) {
                                     try {
                                         equipeDao.ajouterMembre(idEquipe, Integer.parseInt(ajout));
-                                        compteurAjout ++;
-                                    } catch  (NumberFormatException | SQLException ex) {
+                                        compteurAjout++;
+                                    } catch (NumberFormatException | SQLException ex) {
                                         Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
                                     }
-                                } 
+                                }
                             }
                             //retirer des memnres de l'equipe
                             if (suppressions != null) {
-                                for(String suppression : suppressions) {
+                                for (String suppression : suppressions) {
                                     try {
                                         equipeDao.retirerMembre(idEquipe, Integer.parseInt(suppression));
-                                        compteurSupp ++;
+                                        compteurSupp++;
                                     } catch (NumberFormatException | SQLException ex) {
                                         Logger.getLogger(GererEquipeServlet.class.getName()).log(Level.SEVERE, null, ex);
                                     }
@@ -211,10 +207,10 @@ public class GererEquipeServlet extends HttpServlet {
                             request.setAttribute("compteurAjout", compteurAjout);
                             request.setAttribute("compteurSupp", compteurSupp);
 
-                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/gerer?id="+idEquipe);
+                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/gerer?id=" + idEquipe);
                         }
 
-                        if(request.getParameter("supprimer") != null) {
+                        if (request.getParameter("supprimer") != null) {
                             try {
                                 equipeDao.delete(idEquipe);
                             } catch (SQLException ex) {
@@ -224,13 +220,15 @@ public class GererEquipeServlet extends HttpServlet {
                             //message confirmation?
                             String idProjet = request.getParameter("idProjet");
 
-                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/index?id_projet="+idProjet);
+                            response.sendRedirect(this.getServletContext().getContextPath() + "/equipe/index?id=" + idProjet);
                         }
 
+                    } else {
+                        response.sendError(403, "problème, il ne s'agit pas de votre équipe");
                     }
                 }
             }
-          }
+        }
 
     }
 

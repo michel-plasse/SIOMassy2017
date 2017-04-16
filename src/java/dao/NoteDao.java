@@ -50,8 +50,17 @@ public class NoteDao implements NoteHome {
     }
 
     @Override
-    public boolean update(int idAncien, Note nouveau) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(int idAncien, Note note) throws SQLException {
+        connection = ConnectionBd.getConnection();
+            // Commencer une transaction
+            String sql = "UPDATE personne SET note = ?, commentaire = ?)"
+                    + " VALUES (?,?) WHERE id_personne = "+ idAncien + ";";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setDouble(1, note.getNote());
+            stmt.setString(2, note.getCommentaire());
+            stmt.executeUpdate();
+
+        return false;
     }
 
     @Override
