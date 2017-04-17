@@ -28,7 +28,7 @@ public class RentrerNotesServlet extends HttpServlet {
         PersonneDao dao = new PersonneDao();
 
         try {
-            ArrayList<Personne> lesPersonnes = dao.findByEtat();
+            ArrayList<Personne> lesPersonnes = dao.findBySession(1);
             request.setAttribute("lesPersonnes", lesPersonnes);
         } catch (SQLException ex) {
             Logger.getLogger(RentrerNotesServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,25 +44,25 @@ public class RentrerNotesServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String vue = "/WEB-INF/rentrerNotes.jsp";
         NoteDao dao = new NoteDao();
+        Personne etudiant = new Personne();
         
         String[] ids = request.getParameterValues("id");
         String[] notes = request.getParameterValues("note");
         String[] coms = request.getParameterValues("commentaire");
         assert notes.length >= coms.length;
+        
         for (int i = 0; i < notes.length; i++) {
             Integer id = Integer.parseInt(ids[i]);
             Double note = (notes[i].equals("")) ? null : Double.parseDouble(notes[i]);
             String commentaire = (coms[i].equals("")) ? "" : coms[i];
             
             Note noteAjoutee = new Note();
-            Personne mrpatate = new Personne();
-            mrpatate.setId(id);
-            noteAjoutee.setEtudiant(mrpatate);
             noteAjoutee.setNote(note);
             noteAjoutee.setCommentaire(commentaire);
+            etudiant.setId(id);
+            noteAjoutee.setEtudiant(etudiant);
             try {
                 dao.insert(noteAjoutee);
-                System.out.println("ok mr patate");
             } catch (SQLException ex) {
                 Logger.getLogger(RentrerNotesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

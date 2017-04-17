@@ -198,11 +198,9 @@ public class PersonneDao implements PersonneHome {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
         ArrayList<Personne> lesPersonnes = new ArrayList();
-        ResultSet resultat = canal.executeQuery("SELECT m.nom, m.prenom FROM evaluation"
-                + "INNER JOIN formateur ON evaluation.id_formateur = formateur.id_personne"
-                + "INNER JOIN personne p ON formateur.id_personne = p.id_personne"
-                + "INNER JOIN membre m ON p.id_personne = m.id_personne"
-                + "WHERE est_formateur = 0 AND id_evaluation = 1;");
+        ResultSet resultat = canal.executeQuery("SELECT p.nom, p.prenom FROM personne p"
+                + "INNER JOIN candidature c ON p.id_personne = c.id_personne"
+                + "INNER JOIN session_formation sf ON c.id_session = sf.id_session;");
         while (!resultat.isLast()) {
             resultat.next();
             Personne p = new Personne(

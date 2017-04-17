@@ -40,14 +40,14 @@
                 <div class="col-md-4">
                     <fieldset>
                         <legend>Actions</legend>
-                        <input type="hidden" name="idProjet" value="${requestScope.equipeGeree.unProjet.id}" />
+                        <input type="hidden" name="idProjet" value="${requestScope.equipeGeree.idProjet}" />
                         <button type="submit" name="modifier" class="btn btn-primary" value="1">Valider modification(s)</button><br />
                         <br />
                         <button type="reset" class="btn btn-info">Réinitialiser</button><br />
                         <br />
                         <button name="supprimer" class="btn btn-danger" value="1">Supprimer l'équipe</button><br />
                         <br />
-                        <a class="btn btn-default" href="<c:url value="/equipe/index" ><c:param name="id_projet" value="${requestScope.equipeGeree.unProjet.id}" /></c:url>">
+                        <a class="btn btn-default" href="<c:url value="/equipe/index" ><c:param name="id" value="${requestScope.equipeGeree.idProjet}" /></c:url>">
                         Retour à la liste des équipes
                         </a>
                     </fieldset>

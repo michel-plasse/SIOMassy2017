@@ -6,13 +6,15 @@
     <tr>
         <th>Date</th>
         <th>Intitulé</th>
-<!--        <th>Module</th>-->
+        <th>Module</th>-->
 <!--        <th>Formateur</th>
         <th>Note</th>
         <th>Commentaire</th>-->
     </tr>
     <c:forEach items="${lesNotes}" var="laNote">
         <tr>
+            
+            <td>${laNote.evaluation.dateDebutEval}</td>
             <td>${laNote.note}</td>
             <td>${laNote.commentaire}</td>
 

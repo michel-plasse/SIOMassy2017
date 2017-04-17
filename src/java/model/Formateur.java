@@ -24,5 +24,10 @@ public class Formateur extends Personne {
     public Formateur() {
         
     }
-   
+       public Formateur(int id,String nom, String prenom) {
+        super(id, nom, prenom);
+    }
+    
+
+
 }
