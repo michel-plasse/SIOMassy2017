@@ -18,21 +18,24 @@
         </div>
         <div id="display-box1">
             <div id="boiteParDefaut">
-                <a href="<c:url value="/ListeDesQcmServlet"/>">creer Qcm</a>
+                Liste sessions
             </div>
             <div id="boiteParDefaut">
-                
+                Liste projets
             </div>
         </div>
         <div id="display-box2">
-            <div id="boiteParDefaut">
-                
+            <div>
+                <div id="boiteParDefaut">
+                    Liste évaluations non passées
+                </div>
+                <a href="<c:url value="/ListeDesQcmServlet"/>">créer Qcm</a>
             </div>
             <div id="boiteParDefaut">
-                
+                Liste évaluation non corrigées
             </div>
             <div id="boiteParDefaut">
-                
+                Liste évaluations notées
             </div>
         </div>    
     </div>
