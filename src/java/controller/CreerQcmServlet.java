@@ -61,8 +61,9 @@ public class CreerQcmServlet extends HttpServlet {
             throws ServletException, IOException {
         QcmDao qcmDao = new QcmDao();
         Qcm qcm = new Qcm();
+        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
         try {
-            qcm = qcmDao.findById(1);
+            qcm = qcmDao.findById(idQcm);
             request.setAttribute("qcm", qcm);
         } catch (SQLException ex) {
             Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,14 +84,13 @@ public class CreerQcmServlet extends HttpServlet {
         lesChoix.put(2,reponse2);
         lesChoix.put(3,reponse3);
         lesChoix.put(4,reponse4);
-        HttpSession maSession = request.getSession(true);
-        int idqcm = maSession.getParameter("idQcm");
+        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
         Question laQuestion = new Question(question, lesChoix);
         QuestionDao questionDao = new QuestionDao();
         
         try {
             
-            questionDao.insert(0, laQuestion);
+            questionDao.insert(idQcm, laQuestion);
             
         } catch (SQLException ex) {
             Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);

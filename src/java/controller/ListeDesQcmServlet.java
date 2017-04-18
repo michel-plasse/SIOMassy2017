@@ -121,14 +121,15 @@ public class ListeDesQcmServlet extends HttpServlet {
         Qcm nouveauQcm = new Qcm();
         nouveauQcm.setIntitule(intituleQcm);
         nouveauQcm.setValide(false);
+        int idGenere = -1;
         
         try {
-            qcmDao.insert(user.getId(), idModule, nouveauQcm);
+            idGenere = qcmDao.insert(user.getId(), idModule, nouveauQcm);
             System.out.println("nouveau qcm créé !");
         } catch (SQLException ex) {
             Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        request.getRequestDispatcher("/WEB-INF/creerQcm.jsp").forward(request, response);
+        response.sendRedirect(this.getServletContext().getContextPath()+"creerQcm?idQcm="+idGenere);
     }
 
     /**
