@@ -29,7 +29,6 @@ public interface QcmHome<T> extends Dao<T> {
      */
     public HashSet<Integer> findAnsByIdPassage (int idUser, int idQcm) throws SQLException;
     public int isAlreadyDone(int idUser, int idQcm) throws SQLException;
-    @Override
-    public ArrayList<T> findAll() throws SQLException;
+    public ArrayList<T> findAllByFormateur(int idFormateur) throws SQLException;
     
 }

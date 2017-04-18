@@ -18,7 +18,7 @@
         </div>
         <div id="display-box1">
             <div id="boiteParDefaut">
-                <a href="<c:url value="/creerQcm"/>">creer Qcm</a>
+                <a href="<c:url value="/ListeDesQcmServlet"/>">creer Qcm</a>
             </div>
             <div id="boiteParDefaut">
                 

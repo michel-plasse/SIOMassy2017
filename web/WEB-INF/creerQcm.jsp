@@ -3,7 +3,16 @@
     Created on : 4 avr. 2017, 12:58:01
     Author     : admin
 --%>
-
+<c:if test="${requestscope.qcm}">
+    <table>
+        <c:forEach items="${requestScope.qcm.lesQuestions}" var="laQuestion">
+            <tr><c:out value="${laQuestion.question}"/></tr>
+            <c:forEach items="${laQuestion.lesChoix}" var="leChoix">
+                <tr><c:out value="${leChoix.choix}"/><c:out value="${leChoix.estCorrect}"/></tr>
+            </c:forEach>
+        </c:forEach>   
+    </table>
+</c:if>
 
 <form method="post" class="form-horizontal">
     <label for="nom">Entrez la question :</label><br />

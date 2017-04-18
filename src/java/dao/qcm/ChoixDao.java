@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Choix;
 import static dao.DAOUtilitaire.*;
+import java.util.HashMap;
 
 public class ChoixDao implements ChoixHome{
     
@@ -27,8 +28,8 @@ public class ChoixDao implements ChoixHome{
     private static String SQL_INSERT_OPTION = "INSERT INTO question ('id_choix','id_question','choix','est_correct') VALUES(?,?,?,?)";
     private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_choix,id_question,choix,est_correct FROM choix WHERE id_question=?";
 
-    @Override
-    public void insert(Choix objetAInserer) throws SQLException {
+    
+    public void insertChoix(Choix objetAInserer,int idQuestion) throws SQLException {
         
         connection.setAutoCommit(false);
         connection = ConnectionBd.getConnection();
@@ -36,7 +37,7 @@ public class ChoixDao implements ChoixHome{
         try {
             initialisationRequetePreparee(connection, SQL_INSERT_OPTION, false,
                     objetAInserer.getIdChoix(),
-                    objetAInserer.getQuestion().getIdQuestion(),
+                    idQuestion,
                     objetAInserer.getChoix(),
                     objetAInserer.isEstCorrect());
             stmt.executeUpdate();
@@ -62,16 +63,14 @@ public class ChoixDao implements ChoixHome{
     public Choix findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Choix choix = null;
-        QuestionDao questionDao = new QuestionDao();
          String sqlstmt = "SELECT id_choix, id_question, choix, est_correct FROM choix"
                 + "WHERE id_choix = ? ";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, id);
-        stmt.executeUpdate();
+        stmt.executeQuery();
         ResultSet res = stmt.executeQuery(sqlstmt);
         if (res.next()){
             choix = new Choix(
-                    questionDao.findById(res.getInt("id_question")),
                     res.getString("choix"),
                     res.getBoolean("est_correct"));
         }
@@ -84,21 +83,21 @@ public class ChoixDao implements ChoixHome{
     }
 
     @Override
-    public ArrayList<Choix> findByIdQuestion(int idQuestion) throws SQLException {
+    public HashMap<Integer,Choix> findByIdQuestion(int idQuestion) throws SQLException {
         connection = ConnectionBd.getConnection();
         PreparedStatement stmt = null;
         ResultSet res = null;
-        ArrayList<Choix> lesReponses = new ArrayList<>();
-        QuestionDao questionDao = new QuestionDao();
+        HashMap<Integer,Choix> lesReponses = new HashMap<>();
+        int cle = 0;
         
         try {
             
             stmt = initialisationRequetePreparee(connection, SQL_SELECT_OPTION_BY_QUESTION, false, idQuestion);
             res = stmt.executeQuery();
             while(res.next()){
-               Choix choix = new Choix(questionDao.findById(idQuestion), res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
-               choix.setIdOption(res.getInt(CHAMP_ID_OPTION));
-               lesReponses.add(choix);
+               Choix choix = new Choix(res.getString(CHAMP_OPTION), res.getBoolean(CHAMP_EST_CORRECTE));
+               lesReponses.put(cle, choix);
+               cle +=1;
             }
             
         } catch (SQLException e) {
@@ -108,6 +107,11 @@ public class ChoixDao implements ChoixHome{
             fermeturesSilencieuses(res, stmt, connection);
         }
         return lesReponses;
+    }
+
+    @Override
+    public void insert(Choix objetAInserer) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
