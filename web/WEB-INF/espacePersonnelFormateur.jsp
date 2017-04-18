@@ -17,25 +17,45 @@
             </div>
         </div>
         <div id="display-box1">
-            <div id="boiteParDefaut">
-                Liste sessions
+            <div>
+                Sessions
+                <div id="boiteParDefaut">
+                    Liste sessions
+                </div>
             </div>
-            <div id="boiteParDefaut">
-                Liste projets
+            <div>
+                Projets
+                <div id="boiteParDefaut">
+                    Liste projets
+                </div>
             </div>
         </div>
         <div id="display-box2">
             <div>
+                Evaluations non passées
                 <div id="boiteParDefaut">
-                    Liste évaluations non passées
+                     <table class="table">	
+                        <c:forEach items="${requestScope.lesQcm}" var="unQcm">
+                            <tr>
+                                <td><c:out value="${unQcm.intitule}" /></td>
+                                
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
-                <a href="<c:url value="/ListeDesQcmServlet"/>">créer Qcm</a>
+                <a href="<c:url value="/ListeDesQcmServlet"/>">Voir mes Qcm</a>
             </div>
-            <div id="boiteParDefaut">
-                Liste évaluation non corrigées
+            <div>
+                Evaluations non corrigées
+                <div id="boiteParDefaut">
+                    Liste évaluation non corrigées
+                </div>
             </div>
-            <div id="boiteParDefaut">
-                Liste évaluations notées
+            <div>
+                Evaluations notées
+                <div id="boiteParDefaut">
+                    Liste évaluations notées
+                </div>
             </div>
         </div>    
     </div>
