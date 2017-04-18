@@ -265,4 +265,34 @@ public class QcmDao implements QcmHome<Qcm> {
         return rep;
     }
 
+    @Override
+    public ArrayList<Qcm> findAllByFormateur(int idFormateur) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT id_qcm, m.nom, intitule, valide FROM qcm "
+                + " INNER JOIN module m ON qcm.id_module = m.id_module "
+                + " WHERE id_formateur = ?";
+
+        PreparedStatement preparedStatement = null;
+        ResultSet res = null;
+        Qcm unQcm = null;
+        ArrayList<Qcm> lesQcm = new ArrayList<>();
+        
+        try{
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idFormateur);
+            res = preparedStatement.executeQuery();
+            
+            while (res.next()) {
+                unQcm = new Qcm(res.getInt("id_qcm"), res.getString("intitule"), res.getBoolean("valide"),res.getString("m.nom"));
+                lesQcm.add(unQcm);
+                
+            }
+        }catch(SQLException e){
+            System.out.println("Probleme de findAllByFormateur");
+            throw e;
+            }
+        finally{
+            fermeturesSilencieuses(res, preparedStatement, connection);
+        }
+        return lesQcm;
+    }
 }

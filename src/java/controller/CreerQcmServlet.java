@@ -5,19 +5,29 @@
  */
 package controller;
 
+import dao.qcm.QcmDao;
+import dao.qcm.QuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Choix;
+import model.Qcm;
+import model.Question;
 
 /**
  *
  * @author admin
  */
-@WebServlet(name = "CreerQcmServlet", urlPatterns = {"/CreerQcmServlet"})
+@WebServlet(name = "CreerQcmServlet", urlPatterns = {"/CreerQcm"})
 public class CreerQcmServlet extends HttpServlet {
 
     /**
@@ -49,13 +59,46 @@ public class CreerQcmServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         this.getServletContext().getRequestDispatcher("/WEB-INF/creerQcm.jsp").forward(request, response);
+        QcmDao qcmDao = new QcmDao();
+        Qcm qcm = new Qcm();
+        try {
+            qcm = qcmDao.findById(1);
+            request.setAttribute("qcm", qcm);
+        } catch (SQLException ex) {
+            Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.getServletContext().getRequestDispatcher("/WEB-INF/creerQcm.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String question = request.getParameter("question");
+        HashMap<Integer,Choix> lesChoix = new HashMap<>();
+        Choix reponse1 = new Choix(request.getParameter("reponse1"), true);
+        Choix reponse2 = new Choix(request.getParameter("reponse2"), true);
+        Choix reponse3 = new Choix(request.getParameter("reponse3"), true);
+        Choix reponse4 = new Choix(request.getParameter("reponse4"), true);
+        lesChoix.put(1,reponse1);
+        lesChoix.put(2,reponse2);
+        lesChoix.put(3,reponse3);
+        lesChoix.put(4,reponse4);
+        HttpSession maSession = request.getSession(true);
+        int idqcm = maSession.getParameter("idQcm");
+        Question laQuestion = new Question(question, lesChoix);
+        QuestionDao questionDao = new QuestionDao();
+        
+        try {
+            
+            questionDao.insert(0, laQuestion);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
     }
 
     @Override

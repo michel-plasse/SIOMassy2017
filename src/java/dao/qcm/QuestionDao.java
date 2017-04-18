@@ -42,9 +42,11 @@ public class QuestionDao implements QuestionHome<Question>{
             
             if(idGenerated.next()) {
                 ChoixDao optionDao = new ChoixDao();
-                for(Choix uneOption : nouvelleQuestion.getLesChoix()) {
-                    uneOption.setQuestion(new Question(idGenerated.getInt(1)));
-                    optionDao.insert(uneOption);
+                ArrayList<Choix> lesChoix = new ArrayList<>();
+                lesChoix = (ArrayList<Choix>) nouvelleQuestion.getLesChoix().values();
+                
+                for(Choix uneOption : lesChoix) {
+                    optionDao.insertChoix(uneOption,idGenerated.getInt(1));
                 }
             }
 
