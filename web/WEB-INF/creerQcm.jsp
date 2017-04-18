@@ -3,18 +3,20 @@
     Created on : 4 avr. 2017, 12:58:01
     Author     : admin
 --%>
-<c:if test="${requestscope.qcm}">
+<h1><c:out value="${requestScope.qcm.intitule}"/></h1>
+<c:if test="${not empty requestScope.qcm.lesQuestions}">
     <table>
         <c:forEach items="${requestScope.qcm.lesQuestions}" var="laQuestion">
-            <tr><c:out value="${laQuestion.question}"/></tr>
+            <tr><td><c:out value="${laQuestion.question}"/></td></tr>
             <c:forEach items="${laQuestion.lesChoix}" var="leChoix">
-                <tr><c:out value="${leChoix.choix}"/><c:out value="${leChoix.estCorrect}"/></tr>
+                <tr><td><c:out value="${leChoix.value.choix}"/><c:out value="${leChoix.value.estCorrect}"/></td></tr>
             </c:forEach>
         </c:forEach>   
     </table>
 </c:if>
 
-<form method="post" class="form-horizontal">
+<form  method="post" class="form-horizontal">
+    
     <label for="nom">Entrez la question :</label><br />
     <textarea name="question" id="question" cols="100" class="form-control">tape ta question connard !</textarea>
     <div class="form-group">
@@ -42,5 +44,6 @@
         </div>
     </div>
     </table>
+    
            
 </form>

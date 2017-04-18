@@ -17,7 +17,7 @@ import java.util.HashSet;
  */
 public interface QcmHome<T> extends Dao<T> {
     
-    public void insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
+    public int insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
     public void insertPassage (int idUser, T qcmRepsChoisies) throws SQLException;
 
     /**
