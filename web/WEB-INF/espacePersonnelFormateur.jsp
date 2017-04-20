@@ -43,13 +43,14 @@
                         </c:forEach>
                     </table>
                 </div>
-                <a href="<c:url value="/ListeDesQcmServlet"/>">Voir mes Qcm</a>
+                <a href="<c:url value="/CrerEvaluationSerlet"/>">Nouvelle évaluation</a>
             </div>
             <div>
                 Evaluations non corrigées
                 <div id="boiteParDefaut">
                     Liste évaluation non corrigées
                 </div>
+                <a href="<c:url value="/ListeDesQcmServlet"/>">Voir mes Qcm</a>
             </div>
             <div>
                 Evaluations notées

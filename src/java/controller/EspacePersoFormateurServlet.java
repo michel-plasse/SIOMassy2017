@@ -31,18 +31,35 @@ public class EspacePersoFormateurServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
+        
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+                HttpSession maSession = request.getSession(true);
+                Personne user = (Personne) maSession.getAttribute("user");
+
+        if (user == null) {
+            // Pas connecté
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        }
+        else {
+            // try {
+                request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
+
+            // } catch (SQLException ex) {
+            //    Logger.getLogger(EspacePersoFormateurServlet.class.getName()).log(Level.SEVERE, null, ex);
+            //    request.setAttribute("message", "Pb avec la base de données. Voir le fichier journal à " + (new Date()));
+            //    request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+            //}
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         processRequest(request, response);
     }
 
