@@ -47,7 +47,7 @@ public class CreerQcmServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreerQcmServlet</title>");            
+            out.println("<title>Servlet CreerQcmServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreerQcmServlet at " + request.getContextPath() + "</h1>");
@@ -75,30 +75,31 @@ public class CreerQcmServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String question = request.getParameter("question");
-        HashMap<Integer,Choix> lesChoix = new HashMap<>();
-        Choix reponse1 = new Choix(request.getParameter("reponse1"), true);
-        Choix reponse2 = new Choix(request.getParameter("reponse2"), true);
-        Choix reponse3 = new Choix(request.getParameter("reponse3"), true);
-        Choix reponse4 = new Choix(request.getParameter("reponse4"), true);
-        lesChoix.put(1,reponse1);
-        lesChoix.put(2,reponse2);
-        lesChoix.put(3,reponse3);
-        lesChoix.put(4,reponse4);
         int idQcm = Integer.parseInt(request.getParameter("idQcm"));
-        Question laQuestion = new Question(question, lesChoix);
-        QuestionDao questionDao = new QuestionDao();
+        HashMap<Integer, Choix> lesChoix = new HashMap<>();
         
-        try {
-            
-            questionDao.insert(idQcm, laQuestion);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        for (int i = 0; i < 5; i++) {
+            Choix reponse = new Choix(request.getParameter("reponse"+i), Boolean.parseBoolean(request.getParameter("valide")));
+            if(reponse.getChoix() != null){
+            lesChoix.put(i, reponse);
+            }
         }
         
         
-        
-        
+
+        if (lesChoix.size() >= 2 && !question.isEmpty()) {
+            Question laQuestion = new Question(question, lesChoix);
+            QuestionDao questionDao = new QuestionDao();
+            
+            try {
+
+                questionDao.insert(idQcm, laQuestion);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     @Override

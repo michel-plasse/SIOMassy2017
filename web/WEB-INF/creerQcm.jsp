@@ -19,13 +19,13 @@
 <form  method="post" class="form-horizontal">
 
     <label for="nom">Entrez la question :</label><br />
-    <textarea name="question" id="question" cols="100" class="form-control">tape ta question connard !</textarea><br>
+    <textarea name="question" id="question" cols="100" class="form-control"></textarea><br>
     <div class="form-group">
         <label for="reponse1" class="col-sm-2 control-label">Réponse 1 :</label>
         <div class="col-sm-10">
             <input type="text" name="reponse1" id="reponse1" class="form-control"/>
             <div class="checkbox-inline">
-                <input type="radio" name="valide" value="true" checked> est la bonne reponse<br>
+                <input type="radio" name="valide" value="true" > est la bonne reponse<br>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
         <div class="col-sm-10">
             <input type="text" name="reponse2" id="reponse" class="form-control"/>
             <div class="checkbox-inline">
-                <input type="radio" name="valide" value="true" checked> est la bonne reponse<br>
+                <input type="radio" name="valide" value="true" > est la bonne reponse<br>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
         <div class="col-sm-10">
             <input type="text" name="reponse3" id="reponse" class="form-control"/>
             <div class="checkbox-inline">
-                <input type="radio" name="valide" value="true" checked> est la bonne reponse<br>
+                <input type="radio" name="valide" value="true" > est la bonne reponse<br>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
         <div class="col-sm-10">
             <input type="text" name="reponse4" id="reponse" class="form-control"/>
             <div class="checkbox-inline">
-                <input type="radio" name="valide" value="true" checked> est la bonne reponse<br>
+                <input type="radio" name="valide" value="true" > est la bonne reponse<br>
             </div>
         </div>
         <input type="reset" value="Reset">
