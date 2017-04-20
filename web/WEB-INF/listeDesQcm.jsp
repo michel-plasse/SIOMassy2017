@@ -20,6 +20,7 @@
             <td><a href="<c:url value="CreerQcm">
                        <c:param name="idQcm" value="${unQcm.idQcm}"/>
                    </c:url>">Editer</a></td>
+            <td><button type="">Supprimer</button></td>
         </tr>  
     </c:forEach>
         <form method="post" class="form-horizontal">

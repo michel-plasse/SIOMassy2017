@@ -57,7 +57,8 @@
                 <input type="radio" name="valide" value="true" checked> est la bonne reponse<br>
             </div>
         </div>
-
+        <input type="reset" value="Reset">
+        <input type="submit" value="Submit">
     </div>
 </table>
 
