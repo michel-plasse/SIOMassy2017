@@ -67,7 +67,7 @@ public class QcmDao implements QcmHome<Qcm> {
                         if (resQuest.next()) {
                             for (Choix unChoix : uneQuestion.getLesChoix().values()) {
                                 preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
-                                preparedStatementChoix.setString(2, unChoix.getChoix());
+                                preparedStatementChoix.setString(2, unChoix.getLibelle());
                                 preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
                                 preparedStatementChoix.executeUpdate();
                             }
@@ -107,7 +107,7 @@ public class QcmDao implements QcmHome<Qcm> {
         String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_choix, ch.libelle, ch.est_correct "
                 + "FROM qcm as qc "
                 + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
-                + "INNER JOIN choix as ch ON qu.id_question = ch.id_question "
+                + "LEFT OUTER JOIN choix as ch ON qu.id_question = ch.id_question "
                 + "WHERE qc.id_qcm = ? "
                 + "ORDER BY id_question";
 
@@ -137,7 +137,7 @@ public class QcmDao implements QcmHome<Qcm> {
 
                 unChoix = new Choix();
                 unChoix.setIdChoix(res.getInt("ch.id_choix"));
-                unChoix.setChoix(res.getString("ch.libelle"));
+                unChoix.setLibelle(res.getString("ch.libelle"));
                 unChoix.setEstCorrect(res.getBoolean("ch.est_correct"));
 
                 if (uneQuestion != null) {

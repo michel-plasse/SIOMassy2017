@@ -129,7 +129,7 @@ public class ListeDesQcmServlet extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect(this.getServletContext().getContextPath()+"creerQcm?idQcm="+idGenere);
+        response.sendRedirect(this.getServletContext().getContextPath()+"/CreerQcm?idQcm="+idGenere);
     }
 
     /**
