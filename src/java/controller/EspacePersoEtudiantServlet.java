@@ -32,16 +32,22 @@ import model.Personne;
 @WebServlet(name = "EspacePersoEtudiant", urlPatterns = {"/espacePersoEtudiant"})
 public class EspacePersoEtudiantServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    //si l'utilisateur existe alors on le renvoie sur sa page
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    boolean champsrenseignes = true;
+    
+    String nom = request.getParameter("nom");
+    String prenom = request.getParameter("prenom");
+    String no_rue = request.getParameter("no_rue");
+    String nom_rue = request.getParameter("nom_rue");
+    String code_postal = request.getParameter("code_postal");
+    String ville = request.getParameter("ville");
+    String pays = request.getParameter("pays");
+    String no_phone = request.getParameter("no_phone");
+    String email = request.getParameter("email");
+    }
+
+        
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
