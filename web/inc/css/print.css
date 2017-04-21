@@ -41,7 +41,6 @@ and open the template in the editor.
     #unTrombi {
         padding: 10px;
         float: left;
-        page-break-after: always; 
         page-break-inside: avoid;
     }
 
