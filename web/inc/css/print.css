@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 avr. 2017, 10:50:48
+    Author     : nate
+*/
+
+/* Impression Trombi */
+
+
+@media print {
+
+    body {
+        background-color :white;
+        font-size :12pt;
+        width: 100%;
+    }
+
+    #page { 
+        size: A4;
+        margin: 0;
+        border: none;
+    }
+
+    #sidebar {
+        display: none;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    .toHide {
+        display: none;
+    }
+
+
+    #unTrombi {
+        padding: 10px;
+        float: left;
+        page-break-after: always; 
+        page-break-inside: avoid;
+    }
+
+
+
+}
