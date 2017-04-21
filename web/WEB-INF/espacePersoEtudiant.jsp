@@ -5,18 +5,19 @@
 <table class="table">	
     <tr>
         <th>Date</th>
-        <th>Intitulé</th>
-        <th>Module</th>-->
-<!--        <th>Formateur</th>
+        <th>Module</th>
+        <th>formateur</th>
         <th>Note</th>
-        <th>Commentaire</th>-->
+
     </tr>
     <c:forEach items="${lesNotes}" var="laNote">
         <tr>
             
             <td>${laNote.evaluation.dateDebutEval}</td>
+            <td>${laNote.evaluation.leModule.nom}</td> 
+            <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
             <td>${laNote.note}</td>
-            <td>${laNote.commentaire}</td>
+      
 
         </tr>  
     </c:forEach>
