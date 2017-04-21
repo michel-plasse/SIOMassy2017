@@ -26,7 +26,7 @@ import model.Personne;
  *
  * @author Xavier Claude PASSER
  */
-@WebServlet(name = "EspacePersoFormateur", urlPatterns = {"/EspacePersoFormateur"})
+@WebServlet(name = "EspacePersoFormateur", urlPatterns = {"/espacePersoFormateur"})
 public class EspacePersoFormateurServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

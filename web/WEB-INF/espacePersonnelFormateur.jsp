@@ -43,7 +43,7 @@
                         </c:forEach>
                     </table>
                 </div>
-                <a href="<c:url value="/CrerEvaluationSerlet"/>">Nouvelle évaluation</a>
+                <a href="<c:url value="/CreerEvaluationServlet"/>">Nouvelle évaluation</a>
             </div>
             <div>
                 Evaluations non corrigées
