@@ -1,6 +1,6 @@
 <div id="formateur-form">
     <div id="formateur-formBox">
-        <img height="100" width="100" src="image/trombi/${user.photo}"/>
+        <img height="110" width="110" src="image/trombi/${user.photo}"/>
     </div>
     <div id="formateur-formBox">
         <strong> ${user.prenom} ${user.nom}</strong><br>
@@ -8,7 +8,7 @@
                 ${user.code_postal} ${user.ville}<br>
                 ${user.pays}<br>
                 <i class="fa fa-phone" aria-hidden="true"></i> ${user.no_tel}<br>
-                <i class="fa fa-envelope" aria-hidden="true"></i> ${user.email}
+                <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:${user.email}">${user.email}</a>
     </div>
 </div>
 <br>    
