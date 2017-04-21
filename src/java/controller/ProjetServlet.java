@@ -113,7 +113,7 @@ public class ProjetServlet extends HttpServlet {
         }
             if (champsrenseignes) {
             try {
-                Projet projetAjoutee = new Projet(0, sessionFormation, sujet, dateLimite, dateCreation, description);
+                Projet projetAjoutee = new Projet(0, sessionFormation, sujet, dateLimite, dateCreation, dateFin,description);
                 ProjetDao dao = new ProjetDao();
                 dao.insert(projetAjoutee);
                 request.getRequestDispatcher("/WEB-INF/projet.jsp").forward(request, response);
