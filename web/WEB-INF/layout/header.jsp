@@ -51,7 +51,7 @@
                                     <a href="<c:url value="/espacePersoEtudiant" />">Espace Personnel</a>
                                 </c:if>
                                 <c:if test="${user.est_formateur eq true}">
-                                    <a href="<c:url value="/EspacePersoFormateur" />">Espace Personnel</a>
+                                    <a href="<c:url value="/espacePersoFormateur" />">Espace Personnel</a>
                                 </c:if></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

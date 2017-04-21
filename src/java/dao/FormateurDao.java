@@ -269,4 +269,9 @@ public class FormateurDao implements FormateurHome {
 //        }
 //        return lesPersonnes;
 //    }
+
+    @Override
+    public boolean update(int idAncien, Formateur nouveau) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
