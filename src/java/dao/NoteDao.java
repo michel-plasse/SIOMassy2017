@@ -52,13 +52,14 @@ public class NoteDao implements NoteHome {
     @Override
     public boolean update(int idAncien, Note note) throws SQLException {
         connection = ConnectionBd.getConnection();
-            // Commencer une transaction
-            String sql = "UPDATE personne SET note = ?, commentaire = ?)"
-                    + " VALUES (?,?) WHERE id_personne = "+ idAncien + ";";
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setDouble(1, note.getNote());
-            stmt.setString(2, note.getCommentaire());
-            stmt.executeUpdate();
+        // Commencer une transaction
+        String sql = "UPDATE note SET note = ?, commentaire = ? "
+                + " WHERE id_note = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setDouble(1, note.getNote());
+        stmt.setString(2, note.getCommentaire());
+        stmt.setInt(3, idAncien);
+        stmt.executeUpdate();
 
         return false;
     }
@@ -101,18 +102,19 @@ public class NoteDao implements NoteHome {
                 + " INNER JOIN module m ON e.id_module = m.id_module"
                 + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation"
                 + " INNER JOIN personne pe ON n.id_personne = pe.id_personne"
-                + " WHERE pe.id_personne = ?";
+                + " WHERE pe.id_personne = ?"
+                + " ORDER BY date_effet DESC;";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet res = stmt.executeQuery();
         while (res.next()) {
             Evaluation evaluation = new Evaluation(
                     res.getInt("e.id_evaluation"),
-                    new Module(res.getInt("m.id_module"),res.getString("m.nom")),
-                    new Formateur(res.getInt("p.id_personne"), res.getString("p.nom"),res.getString("p.prenom")),
+                    new Module(res.getInt("m.id_module"), res.getString("m.nom")),
+                    new Formateur(res.getInt("p.id_personne"), res.getString("p.nom"), res.getString("p.prenom")),
                     res.getDate("e.date_effet"),
                     res.getString("e.intitule")
-              );
+            );
             Note laNote = new Note();
             laNote.setEvaluation(evaluation);
             laNote.setNote(res.getDouble("n.note"));
