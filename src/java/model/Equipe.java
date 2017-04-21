@@ -5,25 +5,23 @@ import java.util.HashMap;
 
 public class Equipe {
     private Integer id;
+    private Integer idProjet;
     private Personne createur;
-    private Projet unProjet;
     private HashMap<Integer, Personne> lesMembres;
     private Date dateCreation;
 
     public Equipe() {
     }
 
-    public Equipe(Integer id, Personne createur, Projet unProjet, Date dateCreation) {
+    public Equipe(Integer id, Personne createur,Date dateCreation) {
         this.id = id;
         this.createur = createur;
-        this.unProjet = unProjet;
         this.dateCreation = dateCreation;
     }
  
-    public Equipe(Integer id, Personne createur, Projet unProjet, HashMap<Integer, Personne> lesMembres) {
+    public Equipe(Integer id, Personne createur, HashMap<Integer, Personne> lesMembres) {
         this.id = id;
         this.createur = createur;
-        this.unProjet = unProjet;
         this.lesMembres = lesMembres;
     }
 
@@ -41,14 +39,6 @@ public class Equipe {
 
     public void setCreateur(Personne createur) {
         this.createur = createur;
-    }
-
-    public Projet getUnProjet() {
-        return unProjet;
-    }
-
-    public void setUnProjet(Projet unProjet) {
-        this.unProjet = unProjet;
     }
 
     public HashMap<Integer, Personne> getLesMembres() {
@@ -74,11 +64,19 @@ public class Equipe {
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
-    
-    @Override
-    public String toString() {
-        return "Equipe{" + "id=" + id + ", createur=" + createur + ", unProjet=" + unProjet + ", dateCreation=" + dateCreation + '}';
+
+    public Integer getIdProjet() {
+        return idProjet;
     }
 
-    
+    public void setIdProjet(Integer idProjet) {
+        this.idProjet = idProjet;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Equipe{" + "id=" + id + ", createur=" + createur + ", lesMembres=" + lesMembres + ", dateCreation=" + dateCreation + '}';
+    }
+
 }
