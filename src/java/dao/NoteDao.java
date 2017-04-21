@@ -102,7 +102,8 @@ public class NoteDao implements NoteHome {
                 + " INNER JOIN module m ON e.id_module = m.id_module"
                 + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation"
                 + " INNER JOIN personne pe ON n.id_personne = pe.id_personne"
-                + " WHERE pe.id_personne = ?";
+                + " WHERE pe.id_personne = ?"
+                + " ORDER BY date_effet DESC;";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet res = stmt.executeQuery();
