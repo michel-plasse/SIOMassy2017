@@ -31,22 +31,31 @@ public class EspacePersoFormateurServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                HttpSession maSession = request.getSession(true);
-                Personne user = (Personne) maSession.getAttribute("user");
+        HttpSession maSession = request.getSession(true);
+        Personne user = (Personne) maSession.getAttribute("user");
 
         if (user == null) {
             // Pas connecté
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        }
-        else {
+        } else {
+            EvaluationDao evalDao = new EvaluationDao();
+            ArrayList<Evaluation> lesEvaluations = null;
+
+            try {
+                lesEvaluations = evalDao.findAllEvalFormateur(user.getId());
+            } catch (SQLException ex) {
+                System.out.println("controller.EspacePersoFormateurServlet.doGet()");
+                Logger.getLogger(EspacePersoFormateurServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             // try {
-                request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
+            request.setAttribute("lesEvals", lesEvaluations);
+            request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
 
             // } catch (SQLException ex) {
             //    Logger.getLogger(EspacePersoFormateurServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,7 +68,7 @@ public class EspacePersoFormateurServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         processRequest(request, response);
     }
 

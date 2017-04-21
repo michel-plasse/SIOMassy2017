@@ -35,15 +35,15 @@
                 Evaluations non passées
                 <div id="boiteParDefaut">
                      <table class="table">	
-                        <c:forEach items="${requestScope.lesQcm}" var="unQcm">
+                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
                             <tr>
-                                <td><c:out value="${unQcm.intitule}" /></td>
+                                <td><c:out value="${uneEval.intitule}" /></td>
                                 
                             </tr>
                         </c:forEach>
                     </table>
                 </div>
-                <a href="<c:url value="/CreerEvaluationServlet"/>">Nouvelle évaluation</a>
+                <a href="<c:url value="/creerEvaluation"/>">Nouvelle évaluation</a>
             </div>
             <div>
                 Evaluations non corrigées
