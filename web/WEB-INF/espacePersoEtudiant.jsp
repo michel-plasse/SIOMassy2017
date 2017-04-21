@@ -1,6 +1,21 @@
+<div id="formateur-form">
+    <div id="formateur-formBox">
+        <img height="100" width="100" src="image/trombi/${user.photo}"/>
+    </div>
+    <div id="formateur-formBox">
+        <strong> ${user.prenom} ${user.nom}</strong><br>
+                ${user.no_rue} ${user.rue}<br>
+                ${user.code_postal} ${user.ville}<br>
+                ${user.pays}<br>
+                <i class="fa fa-phone" aria-hidden="true"></i> ${user.no_tel}<br>
+                <i class="fa fa-envelope" aria-hidden="true"></i> ${user.email}
+    </div>
+</div>
+<br>    
 
-<p><img height="200" width="200" src="image/trombi/${user.photo}"/><br/>
-<h1>${user.prenom} ${user.nom}</h1></p>
+<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
+
+<div id="demo" class="collapse">
 
 <table class="table">	
     <tr>
@@ -22,8 +37,13 @@
         </tr>  
     </c:forEach>
 </table>
+</div>
+    
+<a href="#demo1" data-toggle="collapse">Mes Projets</a> 
 
+<div id="demo1" class="collapse">
 <table class="table">	
+    
      <tr>
         <th>Nom Projet</th>
         <th>Date début</th>
@@ -34,10 +54,12 @@
     <c:forEach items="${lesProjets}" var="leProjet">
         <tr>
             
-<!--            <td><a href="espacePersoFormateur">${leProjet.nom}</a></td>
-            <td>${leProjet.dateDebut}</td> 
+<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
+            <td>${leProjet.dateCreation}</td> 
             <td>${leProjet.dateLimite}</td>           
             <td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
         </tr>  
     </c:forEach>
 </table>
+</div>
+</div>
