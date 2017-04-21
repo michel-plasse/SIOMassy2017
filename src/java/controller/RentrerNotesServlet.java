@@ -1,5 +1,6 @@
 package controller;
 
+import dao.EvaluationDao;
 import dao.NoteDao;
 import dao.PersonneDao;
 import java.io.IOException;
@@ -25,11 +26,11 @@ public class RentrerNotesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String vue = "/WEB-INF/rentrerNotes.jsp";
-        PersonneDao dao = new PersonneDao();
+        EvaluationDao dao = new EvaluationDao();
 
         try {
-            ArrayList<Personne> lesPersonnes = dao.findBySession(1);
-            request.setAttribute("lesPersonnes", lesPersonnes);
+            ArrayList<Note> lesNotes = dao.findByEval(1);
+            request.setAttribute("lesNotes", lesNotes);
         } catch (SQLException ex) {
             Logger.getLogger(RentrerNotesServlet.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("message", "Pb avec la base de données");
@@ -57,23 +58,27 @@ public class RentrerNotesServlet extends HttpServlet {
             String commentaire = (coms[i].equals("")) ? "" : coms[i];
             
             Note noteAjoutee = new Note();
+            noteAjoutee.setId_note(id);
             noteAjoutee.setNote(note);
             noteAjoutee.setCommentaire(commentaire);
-            etudiant.setId(id);
-            noteAjoutee.setEtudiant(etudiant);
+            //etudiant.setId(id);
+            //noteAjoutee.setEtudiant(etudiant);
+            
             try {
-                dao.insert(noteAjoutee);
+                dao.update(noteAjoutee.getId_note(),noteAjoutee);
             } catch (SQLException ex) {
                 Logger.getLogger(RentrerNotesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+    
         
         
         
 
         String message = "Vos ids : " + String.join(", ", ids)
-                + "<br/>Vos notes : " + String.join(",", notes)
-                + "<br/>Vos commentaires : " + String.join(",", coms);
+                + "<br/>Vos notes : " + String.join(", ", notes)
+                + "<br/>Vos commentaires : " + String.join(", ", coms);
         request.setAttribute("message", message);
         request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
     }

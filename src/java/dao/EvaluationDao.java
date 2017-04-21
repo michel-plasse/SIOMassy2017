@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Evaluation;
 import model.Module;
+import model.Note;
+import model.Personne;
 
 /**
  *
@@ -102,7 +104,7 @@ public class EvaluationDao implements EvaluationHome {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
-                + "WHERE id_formateur = " + idFormateur + " AND date_effet > NOW() ;");
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet >= NOW() ;");
         while (res.next()) {
             Evaluation eval = new Evaluation(
                     moduleDao.findById(res.getInt("id_module")),
@@ -114,4 +116,38 @@ public class EvaluationDao implements EvaluationHome {
         }
         return lesEvalDuFormateur;
     }
+
+    @Override
+    public ArrayList<Note> findByEval(int idEvaluation) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT n.id_evaluation, n.id_note, n.note, n.commentaire, p.id_personne, p.nom, p.prenom, e.intitule  FROM evaluation AS e"
+                + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation"
+                + " INNER JOIN personne p ON n.id_personne = p.id_personne"
+                + " WHERE n.id_evaluation = ?;";
+        PreparedStatement PreparedStatement = connection.prepareStatement(sql);
+        ArrayList<Note> lesNotes = new ArrayList();
+        PreparedStatement.setInt(1, idEvaluation);
+        ResultSet resultat = PreparedStatement.executeQuery();
+        while (resultat.next()) {
+            
+            Personne p = new Personne();
+            p.setId(resultat.getInt("p.id_personne"));
+            p.setNom(resultat.getString("p.nom"));
+            p.setPrenom(resultat.getString("p.prenom"));
+
+            Evaluation e = new Evaluation();
+            e.setIdEvaluation(resultat.getInt("n.id_evaluation"));
+            e.setIntitule(resultat.getString("e.intitule"));
+            
+            Note n = new Note(
+                    resultat.getInt("n.id_note"),
+                    resultat.getDouble("n.note"),
+                    resultat.getString("n.commentaire"));
+            n.setEtudiant(p);
+            n.setEvaluation(e);
+            lesNotes.add(n);
+        }
+        return lesNotes;
+    }
+
 }
