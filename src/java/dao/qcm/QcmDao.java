@@ -23,6 +23,9 @@ import model.Question;
 public class QcmDao implements QcmHome<Qcm> {
 
     private Connection connection;
+    private static String SQL_DELETE_QUESTION = "DELETE FROM question WHERE id_qcm = ?";
+    private static String SQL_DELETE_CHOIX = "DELETE FROM choix WHERE id_question = ?";
+    private static String SQL_DELETE_QCM = "DELETE FROM qcm WHERE id_qcm = ?";
 
     @Override
     public ArrayList<Qcm> findAll() throws SQLException {
@@ -93,7 +96,36 @@ public class QcmDao implements QcmHome<Qcm> {
 
     @Override
     public boolean delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        connection.setAutoCommit(false);
+        PreparedStatement preparedStatement = null;
+        boolean delete = false;
+        QuestionDao questionDao = new QuestionDao();
+        ArrayList<Question> lesQuestions = questionDao.findAll(id);
+
+        try {
+            if (!lesQuestions.isEmpty()) {
+                for (Question laQuestion : lesQuestions) {
+                    if (laQuestion.getLesChoix() != null) {
+                        int idQuestion = laQuestion.getIdQuestion();
+                        preparedStatement = initialisationRequetePreparee(connection, SQL_DELETE_CHOIX, false, idQuestion);
+                        preparedStatement.executeUpdate();
+                    }
+                }
+                preparedStatement = initialisationRequetePreparee(connection, SQL_DELETE_QUESTION, false, id);
+                preparedStatement.executeUpdate();
+            }
+            preparedStatement = initialisationRequetePreparee(connection, SQL_DELETE_QCM, false, id);
+            preparedStatement.executeUpdate();
+            delete = true;
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+            fermeturesSilencieuses(preparedStatement, connection);
+        }
+        return delete;
     }
 
     @Override

@@ -164,7 +164,16 @@ body {
 .red {
     color: #e73036;
 }
+.grey {
+    color: #41d41c;
+}
 
 .score {
     color: white;
+}
+
+#rcorners2 {
+    border-radius: 25px;
+    border: 2px solid #000000;
+     
 }
