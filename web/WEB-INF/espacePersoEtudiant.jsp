@@ -14,7 +14,7 @@
         </div>
             <div id="donnees-ecriture" style="display:none;">
              <table class="table">
-                 <form class="form-horizontal">
+                 <form class="form-horizontal" method="post">
                 <tr> 
                     <td>
                         <label for="prenom">Prénom </label>
@@ -84,8 +84,6 @@
 </div>
 <br>    
 
- <a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').show()">Afficher toute mes notes</a>
-
 <!--<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
 
  <div id="demo" class="collapse"> -->
@@ -112,11 +110,6 @@
     </table>    
 </div>
 
-<a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').show()">Afficher toutes mes notes...</a> 
-<a href="javascript:$('#donnees-ecriture-note').hide(); $('#donnees-lecture-note').show()">Réduire</a> <br>
-<br>
-
-
 <div id="donnees-ecriture-note" style="display:none;">
     <table class="table">	
         <tr>
@@ -139,6 +132,10 @@
         </c:forEach>
     </table>
 </div>
+
+<a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').fadeIn('slow').show()">Afficher toutes mes notes...</a> 
+<a href="javascript:$('#donnees-ecriture-note').hide(); $('#donnees-lecture-note').fadeIn('slow').show()">Réduire</a> <br>
+<br>
 
 <div id="donnees-lecture-projet">
     <table class="table">	
@@ -184,7 +181,7 @@
     </table>
 </div>
 
-<a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').show()">Afficher tous mes projets..</a> 
-<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').show()">Réduire</a> <br>
+<a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
+<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br>
 
 </div>

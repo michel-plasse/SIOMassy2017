@@ -48,16 +48,35 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
     String no_phone = request.getParameter("no_phone");
     String email = request.getParameter("email");
     
+     if (nom.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("nom", "Veuillez entrer votre nom.");
+            System.out.println("Rentre dans if condition");
+        }
+        if (prenom.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("prenom", "Veuillez entrer votre pr�nom.");
+        }
+        if (email.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("email", "Veuillez entrer votre email.");
+        }
+       
+    
      if (champsrenseignes) {
             try {
-                Personne personneAjoutee = new Personne(nom, prenom, no_rue, nom_rue, code_postal, ville,
-                        pays, no_phone, email);
-                PersonneDao dao = new PersonneDao();             
-                dao.update(user.getId(), personneAjoutee);
+//                Personne personneAjoutee = new Personne(nom, prenom, no_rue, nom_rue, code_postal, ville,
+//                        pays, no_phone, email);
+                PersonneDao dao = new PersonneDao();
+                user.setNo_tel(request.getParameter("no_phone"));
+                
+                dao.update(user.getId(), user);
                 } catch (SQLException e) {
-                request.setAttribute("message", "Pb avec la base de données");
+                request.setAttribute("message", e.getMessage());
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
             }}
+     
+            response.sendRedirect("espacePersoEtudiant");
     
     }
 
