@@ -34,6 +34,8 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    HttpSession maSession = request.getSession(true);
+    Personne user = (Personne) maSession.getAttribute("user");
     boolean champsrenseignes = true;
     
     String nom = request.getParameter("nom");
@@ -45,6 +47,18 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
     String pays = request.getParameter("pays");
     String no_phone = request.getParameter("no_phone");
     String email = request.getParameter("email");
+    
+     if (champsrenseignes) {
+            try {
+                Personne personneAjoutee = new Personne(nom, prenom, no_rue, nom_rue, code_postal, ville,
+                        pays, no_phone, email);
+                PersonneDao dao = new PersonneDao();             
+                dao.update(user.getId(), personneAjoutee);
+                } catch (SQLException e) {
+                request.setAttribute("message", "Pb avec la base de données");
+                request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+            }}
+    
     }
 
         

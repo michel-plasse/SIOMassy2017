@@ -84,10 +84,40 @@
 </div>
 <br>    
 
-<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
+ <a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').show()">Afficher toute mes notes</a>
 
-<div id="demo" class="collapse">
+<!--<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
 
+ <div id="demo" class="collapse"> -->
+<div id="donnees-lecture-note">
+     <table class="table">	
+        <tr>
+            <th>Date</th>
+            <th>Module</th>
+            <th>formateur</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+
+        </tr>
+        <c:forEach items="${lesNotes}" var="laNote" end="1">
+            <tr>
+
+                <td>${laNote.evaluation.dateDebutEval}</td>
+                <td>${laNote.evaluation.leModule.nom}</td> 
+                <td><a href="espacePersoFormateur?id=${laNote.evaluation.leFormateur.id}">${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</a></td>           
+                <td>${laNote.note}</td>
+                <td>${laNote.commentaire}</td>
+            </tr>  
+        </c:forEach>
+    </table>    
+</div>
+
+<a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').show()">Afficher toutes mes notes...</a> 
+<a href="javascript:$('#donnees-ecriture-note').hide(); $('#donnees-lecture-note').show()">Réduire</a> <br>
+<br>
+
+
+<div id="donnees-ecriture-note" style="display:none;">
     <table class="table">	
         <tr>
             <th>Date</th>
@@ -110,9 +140,7 @@
     </table>
 </div>
 
-<a href="#demo1" data-toggle="collapse">Mes Projets</a> 
-
-<div id="demo1" class="collapse">
+<div id="donnees-lecture-projet">
     <table class="table">	
 
         <tr>
@@ -133,4 +161,30 @@
         </c:forEach>
     </table>
 </div>
+
+<div id="donnees-ecriture-projet" style="display:none;">
+    <table class="table">	
+
+        <tr>
+            <th>Nom Projet</th>
+            <th>Date début</th>
+            <th>Date limite</th>
+            <th>Formateur</th>
+
+        </tr>
+        <c:forEach items="${lesProjets}" var="leProjet">
+            <tr>
+
+<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
+<td>${leProjet.dateCreation}</td> 
+<td>${leProjet.dateLimite}</td>           
+<td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
+            </tr>  
+        </c:forEach>
+    </table>
+</div>
+
+<a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').show()">Afficher tous mes projets..</a> 
+<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').show()">Réduire</a> <br>
+
 </div>
