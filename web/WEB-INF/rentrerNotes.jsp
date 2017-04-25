@@ -17,7 +17,7 @@
                     <input type="hidden" name="id" value="${n.id_note}"/>
                 </td>
                 <td>
-                    <input type="text" name="commentaire" value="${n.commentaire}"/>
+                    <input type="text" name="commentaire" style="height: 100px" class="form-control" placeholder="Veuillez rentrer le commentaire ici" value="${n.commentaire}"/>
                 </td>
             </tr>  
 

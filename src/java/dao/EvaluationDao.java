@@ -92,7 +92,23 @@ public class EvaluationDao implements EvaluationHome {
 
     @Override
     public ArrayList<Evaluation> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
+//        connection = ConnectionBd.getConnection();
+//        Statement canal = connection.createStatement();
+//        ArrayList<Evaluation> lesEvaluations = new ArrayList();
+//        ResultSet resultat = canal.executeQuery("SELECT id_evaluation, id_module, id_formateur, id_session, intitule, date_effet");
+//        while (!resultat.isLast()) {
+//            resultat.next();
+//            Evaluation e = new Evaluation(
+//                    resultat.getInt("id_evaluation"), 
+//                    resultat.getInt("id_module"),
+//                    resultat.getInt("id_formateur"), 
+//                    resultat.getInt("id_session"), 
+//                    resultat.getString("intitule"), 
+//                    resultat.getDate("date_effet")),
+//            lesEvaluations.add(e);
+//        }
+//        return lesEvaluations;
     }
 
     @Override
