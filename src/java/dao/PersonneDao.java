@@ -16,6 +16,12 @@ public class PersonneDao implements PersonneHome {
     public PersonneDao() {
     }
 
+    /**
+     * Permet d'insérer une personne dans la base de données
+     * 
+     * @param objet personne à insérer
+     * @throws SQLException 
+     */
     @Override
     public void insert(Personne personne) throws SQLException {
         try {
@@ -57,7 +63,11 @@ public class PersonneDao implements PersonneHome {
     }
 
     /**
-     * Personne de id donnée, ou null si pas trouvée.
+     * Renvoie la personne d'id donnée, ou null si pas trouvée.
+     * 
+     * @param id de la personne à trouver
+     * @return
+     * @throws SQLException
      */
     @Override
     public Personne findById(int id) throws SQLException {
@@ -82,6 +92,13 @@ public class PersonneDao implements PersonneHome {
         return result;
     }
 
+    /**
+     * Renvoie la liste de toutes les personnes
+     * dans la base de données
+     * 
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public ArrayList<Personne> findAll() throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -108,6 +125,14 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
 
+    /**
+     * Permet de changer les attributs d'une personne
+     * 
+     * @param id de la personne à mettre à jour
+     * @param objet personne qui va mettre à jour la personne sélectionnée
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean update(int ancien, Personne personne) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -194,6 +219,13 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
     
+    /**
+     * Renvoie la liste des personnes
+     * appartenant aux sessions
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Personne> findBySession() throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
@@ -238,6 +270,15 @@ public class PersonneDao implements PersonneHome {
 
     }
 
+    
+    /**
+     * Renvoie la liste de personnes
+     * appartenant à une session
+     * 
+     * @param id de la session
+     * @return 
+     * @throws SQLException 
+     */
     @Override
     public ArrayList<Personne> findBySession(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
