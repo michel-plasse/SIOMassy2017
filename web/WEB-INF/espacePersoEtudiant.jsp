@@ -84,10 +84,36 @@
 </div>
 <br>    
 
-<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
+ <a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').show()">Afficher toute mes notes</a>
 
-<div id="demo" class="collapse">
+<!--<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
 
+ <div id="demo" class="collapse"> -->
+<div id="donnees-lecture-note">
+     <table class="table">	
+        <tr>
+            <th>Date</th>
+            <th>Module</th>
+            <th>formateur</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+
+        </tr>
+        <c:forEach items="${lesNotes}" var="laNote">
+            <tr>
+
+                <td>${laNote.evaluation.dateDebutEval}</td>
+                <td>${laNote.evaluation.leModule.nom}</td> 
+                <td><a href="espacePersoFormateur?id=${laNote.evaluation.leFormateur.id}">${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</a></td>           
+                <td>${laNote.note}</td>
+                <td>${laNote.commentaire}</td>
+            </tr>  
+        </c:forEach>
+    </table>    
+</div>
+
+
+<div id="donnees-ecriture-note" style="display:none;">
     <table class="table">	
         <tr>
             <th>Date</th>
