@@ -41,8 +41,8 @@
                         </div>
                     </c:forEach>
                 </div>
-                <p><input type="submit" value='Envoyer un email aux personnes sélectionnées' class="toHide"></p>
-                <p><button type="button" onClick="window.print()" class="toHide">Imprimer le trombinoscope</button>
+                <p><input type="submit" value='Envoyer un email aux personnes sélectionnées' class="toHide btn btn-primary"></p>
+                <p><button type="button" onClick="window.print()" class="toHide btn btn-primary">Imprimer le trombinoscope</button>
             </form>
         </div>
 
