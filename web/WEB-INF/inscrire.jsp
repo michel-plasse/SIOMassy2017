@@ -1,9 +1,10 @@
   <p><span>${messageErreurValidation}</span></p>
+  <p><span style='color:#d9534f'>${message}</span></p>
 	<table border=0>
 		<form method="post">
 			<tr>
 				<td>E-mail : </td>
-				<td><input type="text" name="email" class='form-control'><span style='color:#d9534f'> ${email}</span></td>
+				<td><input type="text" name="email" class='form-control' value='<c:out value='${personne.email}'/>'><span style='color:#d9534f'> ${email}</span></td>
 			</tr>
 			<tr>
 				<td>Confirmation de l'e-mail : </td>
@@ -21,35 +22,35 @@
 
 			<tr>
 				<td>Nom : </td>
-				<td><input type="text" name="nom" class='form-control'><span style='color:#d9534f'> ${nom}</span></td>
+                                <td><input type="text" name="nom" class='form-control' value='<c:out value='${personne.nom}'/>'><span style='color:#d9534f'> ${nom}</span></td>
 			</tr>
 			<tr>
 				<td>Prénom : </td>
-				<td><input type="text" name="prenom" class='form-control'><span style='color:#d9534f'> ${prenom}</span></td>
+				<td><input type="text" name="prenom" class='form-control' value='<c:out value='${personne.prenom}'/>'><span style='color:#d9534f'> ${prenom}</span></td>
 			</tr>
                         
                         <tr>
 				<td>Téléphone : </td>
-				<td><input type="text" name="no_phone" class='form-control'><span style='color:#d9534f'> ${no_phone}</span></td>
+				<td><input type="text" name="no_phone" class='form-control' value='<c:out value='${personne.no_tel}'/>'><span style='color:#d9534f'> ${no_phone}</span></td>
 			</tr>
 
 				<td><h3>Adresse :</h1></td>
 			</tr>
 			<tr>
 				<td>Numéro : </td>
-				<td><input type="text" name="no_rue" class='form-control'></td>
+				<td><input type="text" name="no_rue" class='form-control' value='<c:out value='${personne.no_rue}'/>'></td>
 			</tr>
 			<tr>
 				<td>Rue : </td>
-				<td><input type="text" name="nom_rue" class='form-control'></td>
+				<td><input type="text" name="nom_rue" class='form-control' value='<c:out value='${personne.rue}'/>'></td>
 			</tr>
 			<tr>
 				<td>Code Postal : </td>
-				<td><input type="text" name="code_postal" class='form-control'></td>
+				<td><input type="text" name="code_postal" class='form-control' value='<c:out value='${personne.code_postal}'/>'></td>
 			</tr>
 			<tr>
 				<td>Ville : </td>
-				<td><input type="text" name="ville" class='form-control'></td>
+				<td><input type="text" name="ville" class='form-control' value='<c:out value='${personne.ville}'/>'></td>
 			</tr>
 			<tr>
 				<td>Pays : </td>
