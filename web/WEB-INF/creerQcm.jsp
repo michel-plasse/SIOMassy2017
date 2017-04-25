@@ -6,7 +6,7 @@
 <div>${message}</div>
 <h3>${qcm.intitule}</h3>
 <c:if test="${not empty qcm.lesQuestions}">
-    <div class="col-md-12" style="background-color: #c4c4c4" id="rcorners2">
+    <div class="col-md-12">
         <form method="post">
             <c:forEach items="${qcm.lesQuestions}" var="laQuestion">
                 <div class="col-md-8 col-md-offset-1">
@@ -14,16 +14,18 @@
                         <h4>${laQuestion.question}</h4>
                     </div><ul>
                         <c:forEach items="${laQuestion.lesChoix}" var="leChoix">
-                            <li <c:choose>
+                            <li style="list-style-type:none;" <c:choose>
                                     <c:when test="${leChoix.value.estCorrect}"> class="bg-success"</c:when>
                                     <c:when test="${!leChoix.value.estCorrect}">class="bg-danger"</c:when>
                                 </c:choose>>
-                                ${leChoix.value.libelle} ${leChoix.value.estCorrect}
+                                ${leChoix.value.libelle}
                             </li>
                         </c:forEach>
                     </ul></div>
                 <div class="col-md-2">
-                    <button type="submit" value="${laQuestion.idQuestion}" name="supprimerQuestion">Supprimer la question</button>
+                    <c:if test="${!qcm.valide}">
+                        <button type="submit" value="${laQuestion.idQuestion}" name="supprimerQuestion">Supprimer la question</button>
+                    </c:if>
                 </div>
             </c:forEach>
         </form>

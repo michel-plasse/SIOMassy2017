@@ -149,5 +149,25 @@ public class EvaluationDao implements EvaluationHome {
         }
         return lesNotes;
     }
-
+    public ArrayList<Evaluation> findEvalANoterFormateur(int idFormateur) throws SQLException {
+        ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation e"
+                + " INNER JOIN session_formation s ON e.id_session = s.id_session "
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet <= NOW() AND s.date_debut < NOW() < s.date_fin AND s.est_ouverte = 0 ;");
+        while (res.next()) {
+            Evaluation eval = new Evaluation(
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
+            lesEvalDuFormateur.add(eval);
+        }
+        return lesEvalDuFormateur;
+    }
 }

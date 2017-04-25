@@ -15,7 +15,11 @@
             <td><c:out value="${unQcm.intitule}" /></td>
             <td><c:choose>
                     <c:when test="${unQcm.valide}">est terminé</c:when>
-                    <c:when test="${!unQcm.valide}">pas terminé</c:when>
+                    <c:when test="${!unQcm.valide}">
+                        <form method="post">
+                            <button type="submit" value="${unQcm.idQcm}" name="valider">valider</button>
+                        </form>
+                    </c:when>
                 </c:choose>
             </td>
             <td><a href="<c:url value="CreerQcm"><c:param name="idQcm" value="${unQcm.idQcm}"/></c:url>">

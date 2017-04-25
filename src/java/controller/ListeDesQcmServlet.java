@@ -121,34 +121,16 @@ public class ListeDesQcmServlet extends HttpServlet {
         } else {
             //si clique sur supprimer qcm
             if (request.getParameter("supprimer") != null) {
-                
-                int idQcm = Integer.parseInt(request.getParameter("supprimer"));
-                System.out.println("clique sur supprimmer qcm");
-                try {
-                    QcmDao qcmDao = new QcmDao();
-                    qcmDao.delete(idQcm);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                response.sendRedirect("ListeDesQcmServlet");
+                supprimer(request, response);
+            }
+
+            // si clique sur valider
+            if (request.getParameter("valider") != null) {
+                valider(request, response);
             }
             //si clique sur creer Qcm
             if (request.getParameter("creer") != null) {
-                QcmDao qcmDao = new QcmDao();
-                int idModule = Integer.parseInt(request.getParameter("idModule"));
-                String intituleQcm = request.getParameter("intitule");
-                Qcm nouveauQcm = new Qcm();
-                nouveauQcm.setIntitule(intituleQcm);
-                nouveauQcm.setValide(false);
-                int idGenere = -1;
-
-                try {
-                    idGenere = qcmDao.insert(user.getId(), idModule, nouveauQcm);
-                    System.out.println("nouveau qcm créé !");
-                } catch (SQLException ex) {
-                    Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                response.sendRedirect(this.getServletContext().getContextPath() + "/CreerQcm?idQcm=" + idGenere);
+                creer(request, response, user);
             }
 
         }
@@ -164,5 +146,52 @@ public class ListeDesQcmServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void supprimer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idQcm = Integer.parseInt(request.getParameter("supprimer"));
+        System.out.println("clique sur supprimmer qcm");
+        try {
+            QcmDao qcmDao = new QcmDao();
+            qcmDao.delete(idQcm);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("ListeDesQcmServlet");
+    }
+
+    private void valider(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        QcmDao qcmDao = new QcmDao();
+        int idQcm = Integer.parseInt(request.getParameter("valider"));
+        boolean confirmation = false;
+        try {
+            confirmation = qcmDao.rendValideQcm(idQcm);
+            System.out.println("validation du qcm :" + idQcm + " " + confirmation);
+            response.sendRedirect("ListeDesQcmServlet");
+        } catch (Exception exc) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, exc);
+            request.setAttribute("message", exc.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
+
+    private void creer(HttpServletRequest request, HttpServletResponse response, Personne user) throws IOException, ServletException {
+        QcmDao qcmDao = new QcmDao();
+        int idModule = Integer.parseInt(request.getParameter("idModule"));
+        String intituleQcm = request.getParameter("intitule");
+        Qcm nouveauQcm = new Qcm();
+        nouveauQcm.setIntitule(intituleQcm);
+        nouveauQcm.setValide(false);
+        int idGenere = -1;
+
+        try {
+            idGenere = qcmDao.insert(user.getId(), idModule, nouveauQcm);
+            System.out.println("nouveau qcm créé !" + idGenere);
+            response.sendRedirect(this.getServletContext().getContextPath() + "/CreerQcm?idQcm=" + idGenere);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
 
 }
