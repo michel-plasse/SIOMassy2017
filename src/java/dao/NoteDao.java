@@ -95,7 +95,7 @@ public class NoteDao implements NoteHome {
 
     /**
      * 
-     * @param id de la personne dont on cherche la note
+     * @param id
      * @return
      * @throws SQLException 
      */
