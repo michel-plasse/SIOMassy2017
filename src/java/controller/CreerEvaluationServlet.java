@@ -119,7 +119,8 @@ public class CreerEvaluationServlet extends HttpServlet {
             Logger.getLogger(CreerEvaluationServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        request.getRequestDispatcher("/WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
+        response.sendRedirect("espacePersoFormateur");
+        //request.getRequestDispatcher("/WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
         
         // Verifier que les données sont correctes
         // Appeler le DAO.insert

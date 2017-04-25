@@ -47,7 +47,7 @@ public class CreerQcmServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreerQcmServlet</title>");            
+            out.println("<title>Servlet CreerQcmServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CreerQcmServlet at " + request.getContextPath() + "</h1>");
@@ -67,6 +67,8 @@ public class CreerQcmServlet extends HttpServlet {
             request.setAttribute("qcm", qcm);
         } catch (SQLException ex) {
             Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", "la question ne peux pas être supprimée le Qcm est validé" + ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
         }
         this.getServletContext().getRequestDispatcher("/WEB-INF/creerQcm.jsp").forward(request, response);
     }
@@ -74,31 +76,55 @@ public class CreerQcmServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String question = request.getParameter("question");
-        HashMap<Integer,Choix> lesChoix = new HashMap<>();
-        Choix reponse1 = new Choix(request.getParameter("reponse1"), true);
-        Choix reponse2 = new Choix(request.getParameter("reponse2"), true);
-        Choix reponse3 = new Choix(request.getParameter("reponse3"), true);
-        Choix reponse4 = new Choix(request.getParameter("reponse4"), true);
-        lesChoix.put(1,reponse1);
-        lesChoix.put(2,reponse2);
-        lesChoix.put(3,reponse3);
-        lesChoix.put(4,reponse4);
-        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
-        Question laQuestion = new Question(question, lesChoix);
+
         QuestionDao questionDao = new QuestionDao();
-        
-        try {
-            
-            questionDao.insert(idQcm, laQuestion);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
+
+        //si boutton supprimé est cliqué
+        if (request.getParameter("supprimerQuestion") != null) {
+            int idQuestion = Integer.parseInt(request.getParameter("supprimerQuestion"));
+            System.out.println(idQuestion);
+
+            try {
+                questionDao.delete(idQuestion);
+                response.sendRedirect("CreerQcm?idQcm=" + idQcm);
+            } catch (SQLException ex) {
+                Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        
-        
-        
-        
+
+        //si boutton creer est cliqué
+        if (request.getParameter("creer") != null) {
+            String question = request.getParameter("question");
+
+            HashMap<Integer, Choix> lesChoix = new HashMap<>();
+
+            for (int i = 1; i < 5; i++) {
+                System.out.println("reponse " + i + " : " + request.getParameter("reponse" + i));
+                Choix reponse = new Choix(request.getParameter("reponse" + i), (request.getParameter("valide").equals(i + "")) ? true : false);
+                if (reponse.getLibelle() != null && !reponse.getLibelle().equals("")) {
+                    lesChoix.put(i, reponse);
+                }
+            }
+
+            if (lesChoix.size() >= 2 && !question.isEmpty()) {
+                Question laQuestion = new Question(question, lesChoix);
+                try {
+
+                    questionDao.insert(idQcm, laQuestion);
+                    response.sendRedirect("CreerQcm?idQcm=" + idQcm);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    request.setAttribute("message", "Pb avec bd : " + ex.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("message", "les champs ne sont pas remplis , il faut au moins deux reponses par question ");
+                request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+            }
+        }
+
     }
 
     @Override

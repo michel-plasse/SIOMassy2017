@@ -102,7 +102,7 @@ public class InscrireServlet extends HttpServlet {
 //              out.print(personneAjoutee.getEmail() +" : "+ personneAjoutee.getToken());
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
-                request.setAttribute("message", "Pb avec la base de données");
+                request.setAttribute("message", e);
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
             }}
         

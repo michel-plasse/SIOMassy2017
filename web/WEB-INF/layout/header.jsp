@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
+        <link rel="stylesheet" type="text/css" media="print" href="<c:url value="/inc/css/print.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
     </head>
 
@@ -50,7 +51,7 @@
                                     <a href="<c:url value="/espacePersoEtudiant" />">Espace Personnel</a>
                                 </c:if>
                                 <c:if test="${user.est_formateur eq true}">
-                                    <a href="<c:url value="/EspacePersoFormateur" />">Espace Personnel</a>
+                                    <a href="<c:url value="/espacePersoFormateur" />">Espace Personnel</a>
                                 </c:if></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
