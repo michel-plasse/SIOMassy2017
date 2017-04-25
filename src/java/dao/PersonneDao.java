@@ -156,6 +156,13 @@ public class PersonneDao implements PersonneHome {
         return false;
     }
 
+    /**
+     * Supprime une personne d'id donnée dans la base de données
+     * 
+     * @param id de la personne à supprimer
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean delete(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -201,6 +208,12 @@ public class PersonneDao implements PersonneHome {
         return result;
     }
     
+    /**
+     * Renvoie une liste de personnes inscrits
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Personne> findByEtat() throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
@@ -246,6 +259,12 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
 
+    /**
+     * 
+     * @param token
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public int findIdFromToken(String token) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -257,7 +276,13 @@ public class PersonneDao implements PersonneHome {
         }
         return -1;
     }
-
+    
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean activeUser(int id) throws SQLException {
         connection = ConnectionBd.getConnection();

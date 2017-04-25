@@ -16,6 +16,13 @@ import model.TokenGenerator;
 
 public class PersonneDaoTest {
 
+    @Before
+    public void resetDB() throws SQLException {
+        Connection connection = ConnectionBd.getConnection();
+        CallableStatement stmt = connection.prepareCall("CALL agriotes2017_reset()");
+        stmt.executeUpdate();
+    }
+
     @Test
     public void testFindById() throws SQLException {
         PersonneDao dao = new PersonneDao();
@@ -44,13 +51,6 @@ public class PersonneDaoTest {
         assertEquals(110, instance.getId());
         Personne result = dao.findById(110);
         assertEquals(instance, result);
-    }
-
-    @Before
-    public void resetDB() throws SQLException {
-        Connection connection = ConnectionBd.getConnection();
-        CallableStatement stmt = connection.prepareCall("CALL agriotes2017_reset()");
-        stmt.executeUpdate();
     }
 
     public void testFindAll() throws Exception {
