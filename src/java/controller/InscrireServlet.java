@@ -23,11 +23,13 @@ public class InscrireServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         boolean champsrenseignes = true;
@@ -62,7 +64,7 @@ public class InscrireServlet extends HttpServlet {
             champsrenseignes = false;
             request.setAttribute("prenom", "Veuillez entrer votre prénom.");
         }
-        if (no_phone.isEmpty()) {
+        if (no_phone.isEmpty()){
             champsrenseignes = false;
             request.setAttribute("no_phone", "Veuillez entrer votre numéro de téléphone.");
         }
@@ -99,17 +101,18 @@ public class InscrireServlet extends HttpServlet {
                 PersonneDao dao = new PersonneDao();
                 TokenGenerator token = new TokenGenerator();
                 personneAjoutee.setToken(token.Token());
-                request.setAttribute("leToken", personneAjoutee.getToken());             
+                request.setAttribute("leToken", personneAjoutee.getToken());
                 dao.insert(personneAjoutee);
-              //  envoyerMail(personneAjoutee);
+                //  envoyerMail(personneAjoutee);
 //              PrintWriter out = response.getWriter();
 //              out.print(personneAjoutee.getEmail() +" : "+ personneAjoutee.getToken());
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
                 request.setAttribute("message", e.getMessage());
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
-            }}
-        
+            }
+        }
+
         /*
              catch (MessagingException exc) {
                 request.setAttribute("message", "Votre inscription est enregistrée, mais pb pour vous le confirmer par mail");
@@ -118,9 +121,8 @@ public class InscrireServlet extends HttpServlet {
         } else {
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
         }*/
-
     }
-        //Abandon de la solution mail cause proxy.
+    //Abandon de la solution mail cause proxy.
     /*public void envoyerMail(Personne personne) throws MessagingException {
         String from = "greta@gmail.com";
         String to = personne.getEmail();

@@ -3,57 +3,57 @@
 		<form method="post">
 			<tr>
 				<td>E-mail : </td>
-				<td><input type="text" name="email"><span> ${email}</span></td>
+				<td><input type="text" name="email" class='form-control'><span style='color:#d9534f'> ${email}</span></td>
 			</tr>
 			<tr>
 				<td>Confirmation de l'e-mail : </td>
-				<td><input type="text" name="email2"><span> ${email2}</span></td>
+				<td><input type="text" name="email2" class='form-control'><span style='color:#d9534f'> ${email2}</span></td>
 			</tr>
 
 			<tr>
 				<td>Mot de passe : </td>
-				<td><input type="password" name="password"><span> ${password}</span></td>
+				<td><input type="password" name="password" class='form-control'><span style='color:#d9534f'> ${password}</span></td>
 			</tr>
 			<tr>
 				<td>Confirmation du mot de passe : </td>
-				<td><input type="password" name="password2"><span> ${password2}</span></td>
+				<td><input type="password" name="password2" class='form-control'><span style='color:#d9534f'> ${password2}</span></td>
 			</tr>
 
 			<tr>
 				<td>Nom : </td>
-				<td><input type="text" name="nom"><span> ${nom}</span></td>
+				<td><input type="text" name="nom" class='form-control'><span style='color:#d9534f'> ${nom}</span></td>
 			</tr>
 			<tr>
 				<td>Prénom : </td>
-				<td><input type="text" name="prenom"><span> ${prenom}</span></td>
+				<td><input type="text" name="prenom" class='form-control'><span style='color:#d9534f'> ${prenom}</span></td>
 			</tr>
                         
                         <tr>
 				<td>Téléphone : </td>
-				<td><input type="text" name="no_phone"></td>
+				<td><input type="text" name="no_phone" class='form-control'><span style='color:#d9534f'> ${no_phone}</span></td>
 			</tr>
 
 				<td><h3>Adresse :</h1></td>
 			</tr>
 			<tr>
 				<td>Numéro : </td>
-				<td><input type="text" name="no_rue"></td>
+				<td><input type="text" name="no_rue" class='form-control'></td>
 			</tr>
 			<tr>
 				<td>Rue : </td>
-				<td><input type="text" name="nom_rue"></td>
+				<td><input type="text" name="nom_rue" class='form-control'></td>
 			</tr>
 			<tr>
 				<td>Code Postal : </td>
-				<td><input type="text" name="code_postal"></td>
+				<td><input type="text" name="code_postal" class='form-control'></td>
 			</tr>
 			<tr>
 				<td>Ville : </td>
-				<td><input type="text" name="ville"></td>
+				<td><input type="text" name="ville" class='form-control'></td>
 			</tr>
 			<tr>
 				<td>Pays : </td>
-				<td><select name="pays">
+				<td><select name="pays" class='form-control'>
 						<option value="France" selected="selected">France</option>
                                                 <option value='OutreMer'>Outre-Mer</option>
 						<option value="AutreEurope">Autre pays (Europe)</option>
@@ -65,7 +65,7 @@
 			</tr>
 
 			<tr>
-				<td><button type="submit">S'inscrire</button></td>
+				<td><button type="submit" class='btn btn-success'>S'inscrire</button></td>
 			</tr>
 		</form>
 	</table>
