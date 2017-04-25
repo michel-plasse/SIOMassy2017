@@ -48,27 +48,38 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
     String no_phone = request.getParameter("no_phone");
     String email = request.getParameter("email");
     
-     if (nom.isEmpty()) {
+        if (nom.isEmpty()) {
             champsrenseignes = false;
             request.setAttribute("nom", "Veuillez entrer votre nom.");
             System.out.println("Rentre dans if condition");
         }
         if (prenom.isEmpty()) {
             champsrenseignes = false;
-            request.setAttribute("prenom", "Veuillez entrer votre pr�nom.");
+            request.setAttribute("prenom", "Veuillez entrer votre prénom.");
         }
         if (email.isEmpty()) {
             champsrenseignes = false;
             request.setAttribute("email", "Veuillez entrer votre email.");
         }
+        if (no_phone.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("no_phone", "Veuillez entrer votre numéro de téléphone.");
+        }
        
     
      if (champsrenseignes) {
             try {
-//                Personne personneAjoutee = new Personne(nom, prenom, no_rue, nom_rue, code_postal, ville,
-//                        pays, no_phone, email);
+
                 PersonneDao dao = new PersonneDao();
+                user.setNo_tel(request.getParameter("nom"));
+                user.setNo_tel(request.getParameter("prenom"));
+                user.setNo_tel(request.getParameter("no_rue"));
+                user.setNo_tel(request.getParameter("nom_rue"));
+                user.setNo_tel(request.getParameter("code_postal"));
+                user.setNo_tel(request.getParameter("ville"));
+                user.setNo_tel(request.getParameter("pays"));
                 user.setNo_tel(request.getParameter("no_phone"));
+                user.setNo_tel(request.getParameter("email"));
                 
                 dao.update(user.getId(), user);
                 } catch (SQLException e) {
