@@ -19,13 +19,13 @@
         <div id="display-box1">
             <div>
                 Sessions
-                <div id="boiteParDefaut">
+                <div class="boiteParDefaut">
                     Liste sessions
                 </div>
             </div>
             <div>
                 Projets
-                <div id="boiteParDefaut">
+                <div class="boiteParDefaut">
                     Liste projets
                 </div>
             </div>
@@ -33,29 +33,56 @@
         <div id="display-box2">
             <div>
                 Evaluations non passées
-                <div id="boiteParDefaut">
-                     <table class="table">	
-                        <c:forEach items="${requestScope.lesQcm}" var="unQcm">
+                <div class="boiteParDefaut">
+                    <table class="table">
+                        <tr>
+                            <th>Date de passage</th>
+                            <th>Intitulé évaluation</th>
+                        </tr> 
+                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
                             <tr>
-                                <td><c:out value="${unQcm.intitule}" /></td>
-                                
+                                <td><c:out value="${uneEval.dateDebutEval}" /></td>
+                                <td><c:out value="${uneEval.intitule}" /></td>
                             </tr>
                         </c:forEach>
                     </table>
                 </div>
-                <a href="<c:url value="/CreerEvaluationServlet"/>">Nouvelle évaluation</a>
+                <a href="<c:url value="/creerEvaluation"/>">Nouvelle évaluation</a>
             </div>
             <div>
                 Evaluations non corrigées
-                <div id="boiteParDefaut">
-                    Liste évaluation non corrigées
+                <div class="boiteParDefaut">
+                    <table class="table">
+                        <tr>
+                            <th>Date de passage</th>
+                            <th>Intitulé évaluation</th>
+                        </tr> 
+                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
+                            <tr>
+                                <td><c:out value="${uneEval.dateDebutEval}" /></td>
+                                <td><c:out value="${uneEval.intitule}" /></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
                 <a href="<c:url value="/ListeDesQcmServlet"/>">Voir mes Qcm</a>
             </div>
             <div>
                 Evaluations notées
-                <div id="boiteParDefaut">
-                    Liste évaluations notées
+                <div class="boiteParDefaut">
+                    <table class="table">
+                        <tr>
+                            <th>Date de passage</th>
+                            <th>Intitulé évaluation</th>
+                            <th>Note moyenne</th>
+                        </tr> 
+                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
+                            <tr>
+                                <td><c:out value="${uneEval.dateDebutEval}" /></td>
+                                <td><c:out value="${uneEval.intitule}" /></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>    

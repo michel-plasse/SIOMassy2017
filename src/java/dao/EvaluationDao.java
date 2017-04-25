@@ -104,7 +104,7 @@ public class EvaluationDao implements EvaluationHome {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
-                + "WHERE id_formateur = " + idFormateur + " AND date_effet > NOW() ;");
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet >= NOW() ;");
         while (res.next()) {
             Evaluation eval = new Evaluation(
                     moduleDao.findById(res.getInt("id_module")),

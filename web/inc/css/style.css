@@ -127,28 +127,26 @@ body {
 
 #display-box1{
     display: flex;
-    padding: 15px 0px 15px 0px;
-    justify-content: space-between;
-    width: 420px;
+    margin: 15px 0px 15px 0px;
 }
 
 #display-box2{
     display: flex;
-    padding: 15px 0px 15px 0px;
-    justify-content: space-between;
-    width: 640px;
+    margin: 15px 0px 15px 0px;
 }
 
 #formateur-formBox{
-    padding-right: 15px;
+    margin-right: 15px;
     height: 100px;
 }
 
-#boiteParDefaut{
-    width: 200px;
+.boiteParDefaut{
+    display: flex;
+    min-width: 200px;
     height: 100px;
     border: 1px solid black;
-    padding: 15px;
+    margin: 0px 30px 0px 0px;
+    overflow: auto;
 }
 
 /********* STYLE PAGES QCM **********/
@@ -164,7 +162,16 @@ body {
 .red {
     color: #e73036;
 }
+.grey {
+    color: #41d41c;
+}
 
 .score {
     color: white;
+}
+
+#rcorners2 {
+    border-radius: 25px;
+    border: 2px solid #000000;
+     
 }
