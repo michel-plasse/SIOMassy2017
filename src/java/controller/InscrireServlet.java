@@ -60,7 +60,11 @@ public class InscrireServlet extends HttpServlet {
         }
         if (prenom.isEmpty()) {
             champsrenseignes = false;
-            request.setAttribute("prenom", "Veuillez entrer votre pr�nom.");
+            request.setAttribute("prenom", "Veuillez entrer votre prénom.");
+        }
+        if (no_phone.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("no_phone", "Veuillez entrer votre numéro de téléphone.");
         }
         if (email.isEmpty()) {
             champsrenseignes = false;
@@ -102,7 +106,7 @@ public class InscrireServlet extends HttpServlet {
 //              out.print(personneAjoutee.getEmail() +" : "+ personneAjoutee.getToken());
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
-                request.setAttribute("message", e);
+                request.setAttribute("message", e.getMessage());
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
             }}
         
