@@ -50,14 +50,21 @@
                 <tr>
                     <td>
                         <label>Pays</label>
-                        <select class="form-control">
-                            <option value="France" selected="selected">France</option>
+                        <select class="form-control" name='pays'>
+                            <c:forEach items="${lesPays}" var="pays">
+                                <c:set var="selected" value=""/>
+                                <c:if test="${pays eq user.pays}">
+                                    <c:set var="selected" value="selected"/>
+                                </c:if>
+                                <option value="${pays}" ${selected}>${pays}</option>
+                            </c:forEach>
+<!--                            <option value="France" >France</option>
                             <option value='OutreMer'>Outre-Mer</option>
                             <option value="AutreEurope">Autre pays (Europe)</option>
                             <option value="AutreAfrique">Autre pays (Afrique)</option>
                             <option value='AutreAsie'>Autre pays (Asie)</option>
                             <option value='AutreAmérique'>Autre pays (Amérique)</option>
-                            <option value='AutreOcéanie'>Autre pays (Océanie)</option>
+                            <option value='AutreOcéanie'>Autre pays (Océanie)</option>-->
                         </select>
                     </td>
                 </tr>
