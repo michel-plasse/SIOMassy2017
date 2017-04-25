@@ -137,8 +137,9 @@ public class PersonneDao implements PersonneHome {
     public boolean update(int ancien, Personne personne) throws SQLException {
         connection = ConnectionBd.getConnection();
             // Commencer une transaction
-            String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?) WHERE id_personne = "+ ancien + ";";
+            String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?"
+                    + " WHERE id_personne = "+ ancien + ";";
+            try{
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -152,6 +153,10 @@ public class PersonneDao implements PersonneHome {
             stmt.setString(10, personne.getNo_tel());
             stmt.setString(11, personne.getPhoto());
             stmt.executeUpdate();
+            }catch(SQLException e) {
+                System.err.println("problème modification des infos de l'utilisateur");
+                throw e;
+            }
 
         return false;
     }
