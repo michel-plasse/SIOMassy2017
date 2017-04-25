@@ -62,14 +62,14 @@ public class QcmDao implements QcmHome<Qcm> {
                     PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
 
                     for (Question uneQuestion : nouveauQcm.getLesQuestions()) {
-                        preparedStatementQuestion.setInt(1, resQcm.getInt("id_qcm"));
+                        preparedStatementQuestion.setInt(1, idGenere);
                         preparedStatementQuestion.setString(2, uneQuestion.getQuestion());
                         preparedStatementQuestion.executeUpdate();
                         resQuest = preparedStatementQuestion.getGeneratedKeys();
 
                         if (resQuest.next()) {
                             for (Choix unChoix : uneQuestion.getLesChoix().values()) {
-                                preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
+                                preparedStatementChoix.setInt(1, resQuest.getInt(1));
                                 preparedStatementChoix.setString(2, unChoix.getLibelle());
                                 preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
                                 preparedStatementChoix.executeUpdate();
@@ -328,5 +328,22 @@ public class QcmDao implements QcmHome<Qcm> {
             fermeturesSilencieuses(res, preparedStatement, connection);
         }
         return lesQcm;
+    }
+    public boolean rendValideQcm(int idQcm) throws SQLException{
+        boolean status = false;
+        connection = ConnectionBd.getConnection();
+        String sql = "UPDATE qcm SET valide = 1 WHERE id_qcm = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = initialisationRequetePreparee(connection, sql, false,idQcm);
+            preparedStatement.executeUpdate();
+            status = true;
+        } catch (Exception e) {
+            System.out.println("Probleme de ");
+            throw e;
+        }finally{
+            fermeturesSilencieuses(preparedStatement, connection);
+        }
+        return status;
     }
 }

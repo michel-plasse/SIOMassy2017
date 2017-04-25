@@ -92,7 +92,23 @@ public class EvaluationDao implements EvaluationHome {
 
     @Override
     public ArrayList<Evaluation> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
+//        connection = ConnectionBd.getConnection();
+//        Statement canal = connection.createStatement();
+//        ArrayList<Evaluation> lesEvaluations = new ArrayList();
+//        ResultSet resultat = canal.executeQuery("SELECT id_evaluation, id_module, id_formateur, id_session, intitule, date_effet");
+//        while (!resultat.isLast()) {
+//            resultat.next();
+//            Evaluation e = new Evaluation(
+//                    resultat.getInt("id_evaluation"), 
+//                    resultat.getInt("id_module"),
+//                    resultat.getInt("id_formateur"), 
+//                    resultat.getInt("id_session"), 
+//                    resultat.getString("intitule"), 
+//                    resultat.getDate("date_effet")),
+//            lesEvaluations.add(e);
+//        }
+//        return lesEvaluations;
     }
 
     @Override
@@ -149,5 +165,25 @@ public class EvaluationDao implements EvaluationHome {
         }
         return lesNotes;
     }
-
+    public ArrayList<Evaluation> findEvalANoterFormateur(int idFormateur) throws SQLException {
+        ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation e"
+                + " INNER JOIN session_formation s ON e.id_session = s.id_session "
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet <= NOW() AND s.date_debut < NOW() < s.date_fin AND s.est_ouverte = 0 ;");
+        while (res.next()) {
+            Evaluation eval = new Evaluation(
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
+            lesEvalDuFormateur.add(eval);
+        }
+        return lesEvalDuFormateur;
+    }
 }
