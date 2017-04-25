@@ -216,14 +216,13 @@ public class QcmDao implements QcmHome<Qcm> {
             idPassage = preparedStatement.getGeneratedKeys();
 
             if (idPassage.next()) {
-                String sqlChoix = "INSERT INTO reponse(id_question,id_passage_qcm,id_choix) VALUES (?,?,?)";
+                String sqlChoix = "INSERT INTO reponse(id_passage_qcm,id_choix) VALUES (?,?)";
                 PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
                 for (Question q : qcmRepsChoisies.getLesQuestions()) {
                     for (Choix c : q.getLesChoix().values()) {
                         if (c.isEstChoisi()) {
-                            preparedStatementChoix.setInt(1, q.getIdQuestion());
-                            preparedStatementChoix.setInt(2, idPassage.getInt(1));
-                            preparedStatementChoix.setInt(3, c.getIdChoix());
+                            preparedStatementChoix.setInt(1, idPassage.getInt(1));
+                            preparedStatementChoix.setInt(2, c.getIdChoix());
 
                             preparedStatementChoix.executeUpdate();
                         }

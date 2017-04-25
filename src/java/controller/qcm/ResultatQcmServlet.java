@@ -40,85 +40,75 @@ public class ResultatQcmServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
+        Personne user = (Personne) session.getAttribute("user");
+        String idQcmPasse = request.getParameter("id");
+        Integer idQcm = null;
 
-        if (session.getAttribute("user") != null) {
-            Personne user = (Personne) session.getAttribute("user");
-            String idQcmPasse = request.getParameter("id");
-            Integer idQcm = null;
+        try {
+            idQcm = Integer.parseInt(idQcmPasse);
+        } catch (NumberFormatException e) {
+            System.out.println("Erreur id QCM invalide");
+        }
+
+        if (idQcm != null) {
+            QcmDao qcmDao = new QcmDao();
+            int isAlreadyDone = -1;
 
             try {
-                idQcm = Integer.parseInt(idQcmPasse);
-            } catch (NumberFormatException e) {
-                System.out.println("Erreur id QCM invalide");
+                isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
+            } catch (SQLException ex) {
+                Logger.getLogger(ResultatQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            if (idQcm != null) {
-                QcmDao qcmDao = new QcmDao();
-                int isAlreadyDone = -1;
+            if (isAlreadyDone != -1) {
+                Qcm qcmPasse = null;
+                HashSet<Integer> lesChoix = null;
 
                 try {
-                    isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
+                    qcmPasse = qcmDao.findById(idQcm);
                 } catch (SQLException ex) {
-                    Logger.getLogger(ResultatQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                if (isAlreadyDone != -1) {
-                    System.out.println("je usis passe par la ! " + isAlreadyDone);
-                    Qcm qcmPasse = null;
-                    HashSet<Integer> lesChoix = null;
-
+                if (qcmPasse != null) {
                     try {
-                        qcmPasse = qcmDao.findById(idQcm);
+                        lesChoix = qcmDao.findAnsByIdPassage(user.getId(), qcmPasse.getIdQcm());
                     } catch (SQLException ex) {
-                        Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ResultatQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    if (qcmPasse != null) {
-                        try {
-                            lesChoix = qcmDao.findAnsByIdPassage(user.getId(), qcmPasse.getIdQcm());
-                        } catch (SQLException ex) {
-                            Logger.getLogger(ResultatQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                        if (lesChoix != null) {
-                            float compteurBonnesRep = 0;
-                            float nbBonnesRep = 0;
-                            int note;
-                            for (Question q : qcmPasse.getLesQuestions()) {
-                                nbBonnesRep += q.getNbBonnesRep();
-                                for (int idChoix : lesChoix) {
-                                    if (q.getLesChoix().containsKey(idChoix)) {
-                                        q.getLesChoix().get(idChoix).setEstChoisi(true);
-                                        if (q.getLesChoix().get(idChoix).isEstCorrect()) {
-                                            compteurBonnesRep++;
-                                        } else if (!q.getLesChoix().get(idChoix).isEstCorrect()) {
-                                            compteurBonnesRep--;
-                                        }
+                    if (lesChoix != null) {
+                        float compteurBonnesRep = 0;
+                        float nbBonnesRep = 0;
+                        int note;
+                        for (Question q : qcmPasse.getLesQuestions()) {
+                            nbBonnesRep += q.getNbBonnesRep();
+                            for (int idChoix : lesChoix) {
+                                if (q.getLesChoix().containsKey(idChoix)) {
+                                    q.getLesChoix().get(idChoix).setEstChoisi(true);
+                                    if (q.getLesChoix().get(idChoix).isEstCorrect()) {
+                                        compteurBonnesRep++;
                                     }
                                 }
                             }
-                            if (nbBonnesRep < 0) {
-                                nbBonnesRep = 0;
-                            }
-
-                            note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
-
-                            request.setAttribute("note", note);
-                            request.setAttribute("qcmPasse", qcmPasse);
-
-                            this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
                         }
 
+                        note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
+
+                        request.setAttribute("note", note);
+                        request.setAttribute("qcmPasse", qcmPasse);
+
+                        this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
                     }
 
-                } else {
-
-                    response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/passer?id=" + idQcm);
                 }
-            }
 
+            } else {
+
+                response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/passer?id=" + idQcm);
+            }
         } else {
-            response.sendError(403);
+            response.sendRedirect(this.getServletContext().getContextPath() + "/");
         }
     }
 
