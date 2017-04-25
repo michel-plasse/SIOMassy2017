@@ -97,6 +97,20 @@ public class Personne {
         this.est_formateur = est_formateur;
     }
 
+    public Personne(String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String no_tel) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.no_tel = no_tel;
+    }
+    
+    
+
     public Personne(String nom, String prenom) {
         this.nom = nom;
         this.prenom = prenom;
