@@ -38,7 +38,7 @@ public class QcmDao implements QcmHome<Qcm> {
         ArrayList<Qcm> lesQcm = new ArrayList<>();
 
         try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, false, (Object) null);
+            preparedStatement = connection.prepareStatement(sql);
             res = preparedStatement.executeQuery();
             while (res.next()) {
                 ModuleDao moduleDao = new ModuleDao();

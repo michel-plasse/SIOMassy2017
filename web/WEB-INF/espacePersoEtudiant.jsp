@@ -190,8 +190,6 @@
 
 <a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
 <a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br>
-
-</div>
 <div>
     <table class="table">
         <tr>
@@ -205,11 +203,12 @@
         <c:forEach items="${lesQcm}" var="leqcm">
             <tr>
                 <td>${leqcm.nomModule}</td>
-                <td>leqcm.intitule</td>
-                <td>${leqcm.idQcm}</td>
+                <td>${leqcm.intitule}</td>
+                <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">passer</a></td>
                 <td>le score</td>
             </tr>
         </c:forEach>
 
     </table>
+</div>
 </div>
