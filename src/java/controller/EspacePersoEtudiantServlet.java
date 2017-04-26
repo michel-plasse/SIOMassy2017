@@ -8,6 +8,7 @@ package controller;
 import dao.EvaluationDao;
 import dao.NoteDao;
 import dao.PersonneDao;
+import dao.qcm.QcmDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import model.Evaluation;
 import model.Note;
 import model.Personne;
+import model.Qcm;
 
 /**
  *
@@ -104,15 +106,17 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
             NoteDao daoNote = new NoteDao();
+            QcmDao qcmDao = new QcmDao();
             //EvaluationDao daoEval = new EvaluationDao();
 
             try {
-
+                ArrayList<Qcm> lesQcm = qcmDao.findAll();
                 ArrayList<Note> lesNotes = daoNote.findNoteById(user.getId());
                 System.out.println("lesNotes : " + lesNotes.size());
                 maSession.setAttribute("lesNotes", lesNotes);
                 System.out.println(daoNote.findNoteById(1));
                 request.setAttribute("lesPays", lesPays);
+                request.setAttribute("lesQcm", lesQcm);
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);

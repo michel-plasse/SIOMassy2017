@@ -30,5 +30,5 @@ public interface QcmHome<T> extends Dao<T> {
     public HashSet<Integer> findAnsByIdPassage (int idUser, int idQcm) throws SQLException;
     public int isAlreadyDone(int idUser, int idQcm) throws SQLException;
     public ArrayList<T> findAllByFormateur(int idFormateur) throws SQLException;
-    
+    public boolean rendValideQcm(int idQcm) throws SQLException;
 }

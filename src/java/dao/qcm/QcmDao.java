@@ -7,6 +7,7 @@ package dao.qcm;
 
 import dao.ConnectionBd;
 import static dao.DAOUtilitaire.*;
+import dao.ModuleDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import model.Choix;
+import model.Module;
 import model.Qcm;
 import model.Question;
 
@@ -29,7 +31,30 @@ public class QcmDao implements QcmHome<Qcm> {
 
     @Override
     public ArrayList<Qcm> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT id_qcm, id_formateur, id_module, intitule, valide FROM qcm WHERE valide = 1";
+        ResultSet res = null;
+        PreparedStatement preparedStatement = null;
+        ArrayList<Qcm> lesQcm = new ArrayList<>();
+
+        try {
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, (Object) null);
+            res = preparedStatement.executeQuery();
+            while (res.next()) {
+                ModuleDao moduleDao = new ModuleDao();
+                Module module = moduleDao.findById(res.getInt("id_module"));
+                Qcm unQcm = new Qcm(
+                        res.getInt("id_qcm"),
+                        res.getString("intitule"),
+                        res.getBoolean("valide"),
+                        module.getNom());
+                lesQcm.add(unQcm);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problème avec findAllQcm");
+            throw ex;
+        }
+        return lesQcm;
     }
 
     @Override
@@ -329,19 +354,21 @@ public class QcmDao implements QcmHome<Qcm> {
         }
         return lesQcm;
     }
-    public boolean rendValideQcm(int idQcm) throws SQLException{
+
+    @Override
+    public boolean rendValideQcm(int idQcm) throws SQLException {
         boolean status = false;
         connection = ConnectionBd.getConnection();
         String sql = "UPDATE qcm SET valide = 1 WHERE id_qcm = ?";
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, false,idQcm);
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idQcm);
             preparedStatement.executeUpdate();
             status = true;
         } catch (Exception e) {
             System.out.println("Probleme de ");
             throw e;
-        }finally{
+        } finally {
             fermeturesSilencieuses(preparedStatement, connection);
         }
         return status;
