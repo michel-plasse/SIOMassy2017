@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 if (personne != null) {
                     HttpSession maSession = request.getSession();
                     maSession.setAttribute("user", personne);
-                    vue = "WEB-INF/connecte.jsp";
+                    vue = "index.jsp";
                 }
                 else {
                     request.setAttribute("passwordMsg", "Utilisateur inconnu ou mot de passe invalide");

@@ -8,6 +8,7 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Evaluation;
+import model.Note;
 
 /**
  *
@@ -16,4 +17,6 @@ import model.Evaluation;
 public interface EvaluationHome extends Dao<Evaluation> {
     
     public ArrayList<Evaluation> findAllEvalFormateur(int idFormateur)throws SQLException ;
+    public ArrayList<Note> findByEval(int idEvaluation) throws SQLException;
+    
 }

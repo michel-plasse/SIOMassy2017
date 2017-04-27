@@ -18,6 +18,7 @@ public class Qcm {
     private String intitule;
     private boolean valide;
     private ArrayList<Question> lesQuestions;
+    private String nomModule ;
 
     public Qcm() {
     }
@@ -29,15 +30,22 @@ public class Qcm {
         this.lesQuestions = lesQuestions;
     }
 
-    public int getIdModule() {
-        return idModule;
+    public Qcm(int idQcm, String intitule, boolean valide, String nomModule) {
+        this.idQcm = idQcm;
+        this.intitule = intitule;
+        this.valide = valide;
+        this.nomModule = nomModule;
     }
 
-    public void setIdModule(int idModule) {
-        this.idModule = idModule;
+    public String getNomModule() {
+        return nomModule;
     }
 
+    public void setNomModule(String nomModule) {
+        this.nomModule = nomModule;
+    }
     
+
     public int getIdQcm() {
         return idQcm;
     }

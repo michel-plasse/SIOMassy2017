@@ -31,6 +31,11 @@ public class Question {
         this.lesChoix = lesChoix;
     }
 
+    public Question(String question, HashMap<Integer, Choix> lesChoix) {
+        this.question = question;
+        this.lesChoix = lesChoix;
+    }
+
     public int getIdQuestion() {
         return idQuestion;
     }

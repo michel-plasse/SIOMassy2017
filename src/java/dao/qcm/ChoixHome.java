@@ -7,7 +7,7 @@ package dao.qcm;
 
 import dao.Dao;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import model.Choix;
 
 /**
@@ -16,6 +16,6 @@ import model.Choix;
  */
 public interface ChoixHome extends Dao <Choix>{
     
-    public ArrayList<Choix> findByIdQuestion(int idQuestion)throws SQLException;
+    public HashMap<Integer,Choix> findByIdQuestion(int idQuestion)throws SQLException;
     
 }

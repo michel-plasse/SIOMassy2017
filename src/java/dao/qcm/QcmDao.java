@@ -30,12 +30,13 @@ public class QcmDao implements QcmHome<Qcm> {
     }
 
     @Override
-    public void insert(int idFormateur, int idModule, Qcm nouveauQcm) throws SQLException {
+    public int insert(int idFormateur, int idModule, Qcm nouveauQcm) throws SQLException {
         connection = ConnectionBd.getConnection();
         connection.setAutoCommit(false);
-        String sql = "INSERT INTO qcm(id_formateur,id_module,intitule,valide) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO qcm (id_formateur,id_module,intitule,valide) VALUES (?,?,?,?)";
         ResultSet resQcm = null;
         PreparedStatement preparedStatement = null;
+        int idGenere = -1;
 
         try {
             preparedStatement = initialisationRequetePreparee(connection, sql, true,
@@ -49,26 +50,29 @@ public class QcmDao implements QcmHome<Qcm> {
             resQcm = preparedStatement.getGeneratedKeys();
 
             if (resQcm.next()) {
-                String sqlQuestion = "INSERT INTO question(id_qcm,question) VALUES(?,?)";
-                ResultSet resQuest = null;
-                PreparedStatement preparedStatementQuestion = connection.prepareStatement(sqlQuestion, Statement.RETURN_GENERATED_KEYS);
-                String sqlChoix = "INSERT INTO choix (id_question, libelle, est_correct) VALUES(?,?,?)";
-                PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
+                idGenere = resQcm.getInt(1);
+                if (nouveauQcm.getLesQuestions() != null) {
+                    String sqlQuestion = "INSERT INTO question(id_qcm,question) VALUES(?,?)";
+                    ResultSet resQuest = null;
+                    PreparedStatement preparedStatementQuestion = connection.prepareStatement(sqlQuestion, Statement.RETURN_GENERATED_KEYS);
+                    String sqlChoix = "INSERT INTO choix (id_question, libelle, est_correct) VALUES(?,?,?)";
+                    PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
 
-                for (Question uneQuestion : nouveauQcm.getLesQuestions()) {
-                    preparedStatementQuestion.setInt(1, resQcm.getInt("id_qcm"));
-                    preparedStatementQuestion.setString(2, uneQuestion.getQuestion());
-                    preparedStatementQuestion.executeUpdate();
-                    resQuest = preparedStatementQuestion.getGeneratedKeys();
+                    for (Question uneQuestion : nouveauQcm.getLesQuestions()) {
+                        preparedStatementQuestion.setInt(1, resQcm.getInt("id_qcm"));
+                        preparedStatementQuestion.setString(2, uneQuestion.getQuestion());
+                        preparedStatementQuestion.executeUpdate();
+                        resQuest = preparedStatementQuestion.getGeneratedKeys();
 
-                    if (resQuest.next()) {
-                        for (Choix unChoix : uneQuestion.getLesChoix().values()) {
-                            preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
-                            preparedStatementChoix.setString(2, unChoix.getChoix());
-                            preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
-                            preparedStatementChoix.executeUpdate();
+                        if (resQuest.next()) {
+                            for (Choix unChoix : uneQuestion.getLesChoix().values()) {
+                                preparedStatementChoix.setInt(1, resQuest.getInt("id_question"));
+                                preparedStatementChoix.setString(2, unChoix.getLibelle());
+                                preparedStatementChoix.setBoolean(3, unChoix.isEstCorrect());
+                                preparedStatementChoix.executeUpdate();
+                            }
+
                         }
-
                     }
                 }
 
@@ -84,7 +88,7 @@ public class QcmDao implements QcmHome<Qcm> {
         } finally {
             fermeturesSilencieuses(resQcm, preparedStatement, connection);
         }
-
+        return idGenere;
     }
 
     @Override
@@ -102,8 +106,8 @@ public class QcmDao implements QcmHome<Qcm> {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_choix, ch.libelle, ch.est_correct "
                 + "FROM qcm as qc "
-                + "LEFT JOIN question as qu ON qc.id_qcm = qu.id_qcm "
-                + "LEFT JOIN choix as ch ON qu.id_question = ch.id_question "
+                + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
+                + "LEFT OUTER JOIN choix as ch ON qu.id_question = ch.id_question "
                 + "WHERE qc.id_qcm = ? "
                 + "ORDER BY id_question";
 
@@ -114,33 +118,33 @@ public class QcmDao implements QcmHome<Qcm> {
         try {
             preparedStatement = initialisationRequetePreparee(connection, sql, false, id);
             res = preparedStatement.executeQuery();
-            
+
             int idQuestion = -1;
             Question uneQuestion = null;
             Choix unChoix;
             ArrayList<Question> questions = new ArrayList<>();
-            
+
             while (res.next()) {
                 if (res.getInt("qu.id_question") != idQuestion && res.getString("qu.question") != null) {
                     uneQuestion = new Question();
                     uneQuestion.setIdQuestion(res.getInt("qu.id_question"));
                     uneQuestion.setQuestion(res.getString("qu.question"));
-                    HashMap<Integer,Choix> lesChoix = new HashMap<>();
+                    HashMap<Integer, Choix> lesChoix = new HashMap<>();
                     uneQuestion.setLesChoix(lesChoix);
                     questions.add(uneQuestion);
                     idQuestion = res.getInt("qu.id_question");
                 }
-                
+
                 unChoix = new Choix();
                 unChoix.setIdChoix(res.getInt("ch.id_choix"));
-                unChoix.setChoix(res.getString("ch.libelle"));
+                unChoix.setLibelle(res.getString("ch.libelle"));
                 unChoix.setEstCorrect(res.getBoolean("ch.est_correct"));
-                
-                if (uneQuestion != null){
-                uneQuestion.getLesChoix().put(unChoix.getIdChoix(),unChoix);
+
+                if (uneQuestion != null) {
+                    uneQuestion.getLesChoix().put(unChoix.getIdChoix(), unChoix);
                 }
-                
-                if(res.isLast()){
+
+                if (res.isLast()) {
                     unQcm = new Qcm();
                     unQcm.setIdQcm(res.getInt("qc.id_qcm"));
                     unQcm.setIntitule(res.getString("qc.intitule"));
@@ -171,7 +175,7 @@ public class QcmDao implements QcmHome<Qcm> {
         String sql = "INSERT INTO passage_qcm(id_qcm,id_personne,date_passage, est_finie) VALUES (?,?,NOW(),?)";
         PreparedStatement preparedStatement = null;
         ResultSet idPassage = null;
-        try{
+        try {
             preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, qcmRepsChoisies.getIdQcm());
             preparedStatement.setInt(2, idUser);
@@ -180,12 +184,12 @@ public class QcmDao implements QcmHome<Qcm> {
             preparedStatement.executeUpdate();
             idPassage = preparedStatement.getGeneratedKeys();
 
-            if(idPassage.next()){
+            if (idPassage.next()) {
                 String sqlChoix = "INSERT INTO reponse(id_question,id_passage_qcm,id_choix) VALUES (?,?,?)";
                 PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
-                for(Question q : qcmRepsChoisies.getLesQuestions()){
-                    for(Choix c : q.getLesChoix().values()) {
-                        if(c.isEstChoisi()) {
+                for (Question q : qcmRepsChoisies.getLesQuestions()) {
+                    for (Choix c : q.getLesChoix().values()) {
+                        if (c.isEstChoisi()) {
                             preparedStatementChoix.setInt(1, q.getIdQuestion());
                             preparedStatementChoix.setInt(2, idPassage.getInt(1));
                             preparedStatementChoix.setInt(3, c.getIdChoix());
@@ -195,47 +199,47 @@ public class QcmDao implements QcmHome<Qcm> {
                     }
                 }
             }
-            
+
             connection.commit();
         } catch (SQLException e) {
             connection.rollback();
             System.out.println("Problème enregistrement des réponses du QCM");
             throw e;
-        }finally {
+        } finally {
             connection.setAutoCommit(true);
             fermeturesSilencieuses(idPassage, preparedStatement, connection);
         }
-        
+
     }
 
     @Override
     public HashSet<Integer> findAnsByIdPassage(int idUser, int idQcm) throws SQLException {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT r.id_choix FROM passage_qcm AS pq "
-                   + "INNER JOIN reponse AS r ON pq.id_passage_qcm = r.id_passage_qcm "
-                   + "WHERE id_qcm = ? AND id_personne = ?";
-        
+                + "INNER JOIN reponse AS r ON pq.id_passage_qcm = r.id_passage_qcm "
+                + "WHERE id_qcm = ? AND id_personne = ?";
+
         HashSet<Integer> returnListeIdChoix = new HashSet<>();
         ResultSet idChoix = null;
         PreparedStatement preparedStatement = null;
-        
-        try{
+
+        try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idQcm);
             preparedStatement.setInt(2, idUser);
             idChoix = preparedStatement.executeQuery();
-            
-            while(idChoix.next()) {
+
+            while (idChoix.next()) {
                 returnListeIdChoix.add(idChoix.getInt("id_choix"));
             }
-            
-        }catch (SQLException e) {
+
+        } catch (SQLException e) {
             System.out.println("Problème récupération des réponses du QCM");
             throw e;
-        }finally{
+        } finally {
             fermeturesSilencieuses(idChoix, preparedStatement, connection);
         }
-        
+
         return returnListeIdChoix;
     }
 
@@ -250,182 +254,49 @@ public class QcmDao implements QcmHome<Qcm> {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, idUser);
             preparedStatement.setInt(2, idQcm);
-            
+
             res = preparedStatement.executeQuery();
-            
-            if(res.next()) {
+
+            if (res.next()) {
                 rep = res.getInt("id_passage_qcm");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Probleme check isAlreadyDone QCM");
             throw e;
-        }finally{
+        } finally {
             fermeturesSilencieuses(res, preparedStatement, connection);
         }
-        
+
         return rep;
     }
 
     @Override
-    public int insertLight(int idFormateur, int idModule, Qcm nouveauQcm) throws SQLException {
+    public ArrayList<Qcm> findAllByFormateur(int idFormateur) throws SQLException {
         connection = ConnectionBd.getConnection();
-        connection.setAutoCommit(false);
-        String sql = "INSERT INTO qcm(id_formateur,id_module,intitule,valide) VALUES (?,?,?,?)";
-        ResultSet resQcm = null;
-        PreparedStatement preparedStatement = null;
-        int idGenerated = -1;
+        String sql = "SELECT id_qcm, m.nom, intitule, valide FROM qcm "
+                + " INNER JOIN module m ON qcm.id_module = m.id_module "
+                + " WHERE id_formateur = ?";
 
-        try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, true,
-                    idFormateur,
-                    idModule,
-                    nouveauQcm.getIntitule(),
-                    nouveauQcm.isValide());
-
-            preparedStatement.executeUpdate();
-
-            resQcm = preparedStatement.getGeneratedKeys();
-
-            if (resQcm.next()) {
-                idGenerated = resQcm.getInt(1);
-            }
-
-            connection.commit();
-            System.out.println("Ajout du QCM : " + nouveauQcm.getIntitule() + " -> Ok...");
-
-        } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Problème avec la BDD pour ajout QCM");
-            throw e;
-        } finally {
-            fermeturesSilencieuses(resQcm, preparedStatement, connection);
-        }
-
-        return idGenerated;
-    }
-
-    @Override
-    public boolean isCheckedQcmAndUser(int idQcm, int idFormateur) throws SQLException {
-        connection = ConnectionBd.getConnection();
-        String sql = "SELECT id_qcm FROM qcm WHERE id_qcm = ? AND id_formateur = ?";
-        boolean rep = false;
         PreparedStatement preparedStatement = null;
         ResultSet res = null;
+        Qcm unQcm = null;
+        ArrayList<Qcm> lesQcm = new ArrayList<>();
+
         try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idQcm);
-            preparedStatement.setInt(2, idFormateur);
-            
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idFormateur);
             res = preparedStatement.executeQuery();
-            
-            if(res.next()) {
-                rep = true;
+
+            while (res.next()) {
+                unQcm = new Qcm(res.getInt("id_qcm"), res.getString("intitule"), res.getBoolean("valide"), res.getString("m.nom"));
+                lesQcm.add(unQcm);
+
             }
-        }catch (SQLException e) {
-            System.out.println("Probleme check USER & QCM");
+        } catch (SQLException e) {
+            System.out.println("Probleme de findAllByFormateur");
             throw e;
-        }finally{
+        } finally {
             fermeturesSilencieuses(res, preparedStatement, connection);
         }
-        
-        return rep;
+        return lesQcm;
     }
-
-    @Override
-    public void insertQuestion(int idQcm, Question uneQuestion) throws SQLException {
-        connection = ConnectionBd.getConnection();
-        connection.setAutoCommit(false);
-        String sql = "INSERT INTO question(id_qcm,question) VALUES (?,?)";
-        ResultSet resQ = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, true,
-                    idQcm,
-                    uneQuestion.getQuestion());
-
-            preparedStatement.executeUpdate();
-
-            resQ = preparedStatement.getGeneratedKeys();
-
-            if (resQ.next()) {
-                String sqlChoix = "INSERT INTO choix(id_question,libelle,est_correct) VALUES(?,?,?)";
-                PreparedStatement preparedStatementChoix = connection.prepareStatement(sqlChoix);
-
-                for (Choix c : uneQuestion.getLesChoix().values()) {
-                    preparedStatementChoix.setInt(1, resQ.getInt(1));
-                    preparedStatementChoix.setString(2, c.getChoix());
-                    preparedStatementChoix.setBoolean(3, c.isEstCorrect());
-                    
-                    preparedStatementChoix.executeUpdate();
-                }
-
-            }
-
-            connection.commit();
-            System.out.println("Ajout Question -> Ok...");
-
-        } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Problème avec la BDD pour ajout question");
-            throw e;
-        } finally {
-            fermeturesSilencieuses(resQ, preparedStatement, connection);
-        }
-
-    }
-
-    @Override
-    public void deleteQuestion(int idQuestion) throws SQLException {
-        connection = ConnectionBd.getConnection();
-        connection.setAutoCommit(false);
-        String sql = "DELETE FROM question WHERE id_question = ?";
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, false,idQuestion);
-
-            preparedStatement.executeUpdate();
-
-            connection.commit();
-            System.out.println("Suppression question -> Ok...");
-
-        } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Problème avec la BDD pour ajout QCM");
-            throw e;
-        } finally {
-            fermeturesSilencieuses(preparedStatement, connection);
-        }
-
-    }
-
-    @Override
-    public void updateLight(int idModule, Qcm editQcm) throws SQLException {
-        connection = ConnectionBd.getConnection();
-        connection.setAutoCommit(false);
-        String sql = "UPDATE qcm SET intitule = ?, id_module = ?, valide = ? WHERE id_qcm = ?";
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = initialisationRequetePreparee(connection, sql, true,
-                    editQcm.getIntitule(),
-                    idModule,
-                    editQcm.isValide(),
-                    editQcm.getIdQcm());
-
-            preparedStatement.executeUpdate();
-
-            connection.commit();
-            System.out.println("Modif qcm -> Ok...");
-
-        } catch (SQLException e) {
-            connection.rollback();
-            System.out.println("Problème avec la BDD pour ajout QCM");
-            throw e;
-        } finally {
-            fermeturesSilencieuses(preparedStatement, connection);
-        }
-    }
-
 }

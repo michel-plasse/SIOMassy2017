@@ -18,12 +18,7 @@ import model.Question;
  */
 public interface QcmHome<T> extends Dao<T> {
     
-    public void insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
-    
-    public int insertLight(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
-    
-    public void updateLight(int idModule, T editQcm) throws SQLException;
-    
+    public int insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
     public void insertPassage (int idUser, T qcmRepsChoisies) throws SQLException;
     
     public void deleteQuestion(int idQuestion) throws SQLException;
@@ -35,8 +30,6 @@ public interface QcmHome<T> extends Dao<T> {
     public HashSet<Integer> findAnsByIdPassage (int idUser, int idQcm) throws SQLException;
     
     public int isAlreadyDone(int idUser, int idQcm) throws SQLException;
-    
-    @Override
-    public ArrayList<T> findAll() throws SQLException;
+    public ArrayList<T> findAllByFormateur(int idFormateur) throws SQLException;
     
 }

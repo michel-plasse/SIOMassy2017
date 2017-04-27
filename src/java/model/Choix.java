@@ -12,7 +12,7 @@ package model;
 public class Choix {
     
     private int idChoix;
-    private String choix;
+    private String libelle;
     private boolean estCorrect;
     private boolean estChoisi;
 
@@ -20,7 +20,7 @@ public class Choix {
     }
 
     public Choix(String choix, boolean estCorrect) {
-        this.choix = choix;
+        this.libelle = choix;
         this.estCorrect = estCorrect;
     }
 
@@ -34,12 +34,12 @@ public class Choix {
         this.idChoix = idChoix;
     }
 
-    public String getChoix() {
-        return choix;
+    public String getLibelle() {
+        return libelle;
     }
 
-    public void setChoix(String choix) {
-        this.choix = choix;
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
     }
 
     public boolean isEstCorrect() {
