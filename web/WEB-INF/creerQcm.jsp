@@ -40,8 +40,8 @@
             <label for="reponse1" class="col-sm-2 control-label">Réponse 1 :</label>
             <div class="col-sm-10">
                 <input type="text" name="reponse1" id="reponse1" class="form-control"/>
-                <div class="checkbox-inline">
-                    <input type="radio" name="valide" value="1" required /> est la bonne reponse<br>
+                <div data-toggle="buttons">
+                    <label class="btn btn-primary"><input type="radio" name="valide" value="1" required /> est la bonne reponse<br></label>
                 </div>
             </div>
 
@@ -50,8 +50,8 @@
             <label for="nom" class="col-sm-2 control-label">Réponse 2 :</label>
             <div class="col-sm-10">
                 <input type="text" name="reponse2" id="reponse" class="form-control"/>
-                <div class="checkbox-inline">
-                    <input type="radio" name="valide" value="2" required /> est la bonne reponse<br>
+                <div data-toggle="buttons">
+                    <label class="btn btn-primary"><input type="radio" name="valide" value="2" required /> est la bonne reponse<br></label>
                 </div>
             </div>
 
@@ -60,8 +60,8 @@
             <label for="nom" class="col-sm-2 control-label">Réponse 3 :</label>
             <div class="col-sm-10">
                 <input type="text" name="reponse3" id="reponse" class="form-control"/>
-                <div class="checkbox-inline">
-                    <input type="radio" name="valide" value="3" required /> est la bonne reponse<br>
+                <div data-toggle="buttons">
+                    <label class="btn btn-primary"><input type="radio" name="valide" value="3" required /> est la bonne reponse<br></label>
                 </div>
             </div>
         </div>
@@ -69,8 +69,8 @@
             <label for="nom" class="col-sm-2 control-label">Réponse 4 :</label>
             <div class="col-sm-10">
                 <input type="text" name="reponse4" id="reponse" class="form-control"/>
-                <div class="checkbox-inline">
-                    <input type="radio" name="valide" value="4" required /> est la bonne reponse<br>
+                <div data-toggle="buttons">
+                    <label class="btn btn-primary"><input type="radio" name="valide" value="4" required /> est la bonne reponse<br></label>
                 </div>
             </div>
             <input type="reset" value="effacer">

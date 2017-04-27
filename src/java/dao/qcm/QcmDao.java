@@ -16,7 +16,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 import model.Choix;
 import model.Module;
 import model.Qcm;
@@ -32,7 +31,7 @@ public class QcmDao implements QcmHome<Qcm> {
     @Override
     public ArrayList<Qcm> findAll() throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT id_qcm, id_formateur, id_module, intitule, valide FROM qcm WHERE valide = 1";
+        String sql = "SELECT id_qcm, id_formateur, id_module, intitule, valide FROM qcm WHERE valide = 1 AND archive = 0";
         ResultSet res = null;
         PreparedStatement preparedStatement = null;
         ArrayList<Qcm> lesQcm = new ArrayList<>();
@@ -328,7 +327,7 @@ public class QcmDao implements QcmHome<Qcm> {
     @Override
     public ArrayList<Qcm> findAllByFormateur(int idFormateur) throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT id_qcm, m.nom, intitule, valide FROM qcm "
+        String sql = "SELECT id_qcm, m.nom, intitule, valide ,archive FROM qcm "
                 + " INNER JOIN module m ON qcm.id_module = m.id_module "
                 + " WHERE id_formateur = ?";
 
@@ -343,6 +342,7 @@ public class QcmDao implements QcmHome<Qcm> {
 
             while (res.next()) {
                 unQcm = new Qcm(res.getInt("id_qcm"), res.getString("intitule"), res.getBoolean("valide"), res.getString("m.nom"));
+                unQcm.setArchive(res.getBoolean("archive"));
                 lesQcm.add(unQcm);
 
             }
@@ -366,7 +366,26 @@ public class QcmDao implements QcmHome<Qcm> {
             preparedStatement.executeUpdate();
             status = true;
         } catch (Exception e) {
-            System.out.println("Probleme de ");
+            System.out.println("Probleme de rendre validé");
+            throw e;
+        } finally {
+            fermeturesSilencieuses(preparedStatement, connection);
+        }
+        return status;
+    }
+
+    @Override
+    public boolean rendArchiveQcm(int idQcm) throws SQLException {
+        boolean status = false;
+        connection = ConnectionBd.getConnection();
+        String sql = "UPDATE qcm SET archive = 1 WHERE id_qcm = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idQcm);
+            preparedStatement.executeUpdate();
+            status = true;
+        } catch (Exception e) {
+            System.out.println("Probleme de rendre archivé");
             throw e;
         } finally {
             fermeturesSilencieuses(preparedStatement, connection);

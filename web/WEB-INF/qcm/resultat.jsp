@@ -35,7 +35,7 @@
         </c:forEach>
 
         <div class="col-md-8 col-md-offset-2">
-            <a href="<c:url value="/" /> " class="btn btn-block btn-primary">Retour à la liste des QCM</a>
+            <a href="<c:url value="/espacePersoEtudiant" /> " class="btn btn-block btn-primary">Retour</a>
         </div>
     </div>
     <div class="clearfix"></div>
