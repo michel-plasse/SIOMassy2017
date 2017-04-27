@@ -46,7 +46,7 @@ public class ListeDesQcmServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListeDesQcmServlet</title>");            
+            out.println("<title>Servlet ListeDesQcmServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ListeDesQcmServlet at " + request.getContextPath() + "</h1>");
@@ -67,39 +67,34 @@ public class ListeDesQcmServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         Personne user = (Personne) request.getSession(true).getAttribute("user");
         QcmDao qcmDao = new QcmDao();
         ModuleDao moduleDao = new ModuleDao();
-        
-        
-        if (!user.isEst_formateur()){
+
+        if (!user.isEst_formateur()) {
             System.out.println("pas formateur");
             request.setAttribute("message", "Vous n'êtes pas un formateur : vous ne pouvez pas créer une évaluation");
             request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
-        }
-        else if (user == null){
+        } else if (user == null) {
             System.out.println("pas connecté");
             response.sendRedirect("login");
-        }
-        else{
+        } else {
             try {
                 System.out.println(user.getId());
-                ArrayList<Qcm> lesQcm =qcmDao.findAllByFormateur(user.getId());
+                ArrayList<Qcm> lesQcm = qcmDao.findAllByFormateur(user.getId());
                 ArrayList<Module> modules = moduleDao.findAll();
-                
+
                 request.setAttribute("lesQcm", lesQcm);
                 request.setAttribute("modules", modules);
-                
+
                 request.getRequestDispatcher("/WEB-INF/listeDesQcm.jsp").forward(request, response);
-                
+
             } catch (SQLException ex) {
-            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
-        
+
     }
 
     /**
@@ -113,23 +108,35 @@ public class ListeDesQcmServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         Personne user = (Personne) request.getSession(true).getAttribute("user");
-        QcmDao qcmDao = new QcmDao();
-        int idModule = Integer.parseInt(request.getParameter("idModule"));
-        String intituleQcm = request.getParameter("intitule");
-        Qcm nouveauQcm = new Qcm();
-        nouveauQcm.setIntitule(intituleQcm);
-        nouveauQcm.setValide(false);
-        int idGenere = -1;
-        
-        try {
-            idGenere = qcmDao.insert(user.getId(), idModule, nouveauQcm);
-            System.out.println("nouveau qcm créé !");
-        } catch (SQLException ex) {
-            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        //verification si la personne est formateur
+        if (!user.isEst_formateur()) {
+            System.out.println("pas formateur");
+            request.setAttribute("message", "Vous n'êtes pas un formateur : vous ne pouvez pas créer une évaluation");
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        } else if (user == null) {
+            System.out.println("pas connecté");
+            response.sendRedirect("login");
+        } else {
+            //si clique sur supprimer qcm
+            if (request.getParameter("supprimer") != null) {
+                supprimer(request, response);
+            }
+            if (request.getParameter("archiver") != null) {
+                archiver(request,response);
+            }
+            // si clique sur valider
+            if (request.getParameter("valider") != null) {
+                valider(request, response);
+            }
+            //si clique sur creer Qcm
+            if (request.getParameter("creer") != null) {
+                creer(request, response, user);
+            }
+
         }
-        response.sendRedirect(this.getServletContext().getContextPath()+"/CreerQcm?idQcm="+idGenere);
+
     }
 
     /**
@@ -141,5 +148,66 @@ public class ListeDesQcmServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void supprimer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idQcm = Integer.parseInt(request.getParameter("supprimer"));
+        System.out.println("clique sur supprimmer qcm");
+        try {
+            QcmDao qcmDao = new QcmDao();
+            qcmDao.delete(idQcm);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("ListeDesQcmServlet");
+    }
+
+    private void valider(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        QcmDao qcmDao = new QcmDao();
+        int idQcm = Integer.parseInt(request.getParameter("valider"));
+        boolean confirmation = false;
+        try {
+            confirmation = qcmDao.rendValideQcm(idQcm);
+            System.out.println("validation du qcm :" + idQcm + " " + confirmation);
+            response.sendRedirect("ListeDesQcmServlet");
+        } catch (Exception exc) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, exc);
+            request.setAttribute("message", exc.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
+
+    private void creer(HttpServletRequest request, HttpServletResponse response, Personne user) throws IOException, ServletException {
+        QcmDao qcmDao = new QcmDao();
+        int idModule = Integer.parseInt(request.getParameter("idModule"));
+        String intituleQcm = request.getParameter("intitule");
+        Qcm nouveauQcm = new Qcm();
+        nouveauQcm.setIntitule(intituleQcm);
+        nouveauQcm.setValide(false);
+        int idGenere = -1;
+
+        try {
+            idGenere = qcmDao.insert(user.getId(), idModule, nouveauQcm);
+            System.out.println("nouveau qcm créé !" + idGenere);
+            response.sendRedirect(this.getServletContext().getContextPath() + "/CreerQcm?idQcm=" + idGenere);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
+
+    private void archiver(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        QcmDao qcmDao = new QcmDao();
+        int idQcm = Integer.parseInt(request.getParameter("archiver"));
+        try {
+            qcmDao.rendArchiveQcm(idQcm);
+            System.out.println("archivation du qcm");
+            response.sendRedirect("ListeDesQcmServlet");
+        } catch (Exception ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
 
 }

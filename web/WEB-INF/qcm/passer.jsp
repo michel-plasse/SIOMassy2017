@@ -7,7 +7,7 @@
         <div class="alert alert-info">
             <i class="fa fa-info-circle" aria-hidden="true"></i>
             <b>Rappel des règles de notation :</b>
-            une mauvaise réponse entraine le retrait d'un point, l'absence de réponse n'ôte pas de point.
+            une mauvaise réponse ou l'absence de réponse n'ôte pas de point.
         </div>
 
         <form action="<c:url value="/qcm/passer"><c:param name="id" value="${requestScope.qcm.idQcm}" /></c:url>" method="POST">
@@ -18,7 +18,7 @@
                         <b> <c:out value="${q.question}" /></b></div>
                 <div class="panel-body">
                     <c:forEach items="${q.lesChoix}" var="c" >
-                        <input type="checkbox" name="${q.idQuestion}" id="${c.key}" value="${c.key}" /><label for="${c.key}"><c:out value="${c.value.choix}" /></label><br />
+                        <input type="radio" name="${q.idQuestion}" id="${c.key}" value="${c.key}" /><label for="${c.key}"><c:out value="${c.value.libelle}" /></label><br />
                     </c:forEach>
                 </div>
             </div>

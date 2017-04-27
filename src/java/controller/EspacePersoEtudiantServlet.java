@@ -8,6 +8,7 @@ package controller;
 import dao.EvaluationDao;
 import dao.NoteDao;
 import dao.PersonneDao;
+import dao.qcm.QcmDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import model.Evaluation;
 import model.Note;
 import model.Personne;
+import model.Qcm;
 
 /**
  *
@@ -31,23 +33,69 @@ import model.Personne;
  */
 @WebServlet(name = "EspacePersoEtudiant", urlPatterns = {"/espacePersoEtudiant"})
 public class EspacePersoEtudiantServlet extends HttpServlet {
+    private static String[] lesPays = {"France", "Outre-Mer", "Autre pays (Europe)","AutreAfrique\">Autre pays (Afrique)",
+                                       "AutreAsie'>Autre pays (Asie)","AutreAmérique'>Autre pays (Amérique)","AutreOcéanie'>Autre pays (Océanie)"};
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    boolean champsrenseignes = true;
-    
-    String nom = request.getParameter("nom");
-    String prenom = request.getParameter("prenom");
-    String no_rue = request.getParameter("no_rue");
-    String nom_rue = request.getParameter("nom_rue");
-    String code_postal = request.getParameter("code_postal");
-    String ville = request.getParameter("ville");
-    String pays = request.getParameter("pays");
-    String no_phone = request.getParameter("no_phone");
-    String email = request.getParameter("email");
+        HttpSession maSession = request.getSession(true);
+        Personne user = (Personne) maSession.getAttribute("user");
+        boolean champsrenseignes = true;
+
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String no_rue = request.getParameter("no_rue");
+        String nom_rue = request.getParameter("nom_rue");
+        String code_postal = request.getParameter("code_postal");
+        String ville = request.getParameter("ville");
+        String pays = request.getParameter("pays");
+        String no_phone = request.getParameter("no_phone");
+        String email = request.getParameter("email");
+
+        if (nom.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("nom", "Veuillez entrer votre nom.");
+            System.out.println("Rentre dans if condition");
+        }
+        if (prenom.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("prenom", "Veuillez entrer votre prénom.");
+        }
+        if (email.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("email", "Veuillez entrer votre email.");
+        }
+        if (no_phone.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("no_phone", "Veuillez entrer votre numéro de téléphone.");
+        }
+
+        if (champsrenseignes) {
+            try {
+
+                PersonneDao dao = new PersonneDao();
+                user.setNom(request.getParameter("nom"));
+                user.setPrenom(request.getParameter("prenom"));
+                user.setNo_rue(request.getParameter("no_rue"));
+                user.setRue(request.getParameter("nom_rue"));
+                user.setCode_postal(request.getParameter("code_postal"));
+                user.setVille(request.getParameter("ville"));
+                user.setPays(request.getParameter("pays"));
+                user.setNo_tel(request.getParameter("no_phone"));
+                user.setEmail(request.getParameter("email"));
+
+                dao.update(user.getId(), user);
+                request.getSession(true).setAttribute("user", user);
+            } catch (SQLException e) {
+                request.setAttribute("message", e.getMessage());
+                request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+            }
+        }
+
+        response.sendRedirect("espacePersoEtudiant");
+
     }
 
-        
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,14 +106,17 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
             NoteDao daoNote = new NoteDao();
+            QcmDao qcmDao = new QcmDao();
             //EvaluationDao daoEval = new EvaluationDao();
 
             try {
-
+                ArrayList<Qcm> lesQcm = qcmDao.findAll();
                 ArrayList<Note> lesNotes = daoNote.findNoteById(user.getId());
                 System.out.println("lesNotes : " + lesNotes.size());
                 maSession.setAttribute("lesNotes", lesNotes);
                 System.out.println(daoNote.findNoteById(1));
+                request.setAttribute("lesPays", lesPays);
+                request.setAttribute("lesQcm", lesQcm);
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);

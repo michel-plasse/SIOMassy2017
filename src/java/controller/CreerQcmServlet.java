@@ -77,52 +77,14 @@ public class CreerQcmServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        QuestionDao questionDao = new QuestionDao();
-        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
-
         //si boutton supprimé est cliqué
         if (request.getParameter("supprimerQuestion") != null) {
-            int idQuestion = Integer.parseInt(request.getParameter("supprimerQuestion"));
-            System.out.println(idQuestion);
-
-            try {
-                questionDao.delete(idQuestion);
-                response.sendRedirect("CreerQcm?idQcm=" + idQcm);
-            } catch (SQLException ex) {
-                Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            supprimerQuestion(request, response);
         }
 
         //si boutton creer est cliqué
         if (request.getParameter("creer") != null) {
-            String question = request.getParameter("question");
-
-            HashMap<Integer, Choix> lesChoix = new HashMap<>();
-
-            for (int i = 1; i < 5; i++) {
-                System.out.println("reponse " + i + " : " + request.getParameter("reponse" + i));
-                Choix reponse = new Choix(request.getParameter("reponse" + i), (request.getParameter("valide").equals(i + "")) ? true : false);
-                if (reponse.getLibelle() != null && !reponse.getLibelle().equals("")) {
-                    lesChoix.put(i, reponse);
-                }
-            }
-
-            if (lesChoix.size() >= 2 && !question.isEmpty()) {
-                Question laQuestion = new Question(question, lesChoix);
-                try {
-
-                    questionDao.insert(idQcm, laQuestion);
-                    response.sendRedirect("CreerQcm?idQcm=" + idQcm);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    request.setAttribute("message", "Pb avec bd : " + ex.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
-                }
-            } else {
-                request.setAttribute("message", "les champs ne sont pas remplis , il faut au moins deux reponses par question ");
-                request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
-            }
+            creer(request, response);
         }
 
     }
@@ -131,5 +93,52 @@ public class CreerQcmServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void supprimerQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        QuestionDao questionDao = new QuestionDao();
+        int idQcm = Integer.parseInt(request.getParameter("idQcm"));
+        int idQuestion = Integer.parseInt(request.getParameter("supprimerQuestion"));
+        System.out.println(idQuestion);
+
+        try {
+            questionDao.delete(idQuestion);
+            response.sendRedirect("CreerQcm?idQcm=" + idQcm);
+        } catch (SQLException ex) {
+            Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void creer(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String question = request.getParameter("question");
+
+        HashMap<Integer, Choix> lesChoix = new HashMap<>();
+
+        for (int i = 1; i < 5; i++) {
+            System.out.println("reponse " + i + " : " + request.getParameter("reponse" + i));
+            Choix reponse = new Choix(request.getParameter("reponse" + i), (request.getParameter("valide").equals(i + "")) ? true : false);
+            if (reponse.getLibelle() != null && !reponse.getLibelle().equals("")) {
+                lesChoix.put(i, reponse);
+            }
+        }
+
+        if (lesChoix.size() >= 2 && !question.isEmpty()) {
+            QuestionDao questionDao = new QuestionDao();
+            int idQcm = Integer.parseInt(request.getParameter("idQcm"));
+            Question laQuestion = new Question(question, lesChoix);
+            try {
+
+                questionDao.insert(idQcm, laQuestion);
+                response.sendRedirect("CreerQcm?idQcm=" + idQcm);
+            } catch (SQLException ex) {
+                Logger.getLogger(CreerQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", "Pb avec bd : " + ex.getMessage());
+                request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+            }
+        } else {
+            request.setAttribute("message", "les champs ne sont pas remplis , il faut au moins deux reponses par question ");
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
 
 }

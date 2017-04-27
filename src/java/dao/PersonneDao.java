@@ -16,6 +16,12 @@ public class PersonneDao implements PersonneHome {
     public PersonneDao() {
     }
 
+    /**
+     * Permet d'insérer une personne dans la base de données
+     * 
+     * @param objet personne à insérer
+     * @throws SQLException 
+     */
     @Override
     public void insert(Personne personne) throws SQLException {
         try {
@@ -57,7 +63,11 @@ public class PersonneDao implements PersonneHome {
     }
 
     /**
-     * Personne de id donnée, ou null si pas trouvée.
+     * Renvoie la personne d'id donnée, ou null si pas trouvée.
+     * 
+     * @param id de la personne à trouver
+     * @return
+     * @throws SQLException
      */
     @Override
     public Personne findById(int id) throws SQLException {
@@ -82,6 +92,13 @@ public class PersonneDao implements PersonneHome {
         return result;
     }
 
+    /**
+     * Renvoie la liste de toutes les personnes
+     * dans la base de données
+     * 
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public ArrayList<Personne> findAll() throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -108,12 +125,21 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
 
+    /**
+     * Permet de changer les attributs d'une personne
+     * 
+     * @param id de la personne à mettre à jour
+     * @param objet personne qui va mettre à jour la personne sélectionnée
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean update(int ancien, Personne personne) throws SQLException {
         connection = ConnectionBd.getConnection();
             // Commencer une transaction
-            String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?) WHERE id_personne = "+ ancien + ";";
+            String sql = "UPDATE personne SET nom = ?, prenom = ?, email = ?, no_rue = ?, rue = ?, code_postal = ?, ville = ?, pays = ?, mot_de_passe = ?, no_tel = ?, photo = ?"
+                    + " WHERE id_personne = "+ ancien + ";";
+            try{
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, personne.getNom());
             stmt.setString(2, personne.getPrenom());
@@ -127,10 +153,21 @@ public class PersonneDao implements PersonneHome {
             stmt.setString(10, personne.getNo_tel());
             stmt.setString(11, personne.getPhoto());
             stmt.executeUpdate();
+            }catch(SQLException e) {
+                System.err.println("problème modification des infos de l'utilisateur");
+                throw e;
+            }
 
         return false;
     }
 
+    /**
+     * Supprime une personne d'id donnée dans la base de données
+     * 
+     * @param id de la personne à supprimer
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean delete(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -176,6 +213,12 @@ public class PersonneDao implements PersonneHome {
         return result;
     }
     
+    /**
+     * Renvoie une liste de personnes inscrits
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Personne> findByEtat() throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
@@ -194,6 +237,13 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
     
+    /**
+     * Renvoie la liste des personnes
+     * appartenant aux sessions
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Personne> findBySession() throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement canal = connection.createStatement();
@@ -214,6 +264,12 @@ public class PersonneDao implements PersonneHome {
         return lesPersonnes;
     }
 
+    /**
+     * 
+     * @param token
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public int findIdFromToken(String token) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -225,7 +281,13 @@ public class PersonneDao implements PersonneHome {
         }
         return -1;
     }
-
+    
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public boolean activeUser(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -238,6 +300,15 @@ public class PersonneDao implements PersonneHome {
 
     }
 
+    
+    /**
+     * Renvoie la liste de personnes
+     * appartenant à une session
+     * 
+     * @param id de la session
+     * @return 
+     * @throws SQLException 
+     */
     @Override
     public ArrayList<Personne> findBySession(int id) throws SQLException {
         connection = ConnectionBd.getConnection();

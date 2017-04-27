@@ -23,11 +23,13 @@ public class InscrireServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         boolean champsrenseignes = true;
@@ -60,7 +62,11 @@ public class InscrireServlet extends HttpServlet {
         }
         if (prenom.isEmpty()) {
             champsrenseignes = false;
-            request.setAttribute("prenom", "Veuillez entrer votre pr�nom.");
+            request.setAttribute("prenom", "Veuillez entrer votre prénom.");
+        }
+        if (no_phone.isEmpty()) {
+            champsrenseignes = false;
+            request.setAttribute("no_phone", "Veuillez entrer votre numéro de téléphone.");
         }
         if (email.isEmpty()) {
             champsrenseignes = false;
@@ -87,25 +93,31 @@ public class InscrireServlet extends HttpServlet {
             request.setAttribute("email2", "L'email entré ne correspond pas.");
         }
 
+        Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
+                pays, password, no_phone);
+        request.setAttribute("personne", personneAjoutee);
+
         // Sinon envoi Personne à BDD
         if (champsrenseignes) {
             try {
-                Personne personneAjoutee = new Personne(0, nom, prenom, email, no_rue, nom_rue, code_postal, ville,
-                        pays, password, no_phone);
+
                 PersonneDao dao = new PersonneDao();
                 TokenGenerator token = new TokenGenerator();
                 personneAjoutee.setToken(token.Token());
-                request.setAttribute("leToken", personneAjoutee.getToken());             
+                request.setAttribute("leToken", personneAjoutee.getToken());
                 dao.insert(personneAjoutee);
-              //  envoyerMail(personneAjoutee);
+                //  envoyerMail(personneAjoutee);
 //              PrintWriter out = response.getWriter();
 //              out.print(personneAjoutee.getEmail() +" : "+ personneAjoutee.getToken());
                 request.getRequestDispatcher("/WEB-INF/inscrireOk.jsp").forward(request, response);
             } catch (SQLException e) {
-                request.setAttribute("message", "Pb avec la base de données");
-                request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
-            }}
-        
+                request.setAttribute("message", e.getMessage());
+                //request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
+            }
+        } else {
+            request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
+        }
         /*
              catch (MessagingException exc) {
                 request.setAttribute("message", "Votre inscription est enregistrée, mais pb pour vous le confirmer par mail");
@@ -115,9 +127,8 @@ public class InscrireServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
         }*/
 
-    }
-        //Abandon de la solution mail cause proxy.
-    /*public void envoyerMail(Personne personne) throws MessagingException {
+//Abandon de la solution mail cause proxy.
+        /*public void envoyerMail(Personne personne) throws MessagingException {
         String from = "greta@gmail.com";
         String to = personne.getEmail();
         String subject = "Votre inscription sur Agriotes.";
@@ -129,5 +140,5 @@ public class InscrireServlet extends HttpServlet {
         mail.setContent(body, "text/html; charset=utf-8");
         javax.mail.Transport.send(mail);
     }*/
-
+    }
 }

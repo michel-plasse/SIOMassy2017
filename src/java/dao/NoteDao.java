@@ -93,6 +93,12 @@ public class NoteDao implements NoteHome {
         return lesNotes;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Note> findNoteById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         ArrayList<Note> lesNotes = new ArrayList();

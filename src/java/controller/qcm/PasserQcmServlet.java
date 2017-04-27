@@ -31,94 +31,81 @@ import model.Question;
  */
 @WebServlet(name = "PasserQcmServlet", urlPatterns = {"/qcm/passer"})
 public class PasserQcmServlet extends HttpServlet {
-
+    
     public static final String VUE_PASSER = "/WEB-INF/qcm/passer.jsp";
     public static final String VUE_RESULTAT = "/WEB-INF/qcm/resultat.jsp";
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        QcmDao qcmDao = new QcmDao();
-//        Qcm unQcm = null;
-//        
-//        try {
-//            unQcm = qcmDao.findById(1);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        if(unQcm != null) {
-//            PrintWriter out = response.getWriter();
-//            for(Question uneQuestion : unQcm.getLesQuestions()){
-//                out.println(uneQuestion.getIdQuestion() + " - " + uneQuestion.getQuestion());
-//                for(Choix unChoix : uneQuestion.getLesChoix()) {
-//                    out.println(" + " + unChoix.getChoix());
-//                }
-//            }
-//        }
+        
         HttpSession session = request.getSession();
-
+        
         if (session.getAttribute("user") != null) {
             Personne user = (Personne) session.getAttribute("user");
             Integer idQcm = null;
-
+            
             try {
-                idQcm = Integer.parseInt(request.getParameter("id"));
+                idQcm = Integer.parseInt(request.getParameter("idQcmPasser"));
             } catch (NumberFormatException e) {
                 System.out.println("Id QCM invalide");
+                session.setAttribute("messageError", "L'identifiant du Qcm est invalide.");
             }
-
+            
             if (idQcm != null) {
                 QcmDao qcmDao = new QcmDao();
                 Qcm unQcm = null;
                 int isAlreadyDone = 0;
-
+                
                 try {
                     isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
                 } catch (SQLException ex) {
                     Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
                 if (isAlreadyDone == -1) {
                     try {
                         unQcm = qcmDao.findById(idQcm);
                     } catch (SQLException ex) {
                         Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
+                    
                     if (unQcm != null) {
                         request.setAttribute("qcm", unQcm);
                         request.setAttribute("title", "Quizz : " + unQcm.getIntitule());
                         this.getServletContext().getRequestDispatcher(VUE_PASSER).forward(request, response);
                     }
                 } else {
+                    session.setAttribute("messageError", "Vous aviez déjà passer ce Qcm, voici vos résultats");
                     response.sendRedirect(this.getServletContext().getContextPath() + "/qcm/resultat?id=" + idQcm);
                 }
-
+                
+            } else {
+                response.sendRedirect(this.getServletContext().getContextPath() + "/qcm");
             }
         } else {
             response.sendError(403);
         }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         HttpSession session = request.getSession();
-
+        
         if (session.getAttribute("user") != null) {
             Personne user = (Personne) session.getAttribute("user");
             String idQcmPasse = request.getParameter("idQcm");
             Integer idQcm = null;
-
+            
             try {
                 idQcm = Integer.parseInt(idQcmPasse);
             } catch (NumberFormatException e) {
                 System.out.println("Erreur id QCM invalide");
+                session.setAttribute("messageError", "L'identifiant du Qcm est invalide.");
             }
-
+            
             if (idQcm != null) {
                 QcmDao qcmDao = new QcmDao();
                 int isAlreadyDone = 0;
@@ -126,6 +113,7 @@ public class PasserQcmServlet extends HttpServlet {
                     isAlreadyDone = qcmDao.isAlreadyDone(user.getId(), idQcm);
                 } catch (SQLException ex) {
                     Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    session.setAttribute("messageError", "vous aviez déjà passé ce Qcm, voici vos résultats");
                 }
                 if (isAlreadyDone == -1) {
                     Qcm qcmPasse = null;
@@ -133,8 +121,9 @@ public class PasserQcmServlet extends HttpServlet {
                         qcmPasse = qcmDao.findById(idQcm);
                     } catch (SQLException ex) {
                         Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        session.setAttribute("messageError", "Problème rencontré lors de la récupération des données");
                     }
-
+                    
                     if (qcmPasse != null) {
                         float compteurBonnesRep = 0;
                         float nbBonnesRep = 0;
@@ -148,40 +137,37 @@ public class PasserQcmServlet extends HttpServlet {
                                     q.getLesChoix().get(rep).setEstChoisi(true);
                                     if (q.getLesChoix().get(rep).isEstCorrect()) {
                                         compteurBonnesRep++;
-                                    } else if (!q.getLesChoix().get(rep).isEstCorrect()) {
-                                        compteurBonnesRep--;
                                     }
                                 }
                             }
                         }
-                        if (nbBonnesRep < 0) {
-                            nbBonnesRep = 0;
-                        }
-
                         try {
                             qcmDao.insertPassage(user.getId(), qcmPasse);
                         } catch (SQLException ex) {
                             Logger.getLogger(PasserQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                        
                         note = (int) ((compteurBonnesRep / nbBonnesRep) * 100);
-
+                        
                         request.setAttribute("note", note);
                         request.setAttribute("qcmPasse", qcmPasse);
-
+                        
                         this.getServletContext().getRequestDispatcher(VUE_RESULTAT).forward(request, response);
-
+                        
+                    } else {
+                        response.sendRedirect(this.getServletContext().getContextPath() + "/etudiant/qcm");
                     }
-
+                    
                 } else {
-                    response.sendRedirect(this.getServletContext().getContextPath() + "qcm/resultat?id=" + idQcm);
+                    response.sendRedirect(this.getServletContext().getContextPath() + "/etudiant/qcm/resultat?id=" + idQcm);
                 }
+            } else {
+                response.sendRedirect(this.getServletContext().getContextPath() + "/etudiant/qcm");
             }
-
         } else {
             response.sendError(403);
         }
-
+        
     }
 
     /**

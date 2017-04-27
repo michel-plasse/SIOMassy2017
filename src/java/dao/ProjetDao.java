@@ -105,7 +105,7 @@ public class ProjetDao implements ProjetHome<Projet>{
         ArrayList<Projet> lesProjets = new ArrayList<Projet>();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT SELECT s.id_session as idSession,\n" +
+        ResultSet resall = stmt.executeQuery("SELECT s.id_session as idSession,\n" +
 "       p.sujet as sujet ,\n" +
 "       p.date_creation as dateCreation ,\n" +
 "       p.date_limite as dateLimite ,\n" +
@@ -117,10 +117,24 @@ public class ProjetDao implements ProjetHome<Projet>{
         resall.next();
         return lesProjets;
     }
-    }
-
-   
-
-
     
-
+//    @Override
+//    public ArrayList<Projet> findAllByIdFormateur(int idFormateur) throws SQLException {
+//        ArrayList<Projet> lesProjetsDuFormateur = new ArrayList<Projet>();
+//        connection = ConnectionBd.getConnection();
+//        Statement stmt = connection.createStatement();
+//        ResultSet resall = stmt.executeQuery("SELECT s.id_session as idSession," +
+//            " p.sujet as sujet ," +
+//            " p.date_creation as dateCreation ," +
+//            " p.date_limite as dateLimite ," +
+//            " p.description as description" +
+//            "from\n" +
+//            " session_formation s\n" +
+//            " inner join" +
+//            " projet p on s.id_session=p.id_session "
+//                + "where p.id_formateur =" + idFormateur + ";");
+//        resall.next();
+//        return lesProjetsDuFormateur;
+//    }
+    
+}
