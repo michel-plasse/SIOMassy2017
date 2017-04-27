@@ -20,15 +20,15 @@ public interface QcmHome<T> extends Dao<T> {
     
     public int insert(int idFormateur, int idModule, T nouveauQcm) throws SQLException;
     public void insertPassage (int idUser, T qcmRepsChoisies) throws SQLException;
-    
-    public void deleteQuestion(int idQuestion) throws SQLException;
-    
-    public boolean isCheckedQcmAndUser(int idQcm, int idFormateur) throws SQLException;;
-    
-    public void insertQuestion(int idQcm, Question uneQuestion) throws SQLException;
-    
+
+    /**
+     *
+     * @param idUser
+     * @param idQcm
+     * @return
+     * @throws SQLException
+     */
     public HashSet<Integer> findAnsByIdPassage (int idUser, int idQcm) throws SQLException;
-    
     public int isAlreadyDone(int idUser, int idQcm) throws SQLException;
     public ArrayList<T> findAllByFormateur(int idFormateur) throws SQLException;
     public boolean rendValideQcm(int idQcm) throws SQLException;

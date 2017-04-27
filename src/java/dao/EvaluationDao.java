@@ -219,5 +219,59 @@ public class EvaluationDao implements EvaluationHome {
         }
         return lesNotes;
     }
+    public ArrayList<Evaluation> findEvalANoterFormateur(int idFormateur) throws SQLException {
+        ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation e"
+                + " INNER JOIN session_formation s ON e.id_session = s.id_session "
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet <= NOW() AND s.date_debut < NOW() < s.date_fin AND s.est_ouverte = 0 ;");
+        while (res.next()) {
+            Evaluation eval = new Evaluation(
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
+            lesEvalDuFormateur.add(eval);
+        }
+        return lesEvalDuFormateur;
+    }
+
+    @Override
+    public ArrayList<Note> findByEval(int idEvaluation) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT n.id_evaluation, n.id_note, n.note, n.commentaire, p.id_personne, p.nom, p.prenom, e.intitule  FROM evaluation AS e"
+                + " INNER JOIN note n ON e.id_evaluation = n.id_evaluation"
+                + " INNER JOIN personne p ON n.id_personne = p.id_personne"
+                + " WHERE n.id_evaluation = ?;";
+        PreparedStatement PreparedStatement = connection.prepareStatement(sql);
+        ArrayList<Note> lesNotes = new ArrayList();
+        PreparedStatement.setInt(1, idEvaluation);
+        ResultSet resultat = PreparedStatement.executeQuery();
+        while (resultat.next()) {
+            
+            Personne p = new Personne();
+            p.setId(resultat.getInt("p.id_personne"));
+            p.setNom(resultat.getString("p.nom"));
+            p.setPrenom(resultat.getString("p.prenom"));
+
+            Evaluation e = new Evaluation();
+            e.setIdEvaluation(resultat.getInt("n.id_evaluation"));
+            e.setIntitule(resultat.getString("e.intitule"));
+            
+            Note n = new Note(
+                    resultat.getInt("n.id_note"),
+                    resultat.getDouble("n.note"),
+                    resultat.getString("n.commentaire"));
+            n.setEtudiant(p);
+            n.setEvaluation(e);
+            lesNotes.add(n);
+        }
+        return lesNotes;
+    }
 
 }
