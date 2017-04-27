@@ -30,30 +30,7 @@ public class QcmDao implements QcmHome<Qcm> {
 
     @Override
     public ArrayList<Qcm> findAll() throws SQLException {
-        connection = ConnectionBd.getConnection();
-        String sql = "SELECT id_qcm, id_formateur, id_module, intitule, valide FROM qcm WHERE valide = 1 AND archive = 0";
-        ResultSet res = null;
-        PreparedStatement preparedStatement = null;
-        ArrayList<Qcm> lesQcm = new ArrayList<>();
-
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            res = preparedStatement.executeQuery();
-            while (res.next()) {
-                ModuleDao moduleDao = new ModuleDao();
-                Module module = moduleDao.findById(res.getInt("id_module"));
-                Qcm unQcm = new Qcm(
-                        res.getInt("id_qcm"),
-                        res.getString("intitule"),
-                        res.getBoolean("valide"),
-                        module.getNom());
-                lesQcm.add(unQcm);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Problème avec findAllQcm");
-            throw ex;
-        }
-        return lesQcm;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -329,7 +306,7 @@ public class QcmDao implements QcmHome<Qcm> {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT id_qcm, m.nom, intitule, valide ,archive FROM qcm "
                 + " INNER JOIN module m ON qcm.id_module = m.id_module "
-                + " WHERE id_formateur = ?";
+                + " WHERE id_formateur = ? AND archive = 0";
 
         PreparedStatement preparedStatement = null;
         ResultSet res = null;
@@ -392,4 +369,66 @@ public class QcmDao implements QcmHome<Qcm> {
         }
         return status;
     }
+
+    @Override
+    public ArrayList<Qcm> findAlreadyDoneForPersonne(int idPersonne) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT qcm.id_qcm, id_formateur, id_module, intitule, valide, archive "
+                + " FROM qcm INNER JOIN passage_qcm p ON p.id_qcm = qcm.id_qcm "
+                + " WHERE valide = 1 AND archive = 1 AND p.id_personne = ?";
+        ResultSet res = null;
+        PreparedStatement preparedStatement = null;
+        ArrayList<Qcm> lesQcm = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            res = preparedStatement.executeQuery();
+            while (res.next()) {
+                ModuleDao moduleDao = new ModuleDao();
+                Module module = moduleDao.findById(res.getInt("id_module"));
+                Qcm unQcm = new Qcm(
+                        res.getInt("qcm.id_qcm"),
+                        res.getString("intitule"),
+                        res.getBoolean("valide"),
+                        module.getNom());
+                lesQcm.add(unQcm);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problème avec findAllQcm");
+            throw ex;
+        }
+        return lesQcm;
+    }
+
+    @Override
+    public ArrayList<Qcm> findAllNotDone(int idPersonne) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT id_qcm FROM passage_qcm WHERE id_personne = ?";
+        ResultSet res = null;
+        PreparedStatement preparedStatement = null;
+        ArrayList<Qcm> lesQcm = new ArrayList<>();
+
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            res = preparedStatement.executeQuery();
+            while (res.next()) {
+                ModuleDao moduleDao = new ModuleDao();
+                Module module = moduleDao.findById(res.getInt("id_module"));
+                Qcm unQcm = new Qcm(
+                        res.getInt("id_qcm"),
+                        res.getString("intitule"),
+                        res.getBoolean("valide"),
+                        module.getNom());
+                lesQcm.add(unQcm);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Problème avec findAllQcm");
+            throw ex;
+        }
+        return lesQcm;
+    }
+//    SELECT qcm.id_qcm, id_formateur, id_module, intitule, valide, archive FROM qcm 
+//INNER JOIN passage_qcm p ON p.id_qcm = qcm.id_qcm
+//WHERE not exists ( select * FROM passage_qcm WHERE id_personne = 1 AND id_qcm = 2)
+//AND valide = 1 AND archive = 0;
 }
