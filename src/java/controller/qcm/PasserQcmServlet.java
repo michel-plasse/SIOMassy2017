@@ -46,7 +46,7 @@ public class PasserQcmServlet extends HttpServlet {
             Integer idQcm = null;
             
             try {
-                idQcm = Integer.parseInt(request.getParameter("id"));
+                idQcm = Integer.parseInt(request.getParameter("idQcmPasser"));
             } catch (NumberFormatException e) {
                 System.out.println("Id QCM invalide");
                 session.setAttribute("messageError", "L'identifiant du Qcm est invalide.");

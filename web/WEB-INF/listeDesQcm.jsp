@@ -29,7 +29,12 @@
                     </c:choose></a>
             </td>
             <td><form method="post"><c:choose>
-                        <c:when test="${unQcm.valide}">Un Qcm valide ne peut<br>plus être supprimé</c:when>
+                        <c:when test="${unQcm.valide}">
+                            <c:choose>
+                                <c:when test="${unQcm.archive}">Qcm archivé</c:when>
+                                <c:when test="${!unQcm.archive}"><button type="submit" value="${unQcm.idQcm}" name="archiver">Archiver</button></c:when>
+                            </c:choose>                       
+                        </c:when>
                         <c:when test="${!unQcm.valide}"><button type="submit" value="${unQcm.idQcm}" name="supprimer">Supprimer</button></c:when>
                     </c:choose></form>
             </td>

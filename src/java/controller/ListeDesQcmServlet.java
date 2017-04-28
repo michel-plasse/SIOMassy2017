@@ -123,7 +123,9 @@ public class ListeDesQcmServlet extends HttpServlet {
             if (request.getParameter("supprimer") != null) {
                 supprimer(request, response);
             }
-
+            if (request.getParameter("archiver") != null) {
+                archiver(request,response);
+            }
             // si clique sur valider
             if (request.getParameter("valider") != null) {
                 valider(request, response);
@@ -188,6 +190,20 @@ public class ListeDesQcmServlet extends HttpServlet {
             System.out.println("nouveau qcm créé !" + idGenere);
             response.sendRedirect(this.getServletContext().getContextPath() + "/CreerQcm?idQcm=" + idGenere);
         } catch (SQLException ex) {
+            Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", ex.getMessage());
+            request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        }
+    }
+
+    private void archiver(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        QcmDao qcmDao = new QcmDao();
+        int idQcm = Integer.parseInt(request.getParameter("archiver"));
+        try {
+            qcmDao.rendArchiveQcm(idQcm);
+            System.out.println("archivation du qcm");
+            response.sendRedirect("ListeDesQcmServlet");
+        } catch (Exception ex) {
             Logger.getLogger(ListeDesQcmServlet.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("message", ex.getMessage());
             request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);

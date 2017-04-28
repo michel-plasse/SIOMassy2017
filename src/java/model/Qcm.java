@@ -18,6 +18,7 @@ public class Qcm {
     private boolean valide;
     private ArrayList<Question> lesQuestions;
     private String nomModule ;
+    private boolean archive;
 
     public Qcm() {
     }
@@ -36,6 +37,14 @@ public class Qcm {
         this.nomModule = nomModule;
     }
 
+    public boolean isArchive() {
+        return archive;
+    }
+
+    public void setArchive(boolean archive) {
+        this.archive = archive;
+    }
+    
     public String getNomModule() {
         return nomModule;
     }
