@@ -6,10 +6,10 @@
 <div>${message}</div>
 <h3>${qcm.intitule}</h3>
 <c:if test="${not empty qcm.lesQuestions}">
-    <div class="col-md-12">
+    <div >
         <form method="post">
             <c:forEach items="${qcm.lesQuestions}" var="laQuestion">
-                <div class="col-md-8 col-md-offset-1">
+                <div class="col-md-8 col-md-offset-1 col-md-12">
                     <div>
                         <h4>${laQuestion.question}</h4>
                     </div><ul>
@@ -24,7 +24,7 @@
                     </ul></div>
                 <div class="col-md-2">
                     <c:if test="${!qcm.valide}">
-                        <button type="submit" value="${laQuestion.idQuestion}" name="supprimerQuestion">Supprimer la question</button>
+                        <button type="submit" class="btn btn-danger" value="${laQuestion.idQuestion}" name="supprimerQuestion">Supprimer la question</button>
                     </c:if>
                 </div>
             </c:forEach>
@@ -73,10 +73,10 @@
                     <label class="btn btn-primary"><input type="radio" name="valide" value="4" required /> est la bonne reponse<br></label>
                 </div>
             </div>
-            <input type="reset" value="effacer">
-            <input type="submit" value="creer question" name="creer">
+            <input type="reset" class="btn btn-default" value="effacer">
+            <input type="submit" class="btn btn-default" value="creer question" name="creer">
         </div>
 
     </form>
 </c:if>
-<p><a href="<c:url value="/ListeDesQcmServlet"/>">retour</a></p>
+<p><a href="<c:url value="/ListeDesQcmServlet"/>" class="btn btn-default">retour</a></p>
