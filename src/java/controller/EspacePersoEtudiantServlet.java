@@ -107,16 +107,19 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
         } else {
             NoteDao daoNote = new NoteDao();
             QcmDao qcmDao = new QcmDao();
+            QcmDao qcmDao2 = new QcmDao();
             //EvaluationDao daoEval = new EvaluationDao();
 
             try {
-                ArrayList<Qcm> lesQcm = qcmDao.findAll();
+                ArrayList<Qcm> lesQcmNonPasse = qcmDao.findAllNotDone(user.getId());
+                ArrayList<Qcm> lesQcmPasse = qcmDao2.findAlreadyDoneForPersonne(user.getId());
                 ArrayList<Note> lesNotes = daoNote.findNoteById(user.getId());
                 System.out.println("lesNotes : " + lesNotes.size());
                 maSession.setAttribute("lesNotes", lesNotes);
                 System.out.println(daoNote.findNoteById(1));
                 request.setAttribute("lesPays", lesPays);
-                request.setAttribute("lesQcm", lesQcm);
+                request.setAttribute("LesQcmPasse", lesQcmPasse);
+                request.setAttribute("lesQcmNonPasse", lesQcmNonPasse);
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
             } catch (SQLException ex) {
                 Logger.getLogger(EspacePersoEtudiantServlet.class.getName()).log(Level.SEVERE, null, ex);

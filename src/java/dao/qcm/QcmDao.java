@@ -375,13 +375,13 @@ public class QcmDao implements QcmHome<Qcm> {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT qcm.id_qcm, id_formateur, id_module, intitule, valide, archive "
                 + " FROM qcm INNER JOIN passage_qcm p ON p.id_qcm = qcm.id_qcm "
-                + " WHERE valide = 1 AND archive = 1 AND p.id_personne = ?";
+                + " WHERE valide = 1 AND p.id_personne = ?";
         ResultSet res = null;
         PreparedStatement preparedStatement = null;
         ArrayList<Qcm> lesQcm = new ArrayList<>();
 
         try {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idPersonne);
             res = preparedStatement.executeQuery();
             while (res.next()) {
                 ModuleDao moduleDao = new ModuleDao();
@@ -392,6 +392,7 @@ public class QcmDao implements QcmHome<Qcm> {
                         res.getBoolean("valide"),
                         module.getNom());
                 lesQcm.add(unQcm);
+                System.out.println(unQcm.getIntitule());
             }
         } catch (SQLException ex) {
             System.out.println("Problème avec findAllQcm");
@@ -403,13 +404,13 @@ public class QcmDao implements QcmHome<Qcm> {
     @Override
     public ArrayList<Qcm> findAllNotDone(int idPersonne) throws SQLException {
         connection = ConnectionBd.getConnection();
-        String sql = "SELECT id_qcm FROM passage_qcm WHERE id_personne = ?";
+        String sql = "SELECT * FROM qcm WHERE id_qcm <> ALL (SELECT id_qcm FROM passage_qcm WHERE id_personne = ?) AND archive = 0";
         ResultSet res = null;
         PreparedStatement preparedStatement = null;
         ArrayList<Qcm> lesQcm = new ArrayList<>();
 
         try {
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = initialisationRequetePreparee(connection, sql, false, idPersonne);
             res = preparedStatement.executeQuery();
             while (res.next()) {
                 ModuleDao moduleDao = new ModuleDao();
@@ -427,8 +428,4 @@ public class QcmDao implements QcmHome<Qcm> {
         }
         return lesQcm;
     }
-//    SELECT qcm.id_qcm, id_formateur, id_module, intitule, valide, archive FROM qcm 
-//INNER JOIN passage_qcm p ON p.id_qcm = qcm.id_qcm
-//WHERE not exists ( select * FROM passage_qcm WHERE id_personne = 1 AND id_qcm = 2)
-//AND valide = 1 AND archive = 0;
 }
