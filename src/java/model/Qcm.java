@@ -31,6 +31,15 @@ public class Qcm {
         this.lesQuestions = lesQuestions;
     }
 
+    public int getIdModule() {
+        return idModule;
+    }
+
+    public void setIdModule(int idModule) {
+        this.idModule = idModule;
+    }
+
+
     public Qcm(int idQcm, String intitule, boolean valide, String nomModule) {
         this.idQcm = idQcm;
         this.intitule = intitule;

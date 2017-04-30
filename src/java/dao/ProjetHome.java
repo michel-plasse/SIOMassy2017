@@ -5,7 +5,11 @@
  */
 package dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import model.Projet;
+
 public interface ProjetHome<T> extends Dao <T> {
-    
+    public ArrayList<Projet> findAllByIdFormateur(int idFormateur) throws SQLException;
     
 }
