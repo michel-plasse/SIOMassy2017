@@ -145,7 +145,6 @@ public class QuestionDao implements QuestionHome<Question> {
             System.out.println("Récupération des Questions du QCM : OK..");
 
         } catch (SQLException e) {
-            connection.rollback();
             System.out.println("Problème avec la récupération des questions du QCM : " + idQcm);
             throw e;
         } finally {

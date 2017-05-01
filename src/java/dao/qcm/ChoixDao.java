@@ -20,10 +20,10 @@ public class ChoixDao implements ChoixHome {
     private Connection connection;
     private static String CHAMP_ID_OPTION = "id_choix";
     private static String CHAMP_ID_QUESTION = "id_question";
-    private static String CHAMP_OPTION = "choix";
+    private static String CHAMP_OPTION = "libelle";
     private static String CHAMP_EST_CORRECTE = "est_correct";
 
-    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_choix,id_question,choix,est_correct FROM choix WHERE id_question=?";
+    private static String SQL_SELECT_OPTION_BY_QUESTION = "SELECT id_choix,id_question,libelle,est_correct FROM choix WHERE id_question=?";
 
     @Override
     public boolean delete(int id) throws SQLException {
@@ -39,7 +39,7 @@ public class ChoixDao implements ChoixHome {
     public Choix findById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Choix choix = null;
-        String sqlstmt = "SELECT id_choix, id_question, choix, est_correct FROM choix"
+        String sqlstmt = "SELECT id_choix, id_question, libelle, est_correct FROM choix"
                 + "WHERE id_choix = ? ";
         PreparedStatement stmt = connection.prepareStatement(sqlstmt);
         stmt.setInt(1, id);
