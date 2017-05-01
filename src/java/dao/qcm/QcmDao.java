@@ -158,7 +158,7 @@ public class QcmDao implements QcmHome<Qcm> {
             ArrayList<Question> questions = new ArrayList<>();
 
             while (res.next()) {
-                if (res.getInt("qu.id_question") != idQuestion) {
+                if (res.getInt("qu.id_question") != idQuestion && res.getString("qu.question") != null) {
                     uneQuestion = new Question();
                     uneQuestion.setIdQuestion(res.getInt("qu.id_question"));
                     uneQuestion.setQuestion(res.getString("qu.question"));
@@ -181,6 +181,7 @@ public class QcmDao implements QcmHome<Qcm> {
                     unQcm = new Qcm();
                     unQcm.setIdQcm(res.getInt("qc.id_qcm"));
                     unQcm.setIntitule(res.getString("qc.intitule"));
+                    unQcm.setIdModule(res.getInt("qc.id_module"));
                     unQcm.setValide(res.getBoolean("qc.valide"));
                     unQcm.setLesQuestions(questions);
                 }

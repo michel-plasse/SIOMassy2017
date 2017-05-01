@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Qcm {
     
     private int idQcm;
+    private int idModule;
     private String intitule;
     private boolean valide;
     private ArrayList<Question> lesQuestions;
@@ -29,6 +30,15 @@ public class Qcm {
         this.valide = valide;
         this.lesQuestions = lesQuestions;
     }
+
+    public int getIdModule() {
+        return idModule;
+    }
+
+    public void setIdModule(int idModule) {
+        this.idModule = idModule;
+    }
+
 
     public Qcm(int idQcm, String intitule, boolean valide, String nomModule) {
         this.idQcm = idQcm;
