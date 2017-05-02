@@ -26,50 +26,49 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ConfirmerInscription", urlPatterns = {"/ConfirmerInscription"})
 public class ConfirmerInscriptionServlet extends HttpServlet {
 
-      protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          PersonneDao pers = new PersonneDao();
-          String token = request.getParameter("token");
-          String pattern = "(^[a-zA-Z0-9]{26,32}$)";
-          Pattern r = Pattern.compile(pattern);
-          Matcher m = r.matcher(token);
+        PersonneDao pers = new PersonneDao();
+        String token = request.getParameter("token");
+        String pattern = "(^[a-zA-Z0-9]{26,32}$)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(token);
 
-          if(m.matches()){
-              int id_personne = 0;
-              boolean result = false;
-              try {
-                  id_personne = pers.findIdFromToken(token);
-               } 
-              catch (SQLException ex) {
-                  Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
-              }
-              
-              //PrintWriter out = response.getWriter();
-              //out.print(id_personne);
+        if (m.matches()) {
+            int id_personne = 0;
+            boolean result = false;
+            try {
+                id_personne = pers.findIdFromToken(token);
+            } catch (SQLException ex) {
+                Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-              if(id_personne != -1) {
-                  try {
-                      result = pers.activeUser(id_personne);
-                  } catch (SQLException ex) {
-                      Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-                  
-              }
-              //out.print(result);
-              if(result){
-                  response.sendRedirect(this.getServletContext().getContextPath() + "/login" );
-              }
+            //PrintWriter out = response.getWriter();
+            //out.print(id_personne);
+            if (id_personne != -1) {
+                try {
+                    result = pers.activeUser(id_personne);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-          }else{
+            }
+            //out.print(result);
+            if (result) {
+                //response.sendRedirect(this.getServletContext().getContextPath() + "/login" );
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            }
+
+        } else {
             request.setAttribute("messageErreurValidation", "Une erreur s'est produite lors de la confirmation, veuillez entrez a nouveau vos informations.");
             //response.sendRedirect(this.getServletContext().getContextPath() + "/inscrire" );
             request.getRequestDispatcher("/WEB-INF/inscrire.jsp").forward(request, response);
-          }
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        doGet(request, response);
     }
 
 }

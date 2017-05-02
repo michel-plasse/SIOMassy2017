@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,49 +14,48 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import model.Projet;
 
-
-
 /**
  *
  * @author admin
  */
-public class ProjetDao implements ProjetHome<Projet>{
+public class ProjetDao implements ProjetHome<Projet> {
+
     private Connection connection;
-    public ProjetDao(){
+
+    public ProjetDao() {
     }
 
     @Override
-    public void insert(Projet objetAInserer) throws SQLException {
-       
-        
-         try {
+    public void insert(Projet projet) throws SQLException {
+
+        try {
             connection = ConnectionBd.getConnection();
             // Commencer une transaction
             connection.setAutoCommit(false);
-            String sql = "INSERT INTO projet(id_projet,id_formateur, sujet, description,date_limite,date_creation)"
-                    + " VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO projet(id_formateur, id_session, sujet, description, date_limite, date_creation)"
+                    + " VALUES (?,?,?,?,?, ?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt  ( 1,objetAInserer.getId());                 ;
-            stmt.setInt (2, objetAInserer.getId());
-            
-            stmt.setString(3, objetAInserer.getSujet());
-            stmt.setString(4,objetAInserer.getDateCreation());
-            stmt.setString(5, objetAInserer.getDateLimite());
-          
-            stmt.setString(6, objetAInserer.getDescription());
+            stmt.setInt(1, projet.getIdFormateur());
+            stmt.setInt(2, projet.getIdSession());
+            stmt.setString(3, projet.getSujet());
+            stmt.setString(4, projet.getDescription());
+            stmt.setDate(5, new java.sql.Date(projet.getDateLimite().getTime()));
+            stmt.setDate(6, new java.sql.Date(projet.getDateCreation().getTime()));
+            System.out.println(projet);
             stmt.executeUpdate();
             // Recuperer le id
             sql = "SELECT MAX(id_projet) AS id from projet";
             Statement lecture = connection.createStatement();
             ResultSet rs = lecture.executeQuery(sql);
             rs.next();
-        
-            objetAInserer.setId(rs.getInt("id"));
-            System.out.println(objetAInserer);
+
+            projet.setId(rs.getInt("id"));
+            System.out.println(projet);
             // Valider
             connection.commit();
             System.out.println("Projet insérée.");
         } catch (SQLException exc) {
+            exc.printStackTrace();
             connection.rollback();
             System.out.println("Rollback.");
             throw exc;
@@ -76,26 +76,26 @@ public class ProjetDao implements ProjetHome<Projet>{
     public boolean update(int idAncien, Projet nouveau) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        String sessionFormation = nouveau.getSessionFormation();
+        int sessionFormation = nouveau.getIdSession();
         String sujet = nouveau.getSujet();
-        String dateCreation = nouveau.getDateCreation();
-        String dateLimite = nouveau.getDateLimite();
+        Date dateCreation = nouveau.getDateCreation();
+        Date dateLimite = nouveau.getDateLimite();
         String description = nouveau.getDescription();
 
-        stmt.executeUpdate("UPDATE projet SET(" +sessionFormation+ "," + sujet + ",'" + dateCreation + ",'" + dateLimite + ",'" + description +  ";");
+        stmt.executeUpdate("UPDATE projet SET(" + sessionFormation + "," + sujet + ",'" + dateCreation + ",'" + dateLimite + ",'" + description + ";");
         return false;
     }
 
     @Override
     public Projet findById(int id) throws SQLException {
-           Projet result = null;
+        Projet result = null;
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM agriotes2017.projet WHERE id_projet =" + id + ";");
         if (rs.next()) {
             result = new Projet(id,
-                    rs.getString("sessionFormation"), rs.getString("sujet"),
-                    rs.getString("dateCreation"), rs.getString("dateLimite"), rs.getString("description"));
+                    rs.getString("sessionFormation"), rs.getString("sujet"), rs.getString("description"),
+                    rs.getDate("dateCreation"), rs.getDate("dateLimite"));
         }
         return result;
     }

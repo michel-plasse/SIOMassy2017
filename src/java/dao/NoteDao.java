@@ -94,10 +94,10 @@ public class NoteDao implements NoteHome {
     }
 
     /**
-     * 
+     *
      * @param id
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public ArrayList<Note> findNoteById(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -129,5 +129,25 @@ public class NoteDao implements NoteHome {
         }
         return lesNotes;
 
+    }
+
+    @Override
+    public boolean checkIdFormateur(int idEval, int idFormateur) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT id_evaluation FROM evaluation WHERE id_evaluation = ? AND id_formateur = ?";
+        boolean reponse = false;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idEval);
+            preparedStatement.setInt(2, idFormateur);
+            ResultSet resultat = preparedStatement.executeQuery();
+            if (resultat.next()) {
+                reponse = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Problème de concordance idEval et idFormateur");
+            throw e;
+        }
+        return reponse;
     }
 }

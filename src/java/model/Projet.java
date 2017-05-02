@@ -5,29 +5,34 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author admin
  */
 public class Projet {
     private int id;
-    private String sessionFormation;
+    private int idSession;
+     private int idFormateur;
+     private String nomFormateur;
+     private String prenomFormateur;
+    
     private String sujet;
     private String description;
-    private String dateLimite;
-    private String dateCreation;
+    private Date dateLimite;
+    private Date dateCreation;
 
-    public Projet(int id, String sessionFormation, String sujet, String description, String dateLimite, String dateCreation) {
+    public Projet(int id, int idSession, int idFormateur, String nomFormateur, String prenomFormateur, String sujet, String description, Date dateLimite, Date dateCreation) {
         this.id = id;
-        this.sessionFormation = sessionFormation;
+        this.idSession = idSession;
+        this.idFormateur = idFormateur;
+        this.nomFormateur = nomFormateur;
+        this.prenomFormateur = prenomFormateur;
         this.sujet = sujet;
         this.description = description;
         this.dateLimite = dateLimite;
         this.dateCreation = dateCreation;
-    }
-
-    public Projet(int i, String sessionFormation, String sujet, String dateLimite, String dateCreation, String dateFin, String description) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getId() {
@@ -38,12 +43,36 @@ public class Projet {
         this.id = id;
     }
 
-    public String getSessionFormation() {
-        return sessionFormation;
+    public int getIdSession() {
+        return idSession;
     }
 
-    public void setSessionFormation(String sessionFormation) {
-        this.sessionFormation = sessionFormation;
+    public void setIdSession(int idSession) {
+        this.idSession = idSession;
+    }
+
+    public int getIdFormateur() {
+        return idFormateur;
+    }
+
+    public void setIdFormateur(int idFormateur) {
+        this.idFormateur = idFormateur;
+    }
+
+    public String getNomFormateur() {
+        return nomFormateur;
+    }
+
+    public void setNomFormateur(String nomFormateur) {
+        this.nomFormateur = nomFormateur;
+    }
+
+    public String getPrenomFormateur() {
+        return prenomFormateur;
+    }
+
+    public void setPrenomFormateur(String prenomFormateur) {
+        this.prenomFormateur = prenomFormateur;
     }
 
     public String getSujet() {
@@ -62,24 +91,32 @@ public class Projet {
         this.description = description;
     }
 
-    public String getDateLimite() {
+    public Date getDateLimite() {
         return dateLimite;
     }
 
-    public void setDateLimite(String dateLimite) {
+    public void setDateLimite(Date dateLimite) {
         this.dateLimite = dateLimite;
     }
 
-    public String getDateCreation() {
+    public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(String dateCreation) {
+    public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
 
-  
+ 
 
+    public Projet(int id, String string, String string0, String string1, java.sql.Date date, java.sql.Date date0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+} 
 
+    @Override
+    public String toString() {
+        return "Projet{" + "id=" + id + ", idSession=" + idSession + ", idFormateur=" + idFormateur +", nomFormateur=" + nomFormateur +", prenomFormateur=" + prenomFormateur + ", sujet=" + sujet + ", description=" + description + ", dateLimite=" + dateLimite + ", dateCreation=" + dateCreation + '}';
+    }
     
+
 }
