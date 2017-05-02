@@ -1,4 +1,11 @@
-
+<c:if test="${!empty sessionScope.messageOk}">
+    <div class="alert alert-success feedback"><c:out value="${sessionScope.messageOk}" /></div>
+    <c:remove scope="session" var="messageOk" />
+</c:if>
+<c:if test="${!empty sessionScope.messageError}">
+    <div class="alert alert-danger feedback"><c:out value="${sessionScope.messageError}" /></div>
+    <c:remove scope="session" var="messageError" />
+</c:if>
 <div id="formateur-form">
     <div id="formateur-formBox">
         <img height="100" width="100" src="image/trombi/<c:out value="${user.photo}"/>"/>
