@@ -109,7 +109,7 @@
 
                 <td>${laNote.evaluation.dateDebutEval}</td>
                 <td>${laNote.evaluation.leModule.nom}</td> 
-                <td><a href="espacePersoFormateur?id=${laNote.evaluation.leFormateur.id}">${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</a></td>           
+                <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
                 <td>${laNote.note}</td>
                 <td>${laNote.commentaire}</td>
             </tr>  
@@ -132,7 +132,7 @@
 
                 <td>${laNote.evaluation.dateDebutEval}</td>
                 <td>${laNote.evaluation.leModule.nom}</td> 
-                <td><a href="espacePersoFormateur?id=${laNote.evaluation.leFormateur.id}">${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</a></td>           
+                <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
                 <td>${laNote.note}</td>
                 <td>${laNote.commentaire}</td>
             </tr>  
@@ -188,41 +188,59 @@
     </table>
 </div>
 
-<a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
-<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br>
+ <a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
+<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br> 
 
+<br>
 <div>
-    <table class="table">
-        <tr>
-            <th>Module</th>
-            <th>Nom Qcm</th>
-            <th></th>
-            <th></th>
-        </tr>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#qcmpasse" aria-controls="home" role="tab" data-toggle="tab">Qcm Passé</a></li>
+        <li role="presentation"><a href="#qcmnonpasse" aria-controls="profile" role="tab" data-toggle="tab">Qcm non Passé</a></li>
+    </ul>
 
-        <tr><td>Qcm passé</td></tr>
-        
-        <c:forEach items="${LesQcmPasse}" var="leqcm">
-            <tr>
-                <td>${leqcm.nomModule}</td>
-                <td>${leqcm.intitule}</td>
-                <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">passer</a></td>
-                    <td></td>
-                </tr>
-        </c:forEach>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <table role="tabpanel" class="tab-pane active table" id="qcmpasse">
+            
+                <tr>
+                    
+                    <th>Module</th>
+                    <th>Nom</th>
                 
-        <tr><td>Qcm non passé</td></tr>
-        
-        <c:forEach items="${lesQcmNonPasse}" var="leqcm">
-            <tr>
-                <td>${leqcm.nomModule}</td>
-                <td>${leqcm.intitule}</td>
-                <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">passer</a></td>
-                    <td></td>
                 </tr>
-        </c:forEach>
+                <c:forEach items="${LesQcmPasse}" var="leqcm" >
+                    <tr>
+                        
+                        <td>${leqcm.nomModule}</td>
+                        <td>${leqcm.intitule}</td>
+                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Consulter</a></td>
+                         
+                        </tr>
+                </c:forEach>
+            
+        </table>
+        <table role="tabpanel" class="tab-pane  table" id="qcmnonpasse">
+            
+                <tr>
+                  
+                    <th>Module</th>
+                    <th>Nom</th>
+                    <th></th>
+                    
+                </tr>
+                <c:forEach items="${lesQcmNonPasse}" var="leqcm">
+                    <tr>
+                       
+                        <td>${leqcm.nomModule}</td>
+                        <td>${leqcm.intitule}</td>
+                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Passer</a></td>
+                           
+                        </tr>
+                </c:forEach>
+            
+        </table>
+    </div>
 
-    </table>
 </div>
 
-</div>

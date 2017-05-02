@@ -33,8 +33,8 @@ import model.Qcm;
  */
 @WebServlet(name = "EspacePersoEtudiant", urlPatterns = {"/espacePersoEtudiant"})
 public class EspacePersoEtudiantServlet extends HttpServlet {
-    private static String[] lesPays = {"France", "Outre-Mer", "Autre pays (Europe)","AutreAfrique\">Autre pays (Afrique)",
-                                       "AutreAsie'>Autre pays (Asie)","AutreAmérique'>Autre pays (Amérique)","AutreOcéanie'>Autre pays (Océanie)"};
+    private static String[] lesPays = {"France", "Outre-Mer", "Autre pays (Europe)","Autre pays (Afrique)",
+                                       "Autre pays (Asie)","Autre pays (Amérique)","Autre pays (Océanie)"};
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
