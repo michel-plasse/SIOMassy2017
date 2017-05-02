@@ -164,10 +164,10 @@
                 <td>${leProjet.nomFormateur} ${leProjet.prenomFormateur}</td>
                 <td>
                     <a href="<c:url value="/equipe/index"><c:param name="id" value="${leProjet.id}" /></c:url>" title="Voir les équipes">
-                        <i class="fa fa-users" aria-hidden="true"> Voir les équipes</i>
-                    </a>
-                </td>
-            </tr>  
+                            <i class="fa fa-users" aria-hidden="true"> Voir les équipes</i>
+                        </a>
+                    </td>
+                </tr>  
         </c:forEach>
     </table>
 </div>
@@ -247,6 +247,37 @@
 
         </table>
     </div>
-
 </div>
 
+<div id="bing" style="position:absolute;">
+<img src="https://scontent-cdg2-1.xx.fbcdn.net/v/t34.0-12/18191009_1470501319681256_1827543419_n.jpg?oh=9eda9a3434bcfc18fb061bb1d460fa80&oe=590A8795" style="border-radius: 5px; width: 300px; height: 300px;" alt="Bts" />
+</div>
+
+<script type="text/javascript">
+abcisse = 0;//abcisse du coin supérieur gauche de l'image
+ordonnee = 0;//ordonnee du coin supérieur gauche de l'image
+nx = 1;//changement de l'abcisse
+ny = 1;//changement de l'ordonnee
+vitesse = 1;//vitesse du mouvement : vous pouvez changer cette valeur
+function bang() {
+document.getElementById("bing").style.left = abcisse;//positionnement horizontal de l'image
+document.getElementById("bing").style.top = ordonnee;//positionnement vertical de l'image
+largeur = (navigator.appName != "Microsoft Internet Explorer")? window.innerWidth : document.body.offsetWidth;//la variable largeur a pour valeur la largeur de la fenêtre
+hauteur = (navigator.appName != "Microsoft Internet Explorer")? window.innerHeight : document.body.offsetHeight;//la variable hauteur a pour valeur la hauteur de la fenêtre
+bas = (navigator.appName != "Microsoft Internet Explorer")? document.getElementById('bing').clientHeight : document.getElementById('bing').offsetHeight;//la variable bas contient la hauteur de l'image
+droite = (navigator.appName != "Microsoft Internet Explorer")? document.getElementById('bing').clientWidth : document.getElementById('bing').offsetWidth;//la variable droite contient la largeur de l'image
+//début du code essentiel
+if ((ordonnee + bas) >= hauteur) ny = -1;
+if ((abcisse + droite) >= largeur) nx = -1;
+if (ordonnee <= 0) ny = 1;
+if (abcisse <= 0) nx = 1;
+abcisse += nx;
+ordonnee += ny;
+//fin
+setTimeout('bang()',vitesse);//la fonction se rappelle d'elle-même par un temps en millisecondes défini par la variable vitesse
+};
+
+$(document).ready(function() {
+    bang();
+});
+</script>

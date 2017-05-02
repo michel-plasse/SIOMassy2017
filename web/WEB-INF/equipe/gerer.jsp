@@ -4,7 +4,7 @@
     <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 
 
-    <form name="manage" method="POST" action="<c:url value="equipe/gerer"><c:param name="id" value="${equipeGeree.id}" /></c:url>">
+    <form name="manage" method="POST" action="<c:url value="/equipe/gerer"><c:param name="id" value="${equipeGeree.id}" /></c:url>">
             <!-- tableau des membres présents dans l'équipe -->
             <div class="col-md-4">
                 <fieldset>
@@ -52,7 +52,7 @@
                 <br />
                 <button name="supprimer" class="btn btn-danger" value="1">Supprimer l'équipe</button><br />
                 <br />
-                <a class="btn btn-default" href="<c:url value="equipe/index" ><c:param name="id" value="${requestScope.equipeGeree.idProjet}" /></c:url>">
+                <a class="btn btn-default" href="<c:url value="/equipe/index" ><c:param name="id" value="${requestScope.equipeGeree.idProjet}" /></c:url>">
                     Retour à la liste des équipes
                 </a>
             </fieldset>
