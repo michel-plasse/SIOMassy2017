@@ -12,12 +12,14 @@
             Agriote<c:if test="${ !empty requestScope.title }"><c:out value=" - ${requestScope.title}" /></c:if>
             </title>
 
-        <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
+            <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value="/inc/css/print.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="<c:url value="/inc/bootstrap/js/bootstrap.min.js" />"></script>
     </head>
 
     <body>

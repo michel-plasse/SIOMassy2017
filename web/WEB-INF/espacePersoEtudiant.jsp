@@ -10,7 +10,7 @@
             ${user.pays}<br>
             <i class="fa fa-phone" aria-hidden="true"></i> ${user.no_tel}<br>
             <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:${user.email}">${user.email} </a>
-            <a href="javascript:$('#donnees-lecture').hide(); $('#donnees-ecriture').show()">Edit</a>
+            <a id="editInfos" style="cursor: pointer">Edit</a>
         </div>
         <div id="donnees-ecriture" style="display:none;">
             <table class="table">
@@ -140,8 +140,8 @@
     </table>
 </div>
 
-<a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').fadeIn('slow').show()">Afficher toutes mes notes...</a> 
-<a href="javascript:$('#donnees-ecriture-note').hide(); $('#donnees-lecture-note').fadeIn('slow').show()">Réduire</a> <br>
+<a id="afficheNote" style="cursor: pointer">Afficher toutes mes notes...</a> 
+<a id="hideNote"  style="cursor: pointer">Réduire</a> <br>
 <br>
 
 <div id="donnees-lecture-projet">
@@ -188,8 +188,8 @@
     </table>
 </div>
 
- <a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
-<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br> 
+ <a id="afficheProjet" style="cursor: pointer">Afficher tous mes projets..</a> 
+<a id="hideProjet" style="cursor: pointer">Réduire</a> <br> 
 
 <br>
 <div>
@@ -243,4 +243,31 @@
     </div>
 
 </div>
+
+<script>
+    $('#editInfos').click(function() {
+        $('#donnees-lecture').hide(); $('#donnees-ecriture').show();
+    });
+    
+    $('#afficheNote').click(function () {
+        $('#donnees-lecture-note').hide();
+        $('#donnees-ecriture-note').fadeIn('slow').show();
+    });
+    
+    $('#hideNote').click(function() {
+        $('#donnees-ecriture-note').hide();
+        $('#donnees-lecture-note').fadeIn('slow').show();
+    });
+    
+    $('#afficheProjet').click(function() {
+        $('#donnees-lecture-projet').hide();
+        $('#donnees-ecriture-projet').fadeIn('slow').show();
+    });
+    
+    $('#hideProjet').click(function () {
+        $('#donnees-ecriture-projet').hide();
+        $('#donnees-lecture-projet').fadeIn('slow').show();
+    });
+    
+</script>
 
