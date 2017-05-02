@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value="/inc/css/print.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
+        <link rel="stylesheet" href="<c:url value="/inc/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />">
     </head>
 
     <body>

@@ -68,14 +68,15 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
         Connection connection = ConnectionBd.getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(
-                "SELECT"
+                "SELECT"                        
+                + " c.id_personne AS personne,"
+                + " c.id_session AS session,"
+                + " c.id_etat_candidature AS etat_candidature,"
                 + " p.nom AS nom,"
                 + " p.prenom AS prenom,"
                 + " e.libelle AS statut,"
-                + " s.date_debut AS debut,"
-                + " s.date_fin AS fin,"
                 + " f.nom AS formation_nom,"
-                + " c.date_effectue AS effectue"
+                + " c.date_effet AS effectue"
                 + " FROM"
                 + " candidature c"
                 + " INNER JOIN"
@@ -87,27 +88,26 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " INNER JOIN"
                 + " formation f ON s.id_formation = f.id_formation"
                 + where
-                + " ORDER BY date_effectue DESC"                
+                + " ORDER BY date_effet DESC"                
         );
-        
-        System.out.println(where + "heyyyy");
-        
         while (resultSet.next()) {
+            String personne = resultSet.getString("personne");
+            String session = resultSet.getString("session");
+            String etatCandidature = resultSet.getString("etat_candidature");
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
             String statut = resultSet.getString("statut");
-            String debut = resultSet.getString("debut");
-            String fin = resultSet.getString("fin");
-            String formationNom = resultSet.getString("formation_nom");
+            String formationNom = resultSet.getString("formation_nom");            
             String effectue = resultSet.getString("effectue");
 
             HashMap<String, String> candidature = new HashMap<String, String>();
+            candidature.put("idPersonne", personne);
+            candidature.put("idSession", session);
+            candidature.put("idEtatCandidature", etatCandidature);
             candidature.put("nom", nom);
             candidature.put("prenom", prenom);
             candidature.put("statut", statut);
-            candidature.put("debut", debut);
-            candidature.put("fin", fin);
-            candidature.put("formationNom", formationNom);
+            candidature.put("formationNom", formationNom);            
             candidature.put("effectue", effectue);
             listeMapCandidature.add(candidature);
 
