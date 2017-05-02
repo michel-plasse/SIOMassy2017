@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Note;
 import model.Personne;
 
@@ -73,6 +74,7 @@ public class RentrerNotesServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String vue = "/WEB-INF/rentrerNotes.jsp";
         NoteDao dao = new NoteDao();
         Personne etudiant = new Personne();
@@ -96,16 +98,14 @@ public class RentrerNotesServlet extends HttpServlet {
 
             try {
                 dao.update(noteAjoutee.getId_note(), noteAjoutee);
+                session.setAttribute("messageOk", "Vos notes sont bien enregistrées");
             } catch (SQLException ex) {
                 Logger.getLogger(RentrerNotesServlet.class.getName()).log(Level.SEVERE, null, ex);
+                session.setAttribute("messageError", "Problème rencontré lors de l'insertion des notes");
             }
         }
         
-        String message = "Vos ids : " + String.join(", ", ids)
-                + "<br/>Vos notes : " + String.join(", ", notes)
-                + "<br/>Vos commentaires : " + String.join(", ", coms);
-        request.setAttribute("message", message);
-        request.getRequestDispatcher("/WEB-INF/message.jsp").forward(request, response);
+        response.sendRedirect("espacePersoFormateur");
     }
     
 }
