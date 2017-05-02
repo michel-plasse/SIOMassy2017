@@ -132,6 +132,28 @@ public class EvaluationDao implements EvaluationHome {
         }
         return lesEvalDuFormateur;
     }
+    
+    @Override
+    public ArrayList<Evaluation> findPastEvalFormateur(int idFormateur) throws SQLException {
+        ArrayList<Evaluation> lesEvalDuFormateur = new ArrayList();
+        ModuleDao moduleDao = new ModuleDao();
+        PersonneDao personneDao = new PersonneDao();
+        SessionFormationDao sessionDao = new SessionFormationDao();
+        connection = ConnectionBd.getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
+                + " WHERE id_formateur = " + idFormateur + " AND date_effet < NOW() ;");
+        while (res.next()) {
+            Evaluation eval = new Evaluation(
+                    moduleDao.findById(res.getInt("id_module")),
+                    personneDao.findById(res.getInt("id_formateur")),
+                    sessionDao.findById(res.getInt("id_session")),
+                    res.getDate("date_effet"),
+                    res.getString("intitule"));
+            lesEvalDuFormateur.add(eval);
+        }
+        return lesEvalDuFormateur;
+    }
 
     @Override
     public ArrayList<Note> findByEval(int idEvaluation) throws SQLException {

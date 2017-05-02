@@ -57,7 +57,7 @@
                             <th>Date de passage</th>
                             <th>Intitulé évaluation</th>
                         </tr> 
-                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
+                        <c:forEach items="${requestScope.lesEvalsPassees}" var="uneEval">
                             <tr>
                                 <td><c:out value="${uneEval.dateDebutEval}" /></td>
                                 <td><c:out value="${uneEval.intitule}" /></td>

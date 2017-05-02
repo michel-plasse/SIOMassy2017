@@ -46,15 +46,18 @@ public class EspacePersoFormateurServlet extends HttpServlet {
         } else {
             EvaluationDao evalDao = new EvaluationDao();
             ArrayList<Evaluation> lesEvaluations = null;
+            ArrayList<Evaluation> lesEvaluationsPassees = null;
 
             try {
                 lesEvaluations = evalDao.findAllEvalFormateur(user.getId());
+                lesEvaluationsPassees = evalDao.findPastEvalFormateur(user.getId());
             } catch (SQLException ex) {
                 System.out.println("controller.EspacePersoFormateurServlet.doGet()");
                 Logger.getLogger(EspacePersoFormateurServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             // try {
             request.setAttribute("lesEvals", lesEvaluations);
+            request.setAttribute("lesEvalsPassees", lesEvaluationsPassees);
             request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);
 
             // } catch (SQLException ex) {
