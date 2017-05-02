@@ -60,7 +60,10 @@
                         <c:forEach items="${requestScope.lesEvals}" var="uneEval">
                             <tr>
                                 <td><c:out value="${uneEval.dateDebutEval}" /></td>
-                                <td><c:out value="${uneEval.intitule}" /></td>
+                                <td>
+                                    <a href="<c:url value="rentrerNotes"><c:param name="id" value="${uneEval.idEvaluation}"/>
+                                       </c:url>" title="Notez les élèves"><c:out value="${uneEval.intitule}" /></a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -88,4 +91,4 @@
         </div>    
     </div>
 </div>
- 
+
