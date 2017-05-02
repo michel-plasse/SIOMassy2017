@@ -3,6 +3,7 @@ package controller;
 import dao.EvaluationDao;
 import dao.NoteDao;
 import dao.PersonneDao;
+import dao.ProjetDao;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import model.Evaluation;
 import model.Note;
 import model.Personne;
+import model.Projet;
 
 /**
  *
@@ -44,11 +46,14 @@ public class EspacePersoFormateurServlet extends HttpServlet {
             // Pas connecté
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
+            ProjetDao projetDao = new ProjetDao();
+            ArrayList<Projet> lesProjets = null;
             EvaluationDao evalDao = new EvaluationDao();
             ArrayList<Evaluation> lesEvaluations = null;
             ArrayList<Evaluation> lesEvaluationsPassees = null;
 
             try {
+                lesProjets = projetDao.findAllByIdFormateur(user.getId());
                 lesEvaluations = evalDao.findAllEvalFormateur(user.getId());
                 lesEvaluationsPassees = evalDao.findPastEvalFormateur(user.getId());
             } catch (SQLException ex) {
@@ -56,6 +61,7 @@ public class EspacePersoFormateurServlet extends HttpServlet {
                 Logger.getLogger(EspacePersoFormateurServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             // try {
+            request.setAttribute("lesProjets", lesProjets);
             request.setAttribute("lesEvals", lesEvaluations);
             request.setAttribute("lesEvalsPassees", lesEvaluationsPassees);
             request.getRequestDispatcher("WEB-INF/espacePersonnelFormateur.jsp").forward(request, response);

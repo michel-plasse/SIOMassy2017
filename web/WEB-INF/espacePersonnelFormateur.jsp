@@ -26,7 +26,13 @@
             <div>
                 Projets
                 <div class="boiteParDefaut">
-                    Liste projets
+                    <table class="table">
+                        <c:forEach items="${requestScope.lesProjets}" var="unProjet">
+                            <tr>
+                                <c:out value="${unProjet.sujet}" />
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>
