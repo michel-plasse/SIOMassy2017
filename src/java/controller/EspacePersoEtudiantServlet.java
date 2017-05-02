@@ -8,6 +8,7 @@ package controller;
 import dao.EvaluationDao;
 import dao.NoteDao;
 import dao.PersonneDao;
+import dao.ProjetDao;
 import dao.qcm.QcmDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import model.Evaluation;
 import model.Note;
 import model.Personne;
+import model.Projet;
 import model.Qcm;
 
 /**
@@ -106,18 +108,21 @@ public class EspacePersoEtudiantServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } else {
             NoteDao daoNote = new NoteDao();
+            ProjetDao projetDao = new ProjetDao();
             QcmDao qcmDao = new QcmDao();
             QcmDao qcmDao2 = new QcmDao();
             //EvaluationDao daoEval = new EvaluationDao();
 
             try {
                 ArrayList<Qcm> lesQcmNonPasse = qcmDao.findAllNotDone(user.getId());
+                ArrayList<Projet> lesProjets = projetDao.findAll(user.getId());
                 ArrayList<Qcm> lesQcmPasse = qcmDao2.findAlreadyDoneForPersonne(user.getId());
                 ArrayList<Note> lesNotes = daoNote.findNoteById(user.getId());
                 System.out.println("lesNotes : " + lesNotes.size());
                 maSession.setAttribute("lesNotes", lesNotes);
                 System.out.println(daoNote.findNoteById(1));
                 request.setAttribute("lesPays", lesPays);
+                request.setAttribute("lesProjets", lesProjets);
                 request.setAttribute("LesQcmPasse", lesQcmPasse);
                 request.setAttribute("lesQcmNonPasse", lesQcmNonPasse);
                 request.getRequestDispatcher("/WEB-INF/espacePersoEtudiant.jsp").forward(request, response);
