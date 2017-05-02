@@ -133,7 +133,6 @@ public class ProjetDao implements ProjetHome<Projet> {
             " where p.id_formateur =" + idFormateur + ";");
          while (resall.next()) {
             Projet projet = new Projet();
-            projet.setId(resall.getInt("idSession"));
             projet.setSujet(resall.getString("sujet"));
             projet.setDateCreation(resall.getDate("dateCreation"));
             projet.setDateLimite(resall.getDate("dateLimite"));
