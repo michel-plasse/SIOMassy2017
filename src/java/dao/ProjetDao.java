@@ -135,8 +135,8 @@ public class ProjetDao implements ProjetHome<Projet> {
             Projet projet = new Projet();
             projet.setId(resall.getInt("idSession"));
             projet.setSujet(resall.getString("sujet"));
-            projet.setDateCreation(resall.getString("dateCreation"));
-            projet.setDateLimite(resall.getString("dateLimite"));
+            projet.setDateCreation(resall.getDate("dateCreation"));
+            projet.setDateLimite(resall.getDate("dateLimite"));
             projet.setDescription(resall.getString("description"));
             
             lesProjetsDuFormateur.add(projet);
