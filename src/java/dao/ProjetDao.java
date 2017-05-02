@@ -153,7 +153,6 @@ public class ProjetDao implements ProjetHome<Projet> {
                 + "p.description, "
                 + "p.date_limite, "
                 + "p.date_creation, "
-                + "pers.id_personne, "
                 + "pers.nom, "
                 + "pers.prenom "
                 + "FROM projet AS p "
@@ -179,7 +178,7 @@ public class ProjetDao implements ProjetHome<Projet> {
                 p.setDateCreation(res.getDate("p.date_creation"));
                 p.setIdFormateur(res.getInt("p.id_formateur"));
                 p.setNomFormateur(res.getString("pers.nom"));
-                p.setPrenomFormateur(res.getString("p.prenom"));
+                p.setPrenomFormateur(res.getString("pers.prenom"));
                 
                 lesProjets.add(p);
             }

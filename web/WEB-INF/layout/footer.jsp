@@ -8,16 +8,8 @@
 </div>
 
 <!--CHARGMT SCRIPTS-->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-<script src="<c:url value="/inc/bootstrap/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/inc/bootstrap-datepicker/js/bootstrap-datepicker.min.js" />"></script>
-<script src="<c:url value="/inc/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js" />" charset="UTF-8"></script>
-
-
-
-
 <script>
+$('.feedback').delay(300).fadeIn("slow");   
 //   JQuery QCM 
 $(document).ready(function(){
     
