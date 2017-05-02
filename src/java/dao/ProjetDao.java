@@ -143,4 +143,62 @@ public class ProjetDao implements ProjetHome<Projet> {
         return lesProjetsDuFormateur;
     }
     
+    @Override
+    public ArrayList<Projet> findAll(int idPersonne) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT p.id_projet, "
+                + "p.id_formateur, "
+                + "p.id_session, "
+                + "p.sujet, "
+                + "p.description, "
+                + "p.date_limite, "
+                + "p.date_creation, "
+                + "pers.id_personne, "
+                + "pers.nom, "
+                + "pers.prenom "
+                + "FROM projet AS p "
+                + "INNER JOIN candidature AS c ON p.id_session = c.id_session "
+                + "INNER JOIN personne AS pers ON p.id_formateur = pers.id_personne WHERE c.id_personne = ?";
+        
+        PreparedStatement preparedStatement = null;
+        ResultSet res = null;
+        ArrayList<Projet> lesProjets = new ArrayList<Projet>();
+        
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idPersonne);
+            res = preparedStatement.executeQuery();
+            
+            while(res.next()) {
+                Projet p = new Projet();
+                p.setId(res.getInt("p.id_projet"));
+                p.setIdSession(res.getInt("p.id_session"));
+                p.setSujet(res.getString("p.sujet"));
+                p.setDescription(res.getString("p.description"));
+                p.setDateLimite(res.getDate("p.date_limite"));
+                p.setDateCreation(res.getDate("p.date_creation"));
+                p.setIdFormateur(res.getInt("p.id_formateur"));
+                p.setNomFormateur(res.getString("pers.nom"));
+                p.setPrenomFormateur(res.getString("p.prenom"));
+                
+                lesProjets.add(p);
+            }
+        }catch(SQLException e) {
+            System.err.println("problème récupération des projets");
+            throw e;
+        }finally{
+            if(res != null) {
+                res.close();
+            }
+            if(preparedStatement != null ) {
+                preparedStatement.close();
+            }
+            if(connection != null){
+                connection.close();
+            }
+        }
+        
+        return lesProjets;
+    }
+    
 }
