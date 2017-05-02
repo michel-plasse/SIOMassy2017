@@ -37,10 +37,10 @@ public class PersonneDaoTest {
     public void testInsert() throws SQLException {
         PersonneDao dao = new PersonneDao();
         Personne instance = new Personne(0,
-                "Nouveau nom",
-                "Nouveau prénom",
+                "Nouveaunom",
+                "Nouveauprénom",
                 "email@domaine.com",
-                "n° de rue",
+                "1",
                 "une rue",
                 "12345",
                 "Triffouillis les oies",
@@ -86,10 +86,10 @@ public class PersonneDaoTest {
     @Test
     public void testGetByLoginPassword() throws Exception {
         PersonneDao dao = new PersonneDao();
-        Personne result = dao.getByLoginPassword("leto@yahoo.com", "Jesuisunchat123!");
+        Personne result = dao.getByLoginPassword("leto@yahoo.com", "p123");
         Personne expected = new Personne(1, "Leto",
                 "Elias", "leto@yahoo.com", "12",
-                "rue du chat", "75001", "Paris", "France", "Jesuisunchat123!");
+                "rue du chat", "75001", "Paris", "France", "p123");
         assertEquals(expected, result);
     }
 
