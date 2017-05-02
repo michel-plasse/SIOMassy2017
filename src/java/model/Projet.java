@@ -34,6 +34,14 @@ public class Projet {
         this.dateLimite = dateLimite;
         this.dateCreation = dateCreation;
     }
+    
+    public Projet() {
+        
+    }
+
+    public Projet(int i, String sessionFormation, String sujet, String dateLimite, String dateCreation, String dateFin, String description) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     public int getId() {
         return id;

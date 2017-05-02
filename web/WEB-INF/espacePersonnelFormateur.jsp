@@ -33,7 +33,13 @@
             <div>
                 Projets
                 <div class="boiteParDefaut">
-                    Liste projets
+                    <table class="table">
+                        <c:forEach items="${requestScope.lesProjets}" var="unProjet">
+                            <tr>
+                                <c:out value="${unProjet.sujet}" />
+                            </tr>
+                        </c:forEach>
+                    </table>
                 </div>
             </div>
         </div>
@@ -64,7 +70,7 @@
                             <th>Date de passage</th>
                             <th>Intitulé évaluation</th>
                         </tr> 
-                        <c:forEach items="${requestScope.lesEvals}" var="uneEval">
+                        <c:forEach items="${requestScope.lesEvalsPassees}" var="uneEval">
                             <tr>
                                 <td><c:out value="${uneEval.dateDebutEval}" /></td>
                                 <td>

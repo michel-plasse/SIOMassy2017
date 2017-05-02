@@ -123,17 +123,24 @@ public class ProjetDao implements ProjetHome<Projet> {
         ArrayList<Projet> lesProjetsDuFormateur = new ArrayList<Projet>();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT s.id_session as idSession," +
+        ResultSet resall = stmt.executeQuery("SELECT" +
             " p.sujet as sujet ," +
             " p.date_creation as dateCreation ," +
             " p.date_limite as dateLimite ," +
             " p.description as description" +
-            "from\n" +
-            " session_formation s\n" +
-            " inner join" +
-            " projet p on s.id_session=p.id_session "
-                + "where p.id_formateur =" + idFormateur + ";");
-        resall.next();
+            " from" +
+            " projet p" +
+            " where p.id_formateur =" + idFormateur + ";");
+         while (resall.next()) {
+            Projet projet = new Projet();
+            projet.setId(resall.getInt("idSession"));
+            projet.setSujet(resall.getString("sujet"));
+            projet.setDateCreation(resall.getDate("dateCreation"));
+            projet.setDateLimite(resall.getDate("dateLimite"));
+            projet.setDescription(resall.getString("description"));
+            
+            lesProjetsDuFormateur.add(projet);
+        }
         return lesProjetsDuFormateur;
     }
     
