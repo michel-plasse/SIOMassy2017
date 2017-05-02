@@ -33,7 +33,7 @@
                     <br />
                     <button type="reset" class="btn btn-info">Réinitialiser</button><br />
                     <br />
-                    <a class="btn btn-default" href="<c:url value="/etudiant/equipe/index" ><c:param name="id" value="${requestScope.idProjet}" /></c:url>">
+                    <a class="btn btn-default" href="<c:url value="/equipe/index" ><c:param name="id" value="${requestScope.idProjet}" /></c:url>">
                         Annuler - Retour à la liste des équipes
                     </a>
                 </fieldset>

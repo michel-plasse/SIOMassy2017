@@ -64,26 +64,26 @@
         <c:choose>
             <c:when test="${pageScope.statutStagiaire == 1}">
                 <div class="col-md-6">
-                    <a class="btn btn- btn-primary btn-block" href="<c:url value="/etudiant/equipe/gerer"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
+                    <a class="btn btn- btn-primary btn-block" href="<c:url value="equipe/gerer"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
                             Gérer votre équipe
                         </a>
                     </div>
                     <div class="col-md-6">
-                        <a class="btn btn-block btn-success" href="<c:url value="/etudiant/equipe/details"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
+                        <a class="btn btn-block btn-success" href="<c:url value="equipe/details"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
                             Accéder aux détails des membres 
                         </a>
                     </div>
             </c:when>
             <c:when test="${pageScope.statutStagiaire == 2}">
                 <div class="col-md-12">
-                    <a class="btn btn-block btn-success" href="<c:url value="/etudiant/equipe/details"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
+                    <a class="btn btn-block btn-success" href="<c:url value="equipe/details"><c:param name="id" value="${pageScope.idEquipe}" /></c:url>">
                             Vous êtes membre d'une équipe,<strong> Accéder aux détails (coordonnées) en cliquant ici</strong> 
                         </a>
                     </div>
             </c:when>
             <c:when test="${pageScope.statutStagiaire == 3}">
                 <div class="col-md-12">
-                    <a class="btn btn-block btn-primary" href="<c:url value="/etudiant/equipe/creer"><c:param name="id" value="${requestScope.idProjet}" /></c:url>">
+                    <a class="btn btn-block btn-primary" href="<c:url value="equipe/creer"><c:param name="id" value="${requestScope.idProjet}" /></c:url>">
                             Vous ne faites actuellement pas encore parti d'une équipe,<strong> N'attendez plus ! et créer la votre en cliquant ici</strong>
                         </a>
                     </div>
