@@ -208,7 +208,8 @@ public class PersonneDao implements PersonneHome {
                     rs.getString("mot_de_passe"),
                     rs.getString("no_tel"),
                     rs.getString("photo"),
-                    rs.getBoolean("est_formateur"));
+                    rs.getBoolean("est_formateur"),
+                    rs.getBoolean("est_gestionnaire"));
         }
         return result;
     }

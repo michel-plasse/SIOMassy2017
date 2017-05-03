@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,10 +26,10 @@ import model.Personne;
 
 /**
  *
- * @author AveigA
+ * @author admin
  */
-@WebServlet("/candidatures")
-public class ListerCandidaturesServlet extends HttpServlet {
+@WebServlet("/espacePersoGestionnaire")
+public class EspacePersoGestionnaireServlet extends HttpServlet {
     
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -40,7 +41,7 @@ public class ListerCandidaturesServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {     
+            throws ServletException, IOException {
         HttpSession maSession = request.getSession(true);
         Personne user = (Personne) maSession.getAttribute("user");
         // Pas connecté
@@ -51,47 +52,10 @@ public class ListerCandidaturesServlet extends HttpServlet {
         else if(user.isEst_gestionnaire()){
             ArrayList<String> conditions = new ArrayList<>();
             String order_by = "date_effet DESC";
-
-            //RECHERCHE
-            if(request.getParameter("recherche") != null && !request.getParameter("recherche").isEmpty()){
-                String recherche = request.getParameter("recherche");
-                String condition = "(p.nom LIKE '%" + recherche + "%' OR p.prenom LIKE '%" + recherche + "%')";
-                conditions.add(condition);
-            }
-            //STATUT
-            if(request.getParameter("statut") != null && !request.getParameter("statut").isEmpty()){
-                String statut = request.getParameter("statut");
-                String condition = "e.libelle = '" + statut + "'";
-                conditions.add(condition);
-            }
-            //SESSION FORMATION
-            if(request.getParameter("formationNom") != null && !request.getParameter("formationNom").isEmpty()){            
-                String sessionFormation = request.getParameter("formationNom");
-                String condition = "f.nom = '" + sessionFormation + "'";
-                conditions.add(condition);
-            }        
-            //DATE
-            if(request.getParameter("date") != null && !request.getParameter("date").isEmpty()){            
-                String date = request.getParameter("date");
-                String condition = "DATE_FORMAT(c.date_effet, '%d/%m/%Y') = '" + date + "'";
-                conditions.add(condition);
-            }
-            //TRIER PAR
-            if(request.getParameter("trier") != null && !request.getParameter("trier").isEmpty()){
-                String trier = request.getParameter("trier");
-                //par etat de candidature
-                if(trier.equals("statut"))
-                    order_by = "e.libelle ASC";
-                //par formation
-                else if(trier.equals("formation"))
-                    order_by = "f.nom ASC";
-                else
-                    order_by = trier + " ASC";
-            }
-
+            String limit = "LIMIT 5";
             try {            
                 CandidatureDao candidatureDao = new CandidatureDao();
-                ArrayList<HashMap<String, String>> lesCandidatures = candidatureDao.mapCandidatures(conditions, order_by, "");
+                ArrayList<HashMap<String, String>> lesCandidatures = candidatureDao.mapCandidatures(conditions, order_by, limit);
                 request.setAttribute("lesCandidatures", lesCandidatures);
 
                 EtatCandidatureDao etatCandidatureDao = new EtatCandidatureDao();
@@ -102,13 +66,12 @@ public class ListerCandidaturesServlet extends HttpServlet {
                 ArrayList<Formation> lesFormations = formationDao.findAll();
                 request.setAttribute("lesFormations", lesFormations);
 
-                request.getRequestDispatcher("WEB-INF/candidatures.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/espacePersoGestionnaire.jsp").forward(request, response);
 
             } catch (SQLException ex) {
                 request.setAttribute("message", "Pb avec la base de données");
                 request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response);        
             }
-
         }
         //connecté mais le personne n'est pas gestionnaire
         else{

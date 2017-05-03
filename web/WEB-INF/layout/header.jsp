@@ -52,12 +52,17 @@
                             <li class="item-menu"><a href="<c:url value="/"/>">Accueil</a></li>
                             <li class="item-menu"><a href="<c:url value="/sessionsOuvertes"/>">Formations</a></li>
                             <li class="item-menu"><a href="<c:url value="/trombinoscope"/>">Trombinoscope</a></li>
-                            <li class="item-menu"><c:if test='${user.est_formateur eq false}'>
+                            <li class="item-menu">
+                                <c:if test='${user.est_formateur eq false && user.est_gestionnaire eq false}'>
                                     <a href="<c:url value="/espacePersoEtudiant" />">Espace Personnel</a>
                                 </c:if>
                                 <c:if test="${user.est_formateur eq true}">
                                     <a href="<c:url value="/espacePersoFormateur" />">Espace Personnel</a>
-                                </c:if></li>
+                                </c:if>
+                                <c:if test="${user.est_gestionnaire eq true}">
+                                    <a href="<c:url value="/espacePersoGestionnaire" />">Espace Personnel</a>
+                                </c:if>
+                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active"><c:if test='${sessionScope.user == null}'>
