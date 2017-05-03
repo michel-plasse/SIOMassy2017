@@ -36,12 +36,7 @@
     
     //row table clickable
     $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-            $("#delRep").on('click', function(){
-    var countRep = $('#liste-question > div').length;
-            if (countRep > 2){
-    $('#liste-question > div:last').remove();
-    }
+        window.location = $(this).data("href");    
     });
     
     //On change formation or etat submit form candidature
@@ -50,20 +45,18 @@
     });
     
     $("#recherche").keypress(function(event) {
-    if (event.which == 13) {
-        $('#candidatures').submit();
-    }
+        if (event.which == 13) {
+            $('#candidatures').submit();
+        }
+    });
 });
-    
-});
-
 //datepicker
-            $('.input-group.date').datepicker({
-    format: "dd/mm/yyyy",
-            todayBtn: true,
-            language: "fr",
-            todayHighlight: true
-            });
+    $('.input-group.date').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: true,
+        language: "fr",
+        todayHighlight: true
+    });
 </script>
 
 <!-- FIN CHARGEMENT SCRIPT-->
