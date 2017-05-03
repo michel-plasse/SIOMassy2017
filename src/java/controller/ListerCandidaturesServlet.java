@@ -76,6 +76,18 @@ public class ListerCandidaturesServlet extends HttpServlet {
                 String condition = "DATE_FORMAT(c.date_effet, '%d/%m/%Y') = '" + date + "'";
                 conditions.add(condition);
             }
+            //TRIER PAR
+            if(request.getParameter("trier") != null && !request.getParameter("trier").isEmpty()){
+                String trier = request.getParameter("trier");
+                //par etat de candidature
+                if(trier.equals("statut"))
+                    order_by = "e.libelle ASC";
+                //par formation
+                else if(trier.equals("formation"))
+                    order_by = "f.nom ASC";
+                else
+                    order_by = trier + " ASC";
+            }
 
             try {            
                 CandidatureDao candidatureDao = new CandidatureDao();

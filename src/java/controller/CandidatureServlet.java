@@ -5,13 +5,23 @@
  */
 package controller;
 
+import dao.CandidatureDao;
+import dao.EtatCandidatureDao;
+import dao.FormationDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.EtatCandidature;
+import model.Formation;
+import model.Personne;
 
 /**
  *
@@ -31,7 +41,21 @@ public class CandidatureServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("WEB-INF/candidature.jsp").forward(request, response);
+        HttpSession maSession = request.getSession(true);
+        Personne user = (Personne) maSession.getAttribute("user");
+        // Pas connecté
+        if(user == null){            
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        }
+        //connecté et personne est gestionaire
+        else if(user.isEst_gestionnaire()){
+            request.getRequestDispatcher("WEB-INF/candidature.jsp").forward(request, response);            
+        }
+        //connecté mais le personne n'est pas gestionnaire
+        else{
+            request.setAttribute("message", "vous n'avez le droit pour acceder cette page");
+            request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response); 
+        }        
     }
 
     /**
