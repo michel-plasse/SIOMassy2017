@@ -12,7 +12,7 @@
             <i class="fa fa-phone" aria-hidden="true"></i> ${user.no_tel}<br>
             <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:${user.email}">${user.email} </a>
             <br>
-            <a href="javascript:$('#donnees-lecture').hide(); $('#donnees-ecriture').show()">Editer mes informations..</a>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i><a href="javascript:$('#donnees-lecture').hide(); $('#donnees-ecriture').show()">Editer mes informations</a>
         </div>
         <div id="donnees-ecriture" style="display:none;">
             <table class="table">
