@@ -76,7 +76,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " p.prenom AS prenom,"
                 + " e.libelle AS statut,"
                 + " f.nom AS formation_nom,"
-                + " c.date_effet AS effectue"
+                + " DATE_FORMAT(c.date_effet, '%d/%m/%Y') AS effectue"
                 + " FROM"
                 + " candidature c"
                 + " INNER JOIN"

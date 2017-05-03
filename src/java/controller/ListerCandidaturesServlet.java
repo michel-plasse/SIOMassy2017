@@ -70,6 +70,12 @@ public class ListerCandidaturesServlet extends HttpServlet {
         ArrayList<String> conditions = new ArrayList<>();
         
         
+        //RECHERCHE
+        if(request.getParameter("recherche") != null && !request.getParameter("recherche").isEmpty()){
+            String recherche = request.getParameter("recherche");
+            String condition = "p.nom LIKE '%" + recherche + "%' OR p.prenom LIKE '%" + recherche + "%'";
+            conditions.add(condition);
+        }
         //STATUT
         if(request.getParameter("statut") != null && !request.getParameter("statut").isEmpty()){
             String statut = request.getParameter("statut");
@@ -80,6 +86,12 @@ public class ListerCandidaturesServlet extends HttpServlet {
         if(request.getParameter("formationNom") != null && !request.getParameter("formationNom").isEmpty()){            
             String sessionFormation = request.getParameter("formationNom");
             String condition = "f.nom = '" + sessionFormation + "'";
+            conditions.add(condition);
+        }        
+        //DATE
+        if(request.getParameter("date") != null && !request.getParameter("date").isEmpty()){            
+            String date = request.getParameter("date");
+            String condition = "DATE_FORMAT(c.date_effet, '%d/%m/%Y') = '" + date + "'";
             conditions.add(condition);
         }
         

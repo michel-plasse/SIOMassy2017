@@ -25,16 +25,38 @@
             $('#liste-question > div:last').after(newRep);
     }
     });
+    
+    $("#delRep").on('click',function(){
+        var countRep = $('#liste-question > div').length;
+        
+        if(countRep>2){
+            $('#liste-question > div:last').remove();
+        }
+    });
+    
+    //row table clickable
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
             $("#delRep").on('click', function(){
     var countRep = $('#liste-question > div').length;
             if (countRep > 2){
     $('#liste-question > div:last').remove();
     }
     });
-            $(".clickable-row").click(function() {
-    window.location = $(this).data("href");
+    
+    //On change formation or etat submit form candidature
+    $('#candidatures select').change(function(){
+        $('#candidatures').submit();    
     });
-            });
+    
+    $("#recherche").keypress(function(event) {
+    if (event.which == 13) {
+        $('#candidatures').submit();
+    }
+});
+    
+});
+
 //datepicker
             $('.input-group.date').datepicker({
     format: "dd/mm/yyyy",

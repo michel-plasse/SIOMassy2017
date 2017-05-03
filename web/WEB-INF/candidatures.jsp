@@ -1,34 +1,36 @@
 
-        <form action="">
+        <form action="" id="candidatures">
             <div class="row form-group">
                 <div class="col-xs-8 col-sm-6 col-md-6">
                     <div class="input-group">
-                        <input type="search" class="form-control" placeholder="Rechercher candidatures"/>
-                        <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-search"></i>
+                        <input type="search" name="recherche" id="recherche" <c:if test="${param.recherche != null}"> value="${param.recherche}"</c:if> class="form-control" placeholder="Rechercher candidatures(nom ou prenom)"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
                         </span>
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-6 col-md-6">
                     <div class="col-xs-4 col-sm-4 col-md-4">
                         <select name="statut" class="form-control">
-                            <option value="" selected="">Etat</option>
+                            <option value="" selected>Etat</option>
                         <c:forEach var="unStatut" items="${requestScope.lesEtats}">                
-                            <option value="<c:out value="${unStatut.libelle}" />"><c:out value="${unStatut.libelle}" /></option>                           
+                            <option value="<c:out value="${unStatut.libelle}" />" <c:if test="${param.statut == unStatut.libelle}"> selected</c:if> ><c:out value="${unStatut.libelle}" /></option>                         
                         </c:forEach> 
                         </select>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4">
                         <select name="formationNom" class="col-xs-4 col-sm-4 col-md-4 form-control">
-                            <option value="" selected="">Formation</option>
+                            <option value="" selected>Formation</option>
                         <c:forEach var="unFormation" items="${requestScope.lesFormations}">                
-                            <option value="<c:out value="${unFormation.nom}" />"><c:out value="${unFormation.nom}" /></option>                           
+                            <option value="<c:out value="${unFormation.nom}" />" <c:if test="${param.formationNom == unFormation.nom}"> selected</c:if> ><c:out value="${unFormation.nom}" /></option>                           
                         </c:forEach>                            
                          </select>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4">
                         <div class="input-group date">
-                            <input type="text" class="form-control" placeholder="jj/mm/aaaa">
+                            <input type="text" name="date" <c:if test="${param.date != null}"> value="${param.date}"</c:if> class="form-control" placeholder="jj/mm/aaaa">
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
