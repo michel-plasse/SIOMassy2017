@@ -68,7 +68,9 @@ body {
     position: absolute;
 }
 
-
+.feedback {
+    display: none;
+}
 
 .item-menu:hover {
     background: #54acf5;
@@ -177,9 +179,5 @@ body {
 
 .clickable-row{
     cursor: pointer;
-}
-
-.feedback {
-    display: none;
 }
 

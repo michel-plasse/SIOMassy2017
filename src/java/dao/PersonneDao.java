@@ -292,7 +292,7 @@ public class PersonneDao implements PersonneHome {
     public boolean activeUser(int id) throws SQLException {
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        int res = stmt.executeUpdate("UPDATE personne SET estValide=1, token='0' WHERE id_personne=" + id + ";");
+        int res = stmt.executeUpdate("UPDATE personne SET est_valide=1, token='0' WHERE id_personne=" + id + ";");
         if (res != 0) {
             return true;
         }

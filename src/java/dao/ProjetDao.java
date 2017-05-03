@@ -99,25 +99,7 @@ public class ProjetDao implements ProjetHome<Projet> {
         }
         return result;
     }
-
-    @Override
-    public ArrayList<Projet> findAll() throws SQLException {
-        ArrayList<Projet> lesProjets = new ArrayList<Projet>();
-        connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT s.id_session as idSession,\n" +
-"       p.sujet as sujet ,\n" +
-"       p.date_creation as dateCreation ,\n" +
-"       p.date_limite as dateLimite ,\n" +
-"       p.description as description\n" +
-"from\n" +
-"	session_formation s\n" +
-"		inner join\n" +
-"	projet p on s.id_session=p.id_session ;");
-        resall.next();
-        return lesProjets;
-    }
-    
+  
     @Override
     public ArrayList<Projet> findAllByIdFormateur(int idFormateur) throws SQLException {
         ArrayList<Projet> lesProjetsDuFormateur = new ArrayList<Projet>();
@@ -198,6 +180,11 @@ public class ProjetDao implements ProjetHome<Projet> {
         }
         
         return lesProjets;
+    }
+
+    @Override
+    public ArrayList<Projet> findAll() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
