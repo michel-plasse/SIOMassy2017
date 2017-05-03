@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -11,15 +10,17 @@
         <title>
             Agriote<c:if test="${ !empty requestScope.title }"><c:out value=" - ${requestScope.title}" /></c:if>
             </title>
-
             <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value="/inc/css/print.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
+        <link rel="stylesheet" href="<c:url value="/inc/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
         <script src="<c:url value="/inc/bootstrap/js/bootstrap.min.js" />"></script>
+        <script src="<c:url value="/inc/bootstrap-datepicker/js/bootstrap-datepicker.min.js" />"></script>
+        <script src="<c:url value="/inc/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js" />" charset="UTF-8"></script>
     </head>
 
     <body>

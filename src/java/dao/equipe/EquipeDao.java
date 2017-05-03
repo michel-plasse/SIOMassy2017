@@ -1,4 +1,3 @@
-
 package dao.equipe;
 
 import dao.ConnectionBd;
@@ -12,11 +11,45 @@ import java.util.HashMap;
 import model.Equipe;
 import model.Personne;
 
+/**
+ * <p>
+ * Permet de gérer les données relatives aux Equipes.</p>
+ * <p>
+ * Pour base Mysql.</p>
+ * <p>
+ * Structure table equipe : id_equipe (pk), date_creation, id_createur(fk ref
+ * id_personne), id_projet(fk ref id_projet).</p>
+ *
+ * Structure table membre_equipe : ( id_equipe (fk), id_personne (fk) ) (pk)
+ *
+ * @see ConnectionBd
+ * @see Personne
+ * @see Equipe
+ * @since 04/2017
+ * @author Ghislain
+ */
 public class EquipeDao implements EquipeHome<Equipe> {
 
     private Connection connection;
 
-    //private static final String SQL_UPDATE_EQUIPE = "UPDATE equipe"
+    /**
+     * <p>
+     * Insertion d'une équipe en Bdd.</p>
+     *
+     * <p>
+     * Retourne l'id généré correspondant à cette nouvelle équipe.</p>
+     *
+     * @param idProjet l'identifiant unique d'un projet.
+     * @param uneEquipe nouvelle Equipe avec créateur renseigné (sans membre
+     * pour le moment).
+     * @exception SQLException si idProjet et/ou id créateur incohérent.
+     * @return id de la nouvelle Equipe.
+     * @see Projet
+     * @see Equipe
+     *
+     * @deprecated remplacé par insert(Equipe nouvelleEquipe)
+     * @see EquipeDao#insert(Equipe nouvelleEquipe)
+     */
     @Override
     public int insertReturnId(int idProjet, Equipe uneEquipe) throws SQLException {
 
@@ -54,6 +87,19 @@ public class EquipeDao implements EquipeHome<Equipe> {
         return idEquipeNv;
     }
 
+    /**
+     * <p>
+     * Supression d'une équipe en Bdd.</p>
+     *
+     * <p>
+     * Retourne vrai si la suppression a été réalisée.</p>
+     *
+     * @param id l'identifiant unique d'une équipe.
+     *
+     * @exception SQLException si id equipe incohérent.
+     * @see Equipe
+     *
+     */
     @Override
     public boolean delete(int id) throws SQLException {
 
@@ -91,6 +137,19 @@ public class EquipeDao implements EquipeHome<Equipe> {
         return false;
     }
 
+    /**
+     * <p>
+     * récupération d'une équipe en Bdd.</p>
+     *
+     * <p>
+     * Retourne l'objet équipe correspondant à l'id spécifié en paramètre.
+     * peuplée de ses membres</p>
+     *
+     * @param idEquipe l'identifiant unique d'une équipe.
+     * @exception SQLException si idEquipe incohérent.
+     * @see Equipe
+     *
+     */
     @Override
     public Equipe findById(int idEquipe) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -111,14 +170,13 @@ public class EquipeDao implements EquipeHome<Equipe> {
                 + "pc.photo"
                 + " FROM equipe AS e"
                 + " INNER JOIN personne AS pc ON e.id_createur = pc.id_personne"
-                + " INNER JOIN membre_equipe AS me ON e.id_equipe = me.id_equipe"
-                + " INNER JOIN"
-                + " personne AS p ON me.id_personne = p.id_personne"
+                + " LEFT JOIN membre_equipe AS me ON e.id_equipe = me.id_equipe"
+                + " LEFT JOIN personne AS p ON me.id_personne = p.id_personne"
                 + " WHERE e.id_equipe = ?";
 
         PreparedStatement preparedStatementInfoEquipe = null;
         ResultSet result = null;
-        Equipe equipe;
+        Equipe equipe = null;
         HashMap<Integer, Personne> lesMembres;
 
         try {
@@ -126,21 +184,22 @@ public class EquipeDao implements EquipeHome<Equipe> {
 
             result = preparedStatementInfoEquipe.executeQuery();
 
-            equipe = new Equipe();
             lesMembres = new HashMap<>();
 
             while (result.next()) {
-                Personne unMembre = new Personne();
-                unMembre.setId(result.getInt("p.id_personne"));
-                unMembre.setNom(result.getString("p.nom"));
-                unMembre.setPrenom(result.getString("p.prenom"));
-                unMembre.setEmail(result.getString("p.email"));
-                unMembre.setNo_tel(result.getString("p.no_tel"));
-                unMembre.setPhoto(result.getString("p.photo"));
-
-                lesMembres.put(unMembre.getId(), unMembre);
+                if (result.getInt("p.id_personne") != 0) {
+                    Personne unMembre = new Personne();
+                    unMembre.setId(result.getInt("p.id_personne"));
+                    unMembre.setNom(result.getString("p.nom"));
+                    unMembre.setPrenom(result.getString("p.prenom"));
+                    unMembre.setEmail(result.getString("p.email"));
+                    unMembre.setNo_tel(result.getString("p.no_tel"));
+                    unMembre.setPhoto(result.getString("p.photo"));
+                    lesMembres.put(unMembre.getId(), unMembre);
+                }
 
                 if (result.isLast()) {
+                    equipe = new Equipe();
                     Personne createur = new Personne();
                     createur.setId(result.getInt("pc.id_personne"));
                     createur.setNom(result.getString("pc.nom"));
@@ -156,7 +215,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
                 }
             }
             System.out.println("Récupération des infos de l'équipe ok...");
-            
+
         } catch (SQLException e) {
             System.out.println("Probleme avec la récupération des infos de l'équipe...");
             throw e;
@@ -235,6 +294,20 @@ public class EquipeDao implements EquipeHome<Equipe> {
         return isDelete;
     }
 
+    /**
+     * <p>
+     * Récupération de l'ensemble des équipes formées sur un projet.</p>
+     *
+     * <p>
+     * Retourne une ArrayList d'Equipes peuplées de leurs membres, correspondant
+     * à l'idProjet spécifié.
+     * </p>
+     *
+     * @param idProjet l'identifiant unique d'un projet.
+     * @exception SQLException si idProjet incohérent.
+     * @see Equipe
+     * @see Personne
+     */
     @Override
     public ArrayList<Equipe> findAll(int idProjet) throws SQLException {
         connection = ConnectionBd.getConnection();
@@ -255,8 +328,8 @@ public class EquipeDao implements EquipeHome<Equipe> {
                 + "pc.photo"
                 + " FROM equipe AS e"
                 + " INNER JOIN personne AS pc ON e.id_createur = pc.id_personne"
-                + " INNER JOIN membre_equipe AS me ON e.id_equipe = me.id_equipe"
-                + " INNER JOIN"
+                + " LEFT JOIN membre_equipe AS me ON e.id_equipe = me.id_equipe"
+                + " LEFT JOIN"
                 + " personne AS p ON me.id_personne = p.id_personne"
                 + " WHERE e.id_projet = ?"
                 + " ORDER BY e.id_equipe";
@@ -292,7 +365,7 @@ public class EquipeDao implements EquipeHome<Equipe> {
                     equipe.setLesMembres(lesMembres);
 
                     idEquipe = result.getInt("e.id_equipe");
-                    
+
                     lesEquipes.add(equipe);
                 }
 
@@ -319,6 +392,20 @@ public class EquipeDao implements EquipeHome<Equipe> {
         return lesEquipes;
     }
 
+    /**
+     * <p>
+     * Récupération de l'ensemble des personnes n'étant pas encore membre ou
+     * créateur d'une équipe, pour un projet donné</p>
+     *
+     * <p>
+     * Retourne une ArrayList des Personnes ni membre, ni createur d'équipe sur
+     * le projet.
+     * </p>
+     *
+     * @param idProjet l'identifiant unique d'un projet.
+     * @exception SQLException si idProjet incohérent.
+     * @see Personne
+     */
     @Override
     public ArrayList<Personne> findAllNotInTeam(int idProjet) throws SQLException {
 
@@ -369,8 +456,92 @@ public class EquipeDao implements EquipeHome<Equipe> {
     }
 
     @Override
-    public void insert(Equipe objetAInserer) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void insert(Equipe nouvelleEquipe) throws SQLException {
+
+        connection = ConnectionBd.getConnection();
+        connection.setAutoCommit(false);
+        String sqlInsert = "INSERT INTO equipe(id_createur, id_projet, date_creation) VALUES (?,?,NOW())";
+        String sqlInsertMembre = "INSERT INTO membre_equipe(id_equipe,id_personne) VALUES (?,?)";
+        PreparedStatement preparedStatement = null;
+        ResultSet idGenerated = null;
+
+        try {
+            preparedStatement = initialisationRequetePreparee(connection, sqlInsert, true,
+                    nouvelleEquipe.getCreateur().getId(),
+                    nouvelleEquipe.getIdProjet());
+
+            preparedStatement.executeUpdate();
+
+            idGenerated = preparedStatement.getGeneratedKeys();
+
+            if (idGenerated.next()) {
+                nouvelleEquipe.setId(idGenerated.getInt(1));
+                PreparedStatement preparedStatementMembres = connection.prepareStatement(sqlInsertMembre);
+                for (Personne p : nouvelleEquipe.getLesMembres().values()) {
+                    preparedStatementMembres.setInt(1, nouvelleEquipe.getId());
+                    preparedStatementMembres.setInt(2, p.getId());
+
+                    preparedStatementMembres.executeUpdate();
+                }
+            }
+
+            connection.commit();
+            System.out.println("Nouvelle equipe insérée en BDD..");
+
+        } catch (SQLException e) {
+            connection.rollback();
+            System.out.println("Problème SQL => Rollback.");
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+            fermeturesSilencieuses(idGenerated, preparedStatement, connection);
+        }
+
+    }
+
+    /**
+     * <p>
+     * Controle si une personne est dejà membre ou creatrice d'une équipe pour
+     * un projet donné.</p>
+     *
+     * <p>
+     * Retourne -1 si personne ni creatrice ni membre, ou retourne id equipe de
+     * cet personne, pour un projet donné.
+     * </p>
+     *
+     * @param idProjet l'identifiant unique d'un projet.
+     * @param idPersonne l'identifiant unique d'une personne.
+     * @exception SQLException si idProjet ou idPersonne incohérent.
+     */
+    @Override
+    public int isAlreadyInTeam(int idPersonne, int idProjet) throws SQLException {
+        connection = ConnectionBd.getConnection();
+        String sql = "SELECT e.id_equipe FROM equipe as e "
+                + " LEFT JOIN membre_equipe as me  ON e.id_equipe = me.id_equipe"
+                + " WHERE id_projet = ? AND (me.id_personne = ? OR e.id_createur = ?)";
+
+        int idEquipe = -1;
+        PreparedStatement preparedStatement = null;
+        ResultSet res = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idProjet);
+            preparedStatement.setInt(2, idPersonne);
+            preparedStatement.setInt(3, idPersonne);
+
+            res = preparedStatement.executeQuery();
+
+            if (res.next()) {
+                idEquipe = res.getInt("e.id_equipe");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Probleme check isAlreadyDone QCM");
+            throw e;
+        } finally {
+            fermeturesSilencieuses(res, preparedStatement, connection);
+        }
+        return idEquipe;
     }
 
 }

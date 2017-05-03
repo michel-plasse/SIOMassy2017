@@ -2,7 +2,8 @@
     <div id="formateur-formBox">
         <img height="110" width="110" src="image/trombi/${user.photo}"/>
     </div>
-    <section id="donnees-perso">
+    <section id="donnees-perso"> 
+        
         <div id="donnees-lecture">
             <strong> ${user.prenom} ${user.nom}</strong><br>
             ${user.no_rue} ${user.rue}<br>
@@ -152,16 +153,22 @@
             <th>Date début</th>
             <th>Date limite</th>
             <th>Formateur</th>
+            <th>Equipes</th>
 
         </tr>
-        <c:forEach items="${lesProjets}" var="leProjet">
+        <c:forEach items="${lesProjets}" var="leProjet" end="1">
             <tr>
 
-<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
-<td>${leProjet.dateCreation}</td> 
-<td>${leProjet.dateLimite}</td>           
-<td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
-            </tr>  
+                <td>${leProjet.sujet}</td>
+                <td>${leProjet.dateCreation}</td> 
+                <td>${leProjet.dateLimite}</td>           
+                <td>${leProjet.nomFormateur} ${leProjet.prenomFormateur}</td>
+                <td>
+                    <a href="<c:url value="/equipe/index"><c:param name="id" value="${leProjet.id}" /></c:url>" title="Voir les équipes">
+                            <i class="fa fa-users" aria-hidden="true"> Voir les équipes</i>
+                        </a>
+                    </td>
+                </tr>  
         </c:forEach>
     </table>
 </div>
@@ -179,10 +186,10 @@
         <c:forEach items="${lesProjets}" var="leProjet">
             <tr>
 
-<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
-<td>${leProjet.dateCreation}</td> 
-<td>${leProjet.dateLimite}</td>           
-<td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
+                <td>${leProjet.sujet}</td>
+                <td>${leProjet.dateCreation}</td> 
+                <td>${leProjet.dateLimite}</td>           
+                <td>${leProjet.nomFormateur} ${leProjet.prenomFormateur}</td>
             </tr>  
         </c:forEach>
     </table>
@@ -202,46 +209,45 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <table role="tabpanel" class="tab-pane active table" id="qcmpasse">
-            
+
+            <tr>
+
+                <th>Module</th>
+                <th>Nom</th>
+
+            </tr>
+            <c:forEach items="${LesQcmPasse}" var="leqcm" >
                 <tr>
-                    
-                    <th>Module</th>
-                    <th>Nom</th>
-                
-                </tr>
-                <c:forEach items="${LesQcmPasse}" var="leqcm" >
-                    <tr>
-                        
-                        <td>${leqcm.nomModule}</td>
-                        <td>${leqcm.intitule}</td>
-                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Consulter</a></td>
-                         
-                        </tr>
-                </c:forEach>
-            
+
+                    <td>${leqcm.nomModule}</td>
+                    <td>${leqcm.intitule}</td>
+                    <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Consulter</a></td>
+
+                    </tr>
+            </c:forEach>
+
         </table>
         <table role="tabpanel" class="tab-pane  table" id="qcmnonpasse">
-            
+
+            <tr>
+
+                <th>Module</th>
+                <th>Nom</th>
+                <th></th>
+
+            </tr>
+            <c:forEach items="${lesQcmNonPasse}" var="leqcm">
                 <tr>
-                  
-                    <th>Module</th>
-                    <th>Nom</th>
-                    <th></th>
-                    
-                </tr>
-                <c:forEach items="${lesQcmNonPasse}" var="leqcm">
-                    <tr>
-                       
-                        <td>${leqcm.nomModule}</td>
-                        <td>${leqcm.intitule}</td>
-                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Passer</a></td>
-                           
-                        </tr>
-                </c:forEach>
-            
+
+                    <td>${leqcm.nomModule}</td>
+                    <td>${leqcm.intitule}</td>
+                    <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Passer</a></td>
+
+                    </tr>
+            </c:forEach>
+
         </table>
     </div>
-
 </div>
 
 <script>

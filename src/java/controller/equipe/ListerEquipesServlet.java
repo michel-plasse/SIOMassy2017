@@ -43,56 +43,37 @@ public class ListerEquipesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //***********FAKE CONNECTION POUR TEST**********//
-//        PersonneDao personneDao = new PersonneDao();
-//        
-//        Personne stagiaireQuiConsulte = null; 
-//        try {
-//            stagiaireQuiConsulte = new PersonneDao().findById(17);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        if(stagiaireQuiConsulte != null) {
-//            HttpSession session = request.getSession();
-//            session.setAttribute("user", stagiaireQuiConsulte);
-//        }
-        //*********************************************//
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("user") != null) {
+        String ParamIdProjet = request.getParameter(PARAM_ID_PROJET);
+        Personne stagiaireQuiConsulte = (Personne) session.getAttribute("user");
+        Integer idProjet = null;
 
-            String ParamIdProjet = request.getParameter(PARAM_ID_PROJET);
-            Personne stagiaireQuiConsulte = (Personne) session.getAttribute("user");
-            Integer idProjet = null;
+        try {
+            idProjet = Integer.parseInt(ParamIdProjet);
+        } catch (NumberFormatException e) {
+            System.out.println("id projet non valide : " + e);
+        }
 
+        if (idProjet != null) {
+            ArrayList<Equipe> lesEquipesDuProjet = null;
+            ArrayList<Personne> lesStagiairesSansEquipe = null;
+            EquipeDao equipeDao = new EquipeDao();
             try {
-                idProjet = Integer.parseInt(ParamIdProjet);
-            } catch (NumberFormatException e) {
-                System.out.println("id projet non valide : " + e);
+                lesEquipesDuProjet = equipeDao.findAll(idProjet);
+                lesStagiairesSansEquipe = equipeDao.findAllNotInTeam(idProjet);
+            } catch (SQLException ex) {
+                Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            if (idProjet != null) {
-                ArrayList<Equipe> lesEquipesDuProjet = null;
-                ArrayList<Personne> lesStagiairesSansEquipe = null;
-                EquipeDao equipeDao = new EquipeDao();
-                try {
-                    lesEquipesDuProjet = equipeDao.findAll(idProjet);
-                    lesStagiairesSansEquipe = equipeDao.findAllNotInTeam(idProjet);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ListerEquipesServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            request.setAttribute(ATT_IDPROJET, idProjet);
+            request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
+            request.setAttribute(ATT_STAGIAIRES_LIBRES, lesStagiairesSansEquipe);
+            request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
 
-                request.setAttribute(ATT_IDPROJET, idProjet);
-                request.setAttribute(ATT_EQUIPES, lesEquipesDuProjet);
-                request.setAttribute(ATT_STAGIAIRES_LIBRES, lesStagiairesSansEquipe);
-                request.setAttribute(ATT_TITLE, ATT_TITLE_VALUE);
-
-                this.getServletContext().getRequestDispatcher(VUE_EQUIPES).forward(request, response);
-            }
-
-        } else {
-            response.sendRedirect(this.getServletContext().getContextPath() + "/login");
+            this.getServletContext().getRequestDispatcher(VUE_EQUIPES).forward(request, response);
+        }else{
+            response.sendRedirect(this.getServletContext().getContextPath() + "/espacePersoEtudiant");
         }
     }
 
