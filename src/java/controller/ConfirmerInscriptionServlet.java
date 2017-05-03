@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -33,6 +34,7 @@ public class ConfirmerInscriptionServlet extends HttpServlet {
         String pattern = "(^[a-zA-Z0-9]{26,32}$)";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(token);
+        HttpSession session = request.getSession();
 
         if (m.matches()) {
             int id_personne = 0;
@@ -48,16 +50,15 @@ public class ConfirmerInscriptionServlet extends HttpServlet {
             if (id_personne != -1) {
                 try {
                     result = pers.activeUser(id_personne);
+                    session.setAttribute("messageOk", "Votre inscription a été validée avec succès.");
                 } catch (SQLException ex) {
                     Logger.getLogger(ConfirmerInscriptionServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    session.setAttribute("messageError", "Problème rencontré lors de la validation de votre inscription.");
                 }
 
             }
             //out.print(result);
-            if (result) {
-                //response.sendRedirect(this.getServletContext().getContextPath() + "/login" );
-                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            }
+            response.sendRedirect("login");
 
         } else {
             request.setAttribute("messageErreurValidation", "Une erreur s'est produite lors de la confirmation, veuillez entrez a nouveau vos informations.");
