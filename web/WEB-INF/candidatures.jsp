@@ -4,17 +4,15 @@
                 <div class="col-xs-8 col-sm-6 col-md-6">
                     <div class="input-group">
                         <input type="search" name="recherche" id="recherche" <c:if test="${param.recherche != null}"> value="${param.recherche}"</c:if> class="form-control" placeholder="Rechercher candidatures(nom ou prenom)"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-search"></i>
                         </span>
                     </div>
                 </div>
                 <div class="col-xs-4 col-sm-6 col-md-6">
                     <div class="col-xs-4 col-sm-4 col-md-4">
                         <select name="statut" class="form-control">
-                            <option value="" selected>Etat</option>
+                            <option value="" selected>Toutes les Etat</option>
                         <c:forEach var="unStatut" items="${requestScope.lesEtats}">                
                             <option value="<c:out value="${unStatut.libelle}" />" <c:if test="${param.statut == unStatut.libelle}"> selected</c:if> ><c:out value="${unStatut.libelle}" /></option>                         
                         </c:forEach> 
@@ -22,7 +20,7 @@
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4">
                         <select name="formationNom" class="col-xs-4 col-sm-4 col-md-4 form-control">
-                            <option value="" selected>Formation</option>
+                            <option value="" selected>Toutes les Formations</option>
                         <c:forEach var="unFormation" items="${requestScope.lesFormations}">                
                             <option value="<c:out value="${unFormation.nom}" />" <c:if test="${param.formationNom == unFormation.nom}"> selected</c:if> ><c:out value="${unFormation.nom}" /></option>                           
                         </c:forEach>                            
