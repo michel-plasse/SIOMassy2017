@@ -99,40 +99,7 @@ public class ProjetDao implements ProjetHome<Projet> {
         }
         return result;
     }
-
-    @Override
-    public ArrayList<Projet> findAll(int idPersonne) throws SQLException {
-        ArrayList<Projet> lesProjets = new ArrayList<Projet>();
-        connection = ConnectionBd.getConnection();
-        String sql ="SELECT c.id_session,p.id_projet,p.id_formateur,p.sujet,p.date_creation,p.date_limite,p.description "
-                + "FROM candidature c "
-                + "INNER JOIN projet p ON c.id_session = p.id_session "
-                + "WHERE c.id_personne = ?;";
-        
-        PreparedStatement preparedStatement = null;
-        ResultSet res = null;
-        
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, idPersonne);
-            preparedStatement.executeQuery();
-            
-            while(res.next()) {
-                Projet p = new Projet();
-                p.setId(res.getInt("p.id_projet"));
-                p.setIdFormateur(res.getInt("p.id_formateur"));
-                p.setIdSession(res.getInt("c.id_session"));
-                p.setNomFormateur(res.getString(""));
-            }
-              
-        }catch (SQLException e) {
-            System.err.println("Problème récupération des projets");
-            throw e;
-        }
-            
   
-    }
-    
     @Override
     public ArrayList<Projet> findAllByIdFormateur(int idFormateur) throws SQLException {
         ArrayList<Projet> lesProjetsDuFormateur = new ArrayList<Projet>();
@@ -213,6 +180,11 @@ public class ProjetDao implements ProjetHome<Projet> {
         }
         
         return lesProjets;
+    }
+
+    @Override
+    public ArrayList<Projet> findAll() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
