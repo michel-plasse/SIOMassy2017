@@ -58,7 +58,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
     }    
 
     @Override
-    public ArrayList<HashMap<String, String>> mapCandidatures(ArrayList<String> conditions) throws SQLException {
+    public ArrayList<HashMap<String, String>> mapCandidatures(ArrayList<String> conditions, String order_by, String limit) throws SQLException {
         String where = String.join(" AND ", conditions);
         if (!where.equals("")){
             where = " WHERE " + where;
@@ -88,7 +88,8 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " INNER JOIN"
                 + " formation f ON s.id_formation = f.id_formation"
                 + where
-                + " ORDER BY date_effet DESC"                
+                + " ORDER BY " + order_by + " "
+                + limit
         );
         while (resultSet.next()) {
             String personne = resultSet.getString("personne");

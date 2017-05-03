@@ -17,6 +17,7 @@ public class Personne {
     private String no_tel;
     private String photo;
     private boolean est_formateur;
+    private boolean est_gestionnaire;
 
     
     
@@ -96,6 +97,26 @@ public class Personne {
         this.photo = photo;
         this.est_formateur = est_formateur;
     }
+
+    public Personne(int id, String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String mot_de_passe, String no_tel, String photo, boolean est_formateur, boolean est_gestionnaire) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.no_rue = no_rue;
+        this.rue = rue;
+        this.code_postal = code_postal;
+        this.ville = ville;
+        this.pays = pays;
+        this.mot_de_passe = mot_de_passe;
+        this.token = token;
+        this.no_tel = no_tel;
+        this.photo = photo;
+        this.est_formateur = est_formateur;
+        this.est_gestionnaire = est_gestionnaire;
+    }
+    
+    
 
     public Personne(String nom, String prenom, String email, String no_rue, String rue, String code_postal, String ville, String pays, String no_tel) {
         this.nom = nom;
@@ -282,6 +303,14 @@ public class Personne {
         this.est_formateur = est_formateur;
     }
 
+    public boolean isEst_gestionnaire() {
+        return est_gestionnaire;
+    }
+
+    public void setEst_gestionnaire(boolean est_gestionnaire) {
+        this.est_gestionnaire = est_gestionnaire;
+    }
+    
     @Override
     public String toString() {
         return "Personne{" + "id=" + id + ", email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", no_rue=" + no_rue + ", rue=" + rue + ", code_postal=" + code_postal + ", ville=" + ville + ", pays=" + pays + ", mot_de_passe=" + mot_de_passe + ", token=" + token + ", inscriptionValide=" + inscriptionValide + ", photo=" + photo + '}';

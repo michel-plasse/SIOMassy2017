@@ -40,7 +40,7 @@
     });
     
     //On change formation or etat submit form candidature
-    $('#candidatures select').change(function(){
+    $('#candidatures select, .input-group.date').change(function(){
         $('#candidatures').submit();    
     });
     
@@ -53,9 +53,16 @@
 //datepicker
     $('.input-group.date').datepicker({
         format: "dd/mm/yyyy",
-        todayBtn: true,
         language: "fr",
-        todayHighlight: true
+        todayHighlight: true,
+        clearBtn: true,
+        autoclose: true,
+        toggleActive: true
+    });
+    
+    $('.input-group.date').datepicker()
+        .on(picker_event, function(e) {
+        $('#candidatures').submit();
     });
 </script>
 
