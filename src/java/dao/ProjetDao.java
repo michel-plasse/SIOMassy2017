@@ -101,21 +101,36 @@ public class ProjetDao implements ProjetHome<Projet> {
     }
 
     @Override
-    public ArrayList<Projet> findAll() throws SQLException {
+    public ArrayList<Projet> findAll(int idPersonne) throws SQLException {
         ArrayList<Projet> lesProjets = new ArrayList<Projet>();
         connection = ConnectionBd.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet resall = stmt.executeQuery("SELECT s.id_session as idSession,\n" +
-"       p.sujet as sujet ,\n" +
-"       p.date_creation as dateCreation ,\n" +
-"       p.date_limite as dateLimite ,\n" +
-"       p.description as description\n" +
-"from\n" +
-"	session_formation s\n" +
-"		inner join\n" +
-"	projet p on s.id_session=p.id_session ;");
-        resall.next();
-        return lesProjets;
+        String sql ="SELECT c.id_session,p.id_projet,p.id_formateur,p.sujet,p.date_creation,p.date_limite,p.description "
+                + "FROM candidature c "
+                + "INNER JOIN projet p ON c.id_session = p.id_session "
+                + "WHERE c.id_personne = ?;";
+        
+        PreparedStatement preparedStatement = null;
+        ResultSet res = null;
+        
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idPersonne);
+            preparedStatement.executeQuery();
+            
+            while(res.next()) {
+                Projet p = new Projet();
+                p.setId(res.getInt("p.id_projet"));
+                p.setIdFormateur(res.getInt("p.id_formateur"));
+                p.setIdSession(res.getInt("c.id_session"));
+                p.setNomFormateur(res.getString(""));
+            }
+              
+        }catch (SQLException e) {
+            System.err.println("Problème récupération des projets");
+            throw e;
+        }
+            
+  
     }
     
     @Override
