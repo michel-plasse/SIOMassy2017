@@ -32,7 +32,6 @@ body {
 }
 
 #main {
-    height: 100%;
     width: 100%;
     padding:10px;
     background-color: #efefef;
@@ -69,7 +68,9 @@ body {
     position: absolute;
 }
 
-
+.feedback {
+    display: none;
+}
 
 .item-menu:hover {
     background: #54acf5;
@@ -175,3 +176,8 @@ body {
     border: 2px solid #000000;
 
 }
+
+.clickable-row{
+    cursor: pointer;
+}
+

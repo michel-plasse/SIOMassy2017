@@ -11,5 +11,6 @@ import model.Projet;
 
 public interface ProjetHome<T> extends Dao <T> {
     public ArrayList<Projet> findAllByIdFormateur(int idFormateur) throws SQLException;
+    public ArrayList<Projet> findAll(int idPersonne) throws SQLException;
     
 }

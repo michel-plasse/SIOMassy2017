@@ -23,6 +23,7 @@ public interface EquipeHome<T> extends Dao<T>{
     public int insertReturnId(int idProjet, T equipe) throws SQLException;
     public boolean ajouterMembre(int idEquipe, int idPeronne) throws SQLException;
     public boolean retirerMembre(int idEquipe, int idPeronne) throws SQLException;
+    public int isAlreadyInTeam(int idPersonne, int idProjet) throws SQLException;
     public ArrayList<T> findAll(int idProjet) throws SQLException;
     public ArrayList<Personne> findAllNotInTeam (int idProjet) throws SQLException; 
 }

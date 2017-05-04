@@ -11,13 +11,17 @@
         <title>
             Agriote<c:if test="${ !empty requestScope.title }"><c:out value=" - ${requestScope.title}" /></c:if>
             </title>
-
-        <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
+            <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap-theme.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/font-awesome/css/font-awesome.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/bootstrap.min.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/css/style.css" />">
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value="/inc/css/print.css" />">
         <link rel="stylesheet" href="<c:url value="/inc/bootstrap/css/offcanvas.css" />">
+        <link rel="stylesheet" href="<c:url value="/inc/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" />">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="<c:url value="/inc/bootstrap/js/bootstrap.min.js" />"></script>
+        <script src="<c:url value="/inc/bootstrap-datepicker/js/bootstrap-datepicker.min.js" />"></script>
+        <script src="<c:url value="/inc/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js" />" charset="UTF-8"></script>
     </head>
 
     <body>
@@ -48,12 +52,17 @@
                             <li class="item-menu"><a href="<c:url value="/"/>">Accueil</a></li>
                             <li class="item-menu"><a href="<c:url value="/sessionsOuvertes"/>">Formations</a></li>
                             <li class="item-menu"><a href="<c:url value="/trombinoscope"/>">Trombinoscope</a></li>
-                            <li class="item-menu"><c:if test='${user.est_formateur eq false}'>
+                            <li class="item-menu">
+                                <c:if test='${user.est_formateur eq false && user.est_gestionnaire eq false}'>
                                     <a href="<c:url value="/espacePersoEtudiant" />">Espace Personnel</a>
                                 </c:if>
                                 <c:if test="${user.est_formateur eq true}">
                                     <a href="<c:url value="/espacePersoFormateur" />">Espace Personnel</a>
-                                </c:if></li>
+                                </c:if>
+                                <c:if test="${user.est_gestionnaire eq true}">
+                                    <a href="<c:url value="/espacePersoGestionnaire" />">Espace Personnel</a>
+                                </c:if>
+                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="active"><c:if test='${sessionScope.user == null}'>

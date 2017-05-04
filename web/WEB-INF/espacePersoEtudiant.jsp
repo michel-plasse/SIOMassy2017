@@ -1,8 +1,9 @@
 <div id="formateur-form">
     <div id="formateur-formBox">
-        <img height="110" width="110" src="image/trombi/${user.photo}"/>
+        <img style="border:1px solid grey;" height="150" width="150" src="image/trombi/${user.photo}"/>
     </div>
-    <section id="donnees-perso">
+    <section id="donnees-perso"> 
+
         <div id="donnees-lecture">
             <strong> ${user.prenom} ${user.nom}</strong><br>
             ${user.no_rue} ${user.rue}<br>
@@ -10,7 +11,8 @@
             ${user.pays}<br>
             <i class="fa fa-phone" aria-hidden="true"></i> ${user.no_tel}<br>
             <i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:${user.email}">${user.email} </a>
-            <a href="javascript:$('#donnees-lecture').hide(); $('#donnees-ecriture').show()">Edit</a>
+            <br>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i><a href="javascript:$('#donnees-lecture').hide(); $('#donnees-ecriture').show()">Editer mes informations</a>
         </div>
         <div id="donnees-ecriture" style="display:none;">
             <table class="table">
@@ -80,7 +82,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <button type="valider" class="btn btn-default">Valider</button>
+                            <button type="submit" class="btn btn-primary">Valider</button> 
+                            <button id="editClose" type="button" class="btn btn-default">Annuler</button>
                         </td>
                     </tr>
 
@@ -89,61 +92,72 @@
         </div>
     </section>
 </div>
-<br>    
+<br>   
+<br>
 
 <!--<a href="#demo" data-toggle="collapse">Mes Notes</a> </br>
 
  <div id="demo" class="collapse"> -->
-<div id="donnees-lecture-note">
-    <table class="table">	
-        <tr>
-            <th>Date</th>
-            <th>Module</th>
-            <th>formateur</th>
-            <th>Note</th>
-            <th>Commentaire</th>
+<div class="panel panel-default">
+    <div class="panel-heading"><strong><i class="fa fa-graduation-cap" aria-hidden="true"></i> Mes notes</strong></div>
+    <div class="panel-body">
 
-        </tr>
-        <c:forEach items="${lesNotes}" var="laNote" end="1">
-            <tr>
+        <div id="donnees-lecture-note">
+            <table class="table">	
+                <tr>
+                    <th>Date</th>
+                    <th>Module</th>
+                    <th>formateur</th>
+                    <th>Note</th>
+                    <th>Commentaire</th>
 
-                <td>${laNote.evaluation.dateDebutEval}</td>
-                <td>${laNote.evaluation.leModule.nom}</td> 
-                <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
-                <td>${laNote.note}</td>
-                <td>${laNote.commentaire}</td>
-            </tr>  
-        </c:forEach>
-    </table>    
+                </tr>
+                <c:forEach items="${lesNotes}" var="laNote" end="1">
+                    <tr>
+
+                        <td>${laNote.evaluation.dateDebutEval}</td>
+                        <td>${laNote.evaluation.leModule.nom}</td> 
+                        <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
+                        <td>${laNote.note}</td>
+                        <td>${laNote.commentaire}</td>
+                    </tr>  
+                </c:forEach>
+            </table>    
+        </div>
+
+        <div id="donnees-ecriture-note" style="display:none;">
+            <table class="table">	
+                <tr>
+                    <th>Date</th>
+                    <th>Module</th>
+                    <th>formateur</th>
+                    <th>Note</th>
+                    <th>Commentaire</th>
+
+                </tr>
+                <c:forEach items="${lesNotes}" var="laNote">
+                    <tr>
+
+                        <td>${laNote.evaluation.dateDebutEval}</td>
+                        <td>${laNote.evaluation.leModule.nom}</td> 
+                        <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
+                        <td>${laNote.note}</td>
+                        <td>${laNote.commentaire}</td>
+                    </tr>  
+                </c:forEach>
+            </table>
+        </div>
+
+        <a id="afficheNote" style="cursor: pointer">Afficher toutes mes notes...</a> 
+        <a id="hideNote"  style="cursor: pointer">Réduire</a>
+
+    </div>
 </div>
 
-<div id="donnees-ecriture-note" style="display:none;">
-    <table class="table">	
-        <tr>
-            <th>Date</th>
-            <th>Module</th>
-            <th>formateur</th>
-            <th>Note</th>
-            <th>Commentaire</th>
 
-        </tr>
-        <c:forEach items="${lesNotes}" var="laNote">
-            <tr>
-
-                <td>${laNote.evaluation.dateDebutEval}</td>
-                <td>${laNote.evaluation.leModule.nom}</td> 
-                <td>${laNote.evaluation.leFormateur.nom} ${laNote.evaluation.leFormateur.prenom}</td>           
-                <td>${laNote.note}</td>
-                <td>${laNote.commentaire}</td>
-            </tr>  
-        </c:forEach>
-    </table>
-</div>
-
-<a href="javascript:$('#donnees-lecture-note').hide(); $('#donnees-ecriture-note').fadeIn('slow').show()">Afficher toutes mes notes...</a> 
-<a href="javascript:$('#donnees-ecriture-note').hide(); $('#donnees-lecture-note').fadeIn('slow').show()">Réduire</a> <br>
-<br>
-
+<div class="panel panel-default">
+    <div class="panel-heading"><strong><i class="fa fa-folder-open" aria-hidden="true"></i> Mes projets</strong></div>
+    <div class="panel-body">
 <div id="donnees-lecture-projet">
     <table class="table">	
 
@@ -152,16 +166,22 @@
             <th>Date début</th>
             <th>Date limite</th>
             <th>Formateur</th>
+            <th>Equipes</th>
 
         </tr>
-        <c:forEach items="${lesProjets}" var="leProjet">
+        <c:forEach items="${lesProjets}" var="leProjet" end="1">
             <tr>
 
-<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
-<td>${leProjet.dateCreation}</td> 
-<td>${leProjet.dateLimite}</td>           
-<td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
-            </tr>  
+                <td>${leProjet.sujet}</td>
+                <td>${leProjet.dateCreation}</td> 
+                <td>${leProjet.dateLimite}</td>           
+                <td>${leProjet.nomFormateur} ${leProjet.prenomFormateur}</td>
+                <td>
+                    <a href="<c:url value="/equipe/index"><c:param name="id" value="${leProjet.id}" /></c:url>" title="Voir les équipes">
+                            <i class="fa fa-users" aria-hidden="true"> Voir les équipes</i>
+                        </a>
+                    </td>
+                </tr>  
         </c:forEach>
     </table>
 </div>
@@ -179,68 +199,102 @@
         <c:forEach items="${lesProjets}" var="leProjet">
             <tr>
 
-<!--            <td><a href="espacePersoFormateur">${leProjet.sujet}</a></td>
-<td>${leProjet.dateCreation}</td> 
-<td>${leProjet.dateLimite}</td>           
-<td><a href="espacePersoFormateur">${leProjet.leFormateur.nom} ${leProjet.leFormateur.prenom}</a></td>-->
+                <td>${leProjet.sujet}</td>
+                <td>${leProjet.dateCreation}</td> 
+                <td>${leProjet.dateLimite}</td>           
+                <td>${leProjet.nomFormateur} ${leProjet.prenomFormateur}</td>
             </tr>  
         </c:forEach>
     </table>
 </div>
 
- <a href="javascript:$('#donnees-lecture-projet').hide(); $('#donnees-ecriture-projet').fadeIn('slow').show()">Afficher tous mes projets..</a> 
-<a href="javascript:$('#donnees-ecriture-projet').hide(); $('#donnees-lecture-projet').fadeIn('slow').show()">Réduire</a> <br> 
+<a id="afficheProjet" style="cursor: pointer">Afficher tous mes projets..</a> 
+<a id="hideProjet" style="cursor: pointer">Réduire</a> <br> 
+    </div>
+</div>
 
 <br>
 <div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#qcmpasse" aria-controls="home" role="tab" data-toggle="tab">Qcm Passé</a></li>
-        <li role="presentation"><a href="#qcmnonpasse" aria-controls="profile" role="tab" data-toggle="tab">Qcm non Passé</a></li>
+        <li role="presentation" class="active"><a href="#qcmpasse" aria-controls="home" role="tab" data-toggle="tab"><strong><i class="fa fa-check" aria-hidden="true"></i> QCM passé</strong></a></li>
+        <li role="presentation"><a href="#qcmnonpasse" aria-controls="profile" role="tab" data-toggle="tab"><strong><i class="fa fa-times" aria-hidden="true"></i> QCM non passé</strong></a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
         <table role="tabpanel" class="tab-pane active table" id="qcmpasse">
-            
+
+            <tr>
+
+                <th>Module</th>
+                <th>Nom</th>
+
+            </tr>
+            <c:forEach items="${LesQcmPasse}" var="leqcm" >
                 <tr>
-                    
-                    <th>Module</th>
-                    <th>Nom</th>
-                
-                </tr>
-                <c:forEach items="${LesQcmPasse}" var="leqcm" >
-                    <tr>
-                        
-                        <td>${leqcm.nomModule}</td>
-                        <td>${leqcm.intitule}</td>
-                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Consulter</a></td>
-                         
-                        </tr>
-                </c:forEach>
-            
+
+                    <td>${leqcm.nomModule}</td>
+                    <td>${leqcm.intitule}</td>
+                    <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Consulter</a></td>
+
+                    </tr>
+            </c:forEach>
+
         </table>
         <table role="tabpanel" class="tab-pane  table" id="qcmnonpasse">
-            
+
+            <tr>
+
+                <th>Module</th>
+                <th>Nom</th>
+                <th></th>
+
+            </tr>
+            <c:forEach items="${lesQcmNonPasse}" var="leqcm">
                 <tr>
-                  
-                    <th>Module</th>
-                    <th>Nom</th>
-                    <th></th>
-                    
-                </tr>
-                <c:forEach items="${lesQcmNonPasse}" var="leqcm">
-                    <tr>
-                       
-                        <td>${leqcm.nomModule}</td>
-                        <td>${leqcm.intitule}</td>
-                        <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Passer</a></td>
-                           
-                        </tr>
-                </c:forEach>
-            
+
+                    <td>${leqcm.nomModule}</td>
+                    <td>${leqcm.intitule}</td>
+                    <td><a href="<c:url value="/qcm/passer"><c:param name="idQcmPasser" value="${leqcm.idQcm}"/></c:url>">Passer</a></td>
+
+                    </tr>
+            </c:forEach>
+
         </table>
     </div>
-
 </div>
+
+<script>
+    $('#editInfos').click(function () {
+        $('#donnees-lecture').hide();
+        $('#donnees-ecriture').fadeIn('slow').show();
+    });
+    
+    $('#editClose').click(function () {
+        $('#donnees-ecriture').hide();
+        $('#donnees-lecture').fadeIn('slow').show();  
+    });
+
+    $('#afficheNote').click(function () {
+        $('#donnees-lecture-note').hide();
+        $('#donnees-ecriture-note').fadeIn('slow').show();
+    });
+
+    $('#hideNote').click(function () {
+        $('#donnees-ecriture-note').hide();
+        $('#donnees-lecture-note').fadeIn('slow').show();
+    });
+
+    $('#afficheProjet').click(function () {
+        $('#donnees-lecture-projet').hide();
+        $('#donnees-ecriture-projet').fadeIn('slow').show();
+    });
+
+    $('#hideProjet').click(function () {
+        $('#donnees-ecriture-projet').hide();
+        $('#donnees-lecture-projet').fadeIn('slow').show();
+    });
+
+</script>
 
