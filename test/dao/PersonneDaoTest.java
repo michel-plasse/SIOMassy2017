@@ -29,7 +29,7 @@ public class PersonneDaoTest {
         Personne result = dao.findById(1);
         Personne expected = new Personne(1, "Leto",
                 "Elias", "leto@yahoo.com", "12",
-                "rue du chat", "75001", "Paris", "France", "Jesuisunchat123!");
+                "rue du chat", "75001", "Paris", "France", "p123");
         assertEquals(expected, result);
     }
 
