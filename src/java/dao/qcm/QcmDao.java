@@ -401,7 +401,12 @@ public class QcmDao implements QcmHome<Qcm> {
         }
         return lesQcm;
     }
-
+/**
+ * 
+ * @param idPersonne
+ * @return
+ * @throws SQLException 
+ */
     @Override
     public ArrayList<Qcm> findAllNotDone(int idPersonne) throws SQLException {
         connection = ConnectionBd.getConnection();
