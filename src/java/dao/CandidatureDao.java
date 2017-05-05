@@ -74,7 +74,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " c.id_etat_candidature AS etat_candidature,"
                 + " p.nom AS nom,"
                 + " p.prenom AS prenom,"
-                + " e.libelle AS statut,"
+                + " e.libelle AS etat,"
                 + " f.nom AS formation_nom,"
                 + " DATE_FORMAT(c.date_effet, '%d/%m/%Y') AS effectue"
                 + " FROM"
@@ -97,7 +97,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
             String etatCandidature = resultSet.getString("etat_candidature");
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
-            String statut = resultSet.getString("statut");
+            String etat = resultSet.getString("etat");
             String formationNom = resultSet.getString("formation_nom");            
             String effectue = resultSet.getString("effectue");
 
@@ -107,7 +107,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
             candidature.put("idEtatCandidature", etatCandidature);
             candidature.put("nom", nom);
             candidature.put("prenom", prenom);
-            candidature.put("statut", statut);
+            candidature.put("etat", etat);
             candidature.put("formationNom", formationNom);            
             candidature.put("effectue", effectue);
             listeMapCandidature.add(candidature);

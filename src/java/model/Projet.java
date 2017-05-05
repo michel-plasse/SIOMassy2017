@@ -43,6 +43,10 @@ public class Projet {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public Projet(int i, int idSession, int idFormateur, String sujet, String description, Date dateLimite, Date dateCreation) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public int getId() {
         return id;
     }

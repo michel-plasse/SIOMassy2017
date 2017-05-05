@@ -58,10 +58,10 @@ public class ListerCandidaturesServlet extends HttpServlet {
                 String condition = "(p.nom LIKE '%" + recherche + "%' OR p.prenom LIKE '%" + recherche + "%')";
                 conditions.add(condition);
             }
-            //STATUT
-            if(request.getParameter("statut") != null && !request.getParameter("statut").isEmpty()){
-                String statut = request.getParameter("statut");
-                String condition = "e.libelle = '" + statut + "'";
+            //ETAT
+            if(request.getParameter("etat") != null && !request.getParameter("etat").isEmpty()){
+                String etat = request.getParameter("etat");
+                String condition = "e.libelle = '" + etat + "'";
                 conditions.add(condition);
             }
             //SESSION FORMATION
@@ -80,7 +80,7 @@ public class ListerCandidaturesServlet extends HttpServlet {
             if(request.getParameter("trier") != null && !request.getParameter("trier").isEmpty()){
                 String trier = request.getParameter("trier");
                 //par etat de candidature
-                if(trier.equals("statut"))
+                if(trier.equals("etat"))
                     order_by = "e.libelle ASC";
                 //par formation
                 else if(trier.equals("formation"))
