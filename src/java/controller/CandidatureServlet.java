@@ -49,7 +49,9 @@ public class CandidatureServlet extends HttpServlet {
         }
         //connecté et personne est gestionaire
         else if(user.isEst_gestionnaire()){
-            request.getRequestDispatcher("WEB-INF/candidature.jsp").forward(request, response);            
+            request.getRequestDispatcher("WEB-INF/candidature.jsp").forward(request, response);
+            if(request.getParameter("formationNom") != null && !request.getParameter("formationNom").isEmpty()){
+            } 
         }
         //connecté mais le personne n'est pas gestionnaire
         else{

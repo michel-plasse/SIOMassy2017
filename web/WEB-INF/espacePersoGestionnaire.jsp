@@ -96,15 +96,15 @@
             <tr>
                 <th>Nom</th>
                 <th>Prenom</th>
-                <th>Statut</th>
+                <th>Etat</th>
                 <th>Session</th>
-                <th>Date_de_postulation</th>
+                <th>Date postulé</th>
             </tr>
         <c:forEach var="unCandidature" items="${lesCandidatures}">
             <tr class='clickable-row' data-href='<c:url value="/candidature?personne=${unCandidature.idPersonne}&session=${unCandidature.idSession}&etat=${unCandidature.idEtatCandidature}" />'>
                 <td><c:out value="${unCandidature.nom}"/></td>
                 <td><c:out value="${unCandidature.prenom}"/></td>
-                <td><c:out value="${unCandidature.statut}"/></td>
+                <td><c:out value="${unCandidature.etat}"/></td>
                 <td><c:out value="${unCandidature.formationNom}"/></td>
                 <td><c:out value="${unCandidature.effectue}"/></td>
             </tr>            
