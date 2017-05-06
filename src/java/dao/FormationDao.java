@@ -32,7 +32,18 @@ public class FormationDao  implements FormationHome<Formation>{
 
     @Override
     public Formation findById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection connection = ConnectionBd.getConnection();
+        Statement statement = connection.createStatement();
+        Formation formation = null;
+        ResultSet resultat = statement.executeQuery("SELECT * FROM formation WHERE id_formation  =" + id);
+
+        if(resultat.next()) {
+            formation = new Formation(
+                    resultat.getInt("id_formation"),
+                    resultat.getString("nom"),
+                    resultat.getString("description"));
+        }
+        return formation;    
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ListerCandidaturesServlet extends HttpServlet {
         //connecté et personne est gestionaire
         else if(user.isEst_gestionnaire()){
             ArrayList<String> conditions = new ArrayList<>();
-            String order_by = "date_effet DESC";
+            String order_by = " ORDER BY date_effet DESC";
 
             //RECHERCHE
             if(request.getParameter("recherche") != null && !request.getParameter("recherche").isEmpty()){
@@ -61,13 +61,13 @@ public class ListerCandidaturesServlet extends HttpServlet {
             //ETAT
             if(request.getParameter("etat") != null && !request.getParameter("etat").isEmpty()){
                 String etat = request.getParameter("etat");
-                String condition = "e.libelle = '" + etat + "'";
+                String condition = "e.id_etat_candidature = '" + etat + "'";
                 conditions.add(condition);
             }
             //SESSION FORMATION
-            if(request.getParameter("formationNom") != null && !request.getParameter("formationNom").isEmpty()){            
-                String sessionFormation = request.getParameter("formationNom");
-                String condition = "f.nom = '" + sessionFormation + "'";
+            if(request.getParameter("formation") != null && !request.getParameter("formation").isEmpty()){            
+                String formation = request.getParameter("formation");
+                String condition = "f.id_formation = '" + formation + "'";
                 conditions.add(condition);
             }        
             //DATE
@@ -81,12 +81,12 @@ public class ListerCandidaturesServlet extends HttpServlet {
                 String trier = request.getParameter("trier");
                 //par etat de candidature
                 if(trier.equals("etat"))
-                    order_by = "e.libelle ASC";
+                    order_by = "ORDER BY e.libelle ASC";
                 //par formation
                 else if(trier.equals("formation"))
-                    order_by = "f.nom ASC";
+                    order_by = " ORDER BY f.nom ASC";
                 else
-                    order_by = trier + " ASC";
+                    order_by = " ORDER BY p." + trier + " ASC";
             }
 
             try {            
@@ -112,7 +112,7 @@ public class ListerCandidaturesServlet extends HttpServlet {
         }
         //connecté mais le personne n'est pas gestionnaire
         else{
-            request.setAttribute("message", "vous n'avez le droit pour acceder cette page");
+            request.setAttribute("message", "vous n'avez pas le droit pour acceder cette page");
             request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response); 
         }
     }

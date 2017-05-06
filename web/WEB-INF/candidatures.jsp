@@ -14,15 +14,15 @@
                         <select name="etat" class="form-control">
                             <option value="" selected>Toutes les Etat</option>
                         <c:forEach var="unEtat" items="${requestScope.lesEtats}">                
-                            <option value="<c:out value="${unEtat.libelle}" />" <c:if test="${param.etat == unEtat.libelle}"> selected</c:if> ><c:out value="${unEtat.libelle}" /></option>                         
+                            <option value="<c:out value="${unEtat.idEtatCandidature}" />" <c:if test="${param.etat == unEtat.idEtatCandidature}"> selected</c:if> ><c:out value="${unEtat.libelle}" /></option>                         
                         </c:forEach> 
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3">
-                        <select name="formationNom" class="col-xs-4 col-sm-4 col-md-4 form-control">
-                            <option value="" selected>Toutes les Formations</option>
+                        <select name="formation" class="col-xs-4 col-sm-4 col-md-4 form-control">
+                            <option value="" selected>Les Formations</option>
                         <c:forEach var="unFormation" items="${requestScope.lesFormations}">                
-                            <option value="<c:out value="${unFormation.nom}" />" <c:if test="${param.formationNom == unFormation.nom}"> selected</c:if> ><c:out value="${unFormation.nom}" /></option>                           
+                            <option value="<c:out value="${unFormation.id}" />" <c:if test="${param.formation == unFormation.id}"> selected</c:if> ><c:out value="${unFormation.nom}" /></option>                           
                         </c:forEach>                            
                          </select>
                     </div>
@@ -56,10 +56,10 @@
                 <th>Prenom</th>
                 <th>Etat</th>
                 <th>Formation</th>
-                <th>Date postulé</th>
+                <th>Postulé</th>
             </tr>
         <c:forEach var="unCandidature" items="${lesCandidatures}">
-            <tr class='clickable-row' data-href='<c:url value="/candidature?personne=${unCandidature.idPersonne}&session=${unCandidature.idSession}&etat=${unCandidature.idEtatCandidature}" />'>
+            <tr class='clickable-row' data-href='<c:url value="/candidature?personne=${unCandidature.idPersonne}&session=${unCandidature.idSession}&formation=${unCandidature.idFormation}&etat=${unCandidature.idEtatCandidature}" />'>
                 <td><c:out value="${unCandidature.nom}"/></td>
                 <td><c:out value="${unCandidature.prenom}"/></td>
                 <td><c:out value="${unCandidature.etat}"/></td>

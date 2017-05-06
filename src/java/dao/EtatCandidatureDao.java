@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.EtatCandidature;
+import model.SessionFormation;
 
 /**
  *
@@ -34,7 +35,17 @@ public class EtatCandidatureDao implements EtatCandidatureHome<EtatCandidature>{
 
     @Override
     public EtatCandidature findById(int id) throws SQLException {
-        return null;
+        Connection connection = ConnectionBd.getConnection();
+        Statement statement = connection.createStatement();
+        EtatCandidature etatCandidature = null;
+        ResultSet resultat = statement.executeQuery("SELECT * FROM etat_candidature WHERE id_etat_candidature = " + id);
+
+        if(resultat.next()) {
+            etatCandidature = new EtatCandidature(
+                    resultat.getInt("id_etat_candidature"),
+                    resultat.getString("libelle"));
+        }
+        return etatCandidature;
     }
 
     @Override

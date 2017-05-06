@@ -49,6 +49,17 @@
             $('#candidatures').submit();
         }
     });
+    
+    
+    $("#modifierEtat").click(function(){
+        $("#infoCandidature").css("display", "none");
+        $("#etatForm").css("display", "block");
+    });
+    
+    $("#closeEtatForm").click(function(){
+        $("#etatForm").css("display", "none");
+        $("#infoCandidature").css("display", "block");
+    });
 });
 //datepicker
     $('.input-group.date').datepicker({

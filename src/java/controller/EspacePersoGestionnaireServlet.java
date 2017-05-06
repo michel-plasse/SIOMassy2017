@@ -51,7 +51,7 @@ public class EspacePersoGestionnaireServlet extends HttpServlet {
         //connecté et personne est gestionaire
         else if(user.isEst_gestionnaire()){
             ArrayList<String> conditions = new ArrayList<>();
-            String order_by = "date_effet DESC";
+            String order_by = " ORDER BY date_effet DESC";
             String limit = "LIMIT 5";
             try {            
                 CandidatureDao candidatureDao = new CandidatureDao();
@@ -75,7 +75,7 @@ public class EspacePersoGestionnaireServlet extends HttpServlet {
         }
         //connecté mais le personne n'est pas gestionnaire
         else{
-            request.setAttribute("message", "vous n'avez le droit pour acceder cette page");
+            request.setAttribute("message", "vous n'avez pas le droit pour acceder cette page");
             request.getRequestDispatcher("WEB-INF/message.jsp").forward(request, response); 
         }
     }

@@ -79,10 +79,12 @@ public class CandidatureDaoTest{
 
     @Test
     public void testMapCandidatures() throws Exception {
-        ArrayList<String> conditions = new ArrayList<>();        
+        ArrayList<String> conditions = new ArrayList<>();
+        String order = "";
+        String limit = "";
         
         CandidatureDao dao = new CandidatureDao();
-        ArrayList<HashMap<String, String>> result = dao.mapCandidatures(conditions);
+        ArrayList<HashMap<String, String>> result = dao.mapCandidatures(conditions, order, limit);
         
         assertEquals(7, result.size());
         

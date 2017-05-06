@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.Candidature;
+import model.EtatCandidature;
+import model.Personne;
+import model.SessionFormation;
 
 public class CandidatureDao implements CandidatureHome<Candidature> {
 
@@ -40,9 +43,20 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
     }
 
     @Override
-    public boolean update(int idAncien, Candidature nouveau) throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean update(int idAncien, Candidature candidature) throws SQLException {
+        Personne personne = candidature.getPersonne();
+        SessionFormation sessionFormation = candidature.getSessionFomation();
+        EtatCandidature etatCandidature = candidature.getEtatCandidature();
+        
+        connection = ConnectionBd.getConnection();
+            // Commencer une transaction
+            String sql = "UPDATE candidature SET id_etat_candidature = ?"
+                    + " WHERE id_personne = "+ personne.getId() + " AND id_session =" + sessionFormation.getId_session();
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, etatCandidature.getIdEtatCandidature());
+            stmt.executeUpdate();
+
+        return true;
     }
 
     @Override
@@ -71,6 +85,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 "SELECT"                        
                 + " c.id_personne AS personne,"
                 + " c.id_session AS session,"
+                + " f.id_formation AS formation,"
                 + " c.id_etat_candidature AS etat_candidature,"
                 + " p.nom AS nom,"
                 + " p.prenom AS prenom,"
@@ -88,12 +103,13 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
                 + " INNER JOIN"
                 + " formation f ON s.id_formation = f.id_formation"
                 + where
-                + " ORDER BY " + order_by + " "
+                + order_by + " "
                 + limit
         );
         while (resultSet.next()) {
             String personne = resultSet.getString("personne");
             String session = resultSet.getString("session");
+            String formation = resultSet.getString("formation");
             String etatCandidature = resultSet.getString("etat_candidature");
             String nom = resultSet.getString("nom");
             String prenom = resultSet.getString("prenom");
@@ -104,6 +120,7 @@ public class CandidatureDao implements CandidatureHome<Candidature> {
             HashMap<String, String> candidature = new HashMap<String, String>();
             candidature.put("idPersonne", personne);
             candidature.put("idSession", session);
+            candidature.put("idFormation", formation);
             candidature.put("idEtatCandidature", etatCandidature);
             candidature.put("nom", nom);
             candidature.put("prenom", prenom);
