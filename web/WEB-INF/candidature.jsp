@@ -29,12 +29,15 @@
             <dd>De ${session.dateDebut} à ${session.dateFin}</dd>
         </dl>
         <div id="etatForm" style="display: none">
-            <form method="POST">
-                <select name="etat" class="form-control">
+            <form method="post">
+                <select name="etatId" class="form-control">
                     <c:forEach var="unEtat" items="${requestScope.lesEtats}">                
                         <option value="<c:out value="${unEtat.idEtatCandidature}" />" <c:if test="${param.etat == unEtat.idEtatCandidature}"> selected</c:if> ><c:out value="${unEtat.libelle}" /></option>                         
                     </c:forEach> 
                 </select>
+                <input name="personneId" value="${param.personne}" style="display: none"/>
+                <input name="sessionId" value="${param.session}" style="display: none"/>
+                <input name="formationId" value="${param.formation}" style="display: none"/>
                 <button type="submit" class="btn btn-primary">Valider</button> 
                 <button id="closeEtatForm" type="button" class="btn btn-default">Annuler</button>
             </form>

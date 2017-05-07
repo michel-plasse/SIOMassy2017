@@ -143,15 +143,15 @@ public class CandidatureServlet extends HttpServlet {
         }
         //connecté et personne est gestionaire
         else if(user.isEst_gestionnaire()){
-            if(request.getParameter("personne") != null && !request.getParameter("personne").isEmpty()
-                    && request.getParameter("session") != null && !request.getParameter("session").isEmpty()
-                    && request.getParameter("formation") != null && !request.getParameter("formation").isEmpty()
-                    && request.getParameter("etat") != null && !request.getParameter("etat").isEmpty()){
+            if(request.getParameter("personneId") != null && !request.getParameter("personneId").isEmpty()
+                    && request.getParameter("sessionId") != null && !request.getParameter("sessionId").isEmpty()
+                    && request.getParameter("formationId") != null && !request.getParameter("formationId").isEmpty()
+                    && request.getParameter("etatId") != null && !request.getParameter("etatId").isEmpty()){
                 
-                int idPersonne = Integer.parseInt(request.getParameter("personne"));
-                int idSession = Integer.parseInt(request.getParameter("session"));
-                int idFormation = Integer.parseInt(request.getParameter("formation"));
-                int idEtat = Integer.parseInt(request.getParameter("etat"));
+                int idPersonne = Integer.parseInt(request.getParameter("personneId"));
+                int idSession = Integer.parseInt(request.getParameter("sessionId"));
+                int idFormation = Integer.parseInt(request.getParameter("formationId"));
+                int idEtat = Integer.parseInt(request.getParameter("etatId"));
                 
                 PersonneDao personneDao = new PersonneDao();
                 SessionFormationDao sessionFormationDao = new SessionFormationDao();
