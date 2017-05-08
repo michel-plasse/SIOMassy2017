@@ -143,7 +143,7 @@ public class EvaluationDao implements EvaluationHome {
         SessionFormationDao sessionDao = new SessionFormationDao();
         connection = ConnectionBd.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet res = stmt.executeQuery("SELECT id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
+        ResultSet res = stmt.executeQuery("SELECT id_evaluation, id_module, id_formateur, id_session, date_effet, intitule FROM evaluation"
                 + " WHERE id_formateur = " + idFormateur + " AND date_effet < NOW() ;");
         while (res.next()) {
             Evaluation eval = new Evaluation(
@@ -152,6 +152,7 @@ public class EvaluationDao implements EvaluationHome {
                     sessionDao.findById(res.getInt("id_session")),
                     res.getDate("date_effet"),
                     res.getString("intitule"));
+            eval.setIdEvaluation(res.getInt("id_evaluation"));
             lesEvalDuFormateur.add(eval);
         }
         return lesEvalDuFormateur;

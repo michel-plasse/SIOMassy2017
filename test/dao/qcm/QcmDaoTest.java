@@ -116,18 +116,6 @@ public class QcmDaoTest extends TestCase {
         fail("The test case is a prototype.");
     }
 
-    public void testFindAllByFormateur() throws Exception {
-        System.out.println("findAllByFormateur");
-        int idFormateur = 7;
-        QcmDao instance = new QcmDao();
-        ArrayList<Qcm> expResult = new ArrayList<>();
-        Qcm 
-                
-        ArrayList<Qcm> result = instance.findAllByFormateur(idFormateur);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
     public void testRendValideQcm() throws Exception {
         System.out.println("rendValideQcm");
         int idQcm = 0;
