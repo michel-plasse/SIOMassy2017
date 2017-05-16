@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -20,6 +21,55 @@ public class Qcm {
     private ArrayList<Question> lesQuestions;
     private String nomModule ;
     private boolean archive;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + this.idQcm;
+        hash = 31 * hash + this.idModule;
+        hash = 31 * hash + Objects.hashCode(this.intitule);
+        hash = 31 * hash + (this.valide ? 1 : 0);
+        hash = 31 * hash + Objects.hashCode(this.lesQuestions);
+        hash = 31 * hash + Objects.hashCode(this.nomModule);
+        hash = 31 * hash + (this.archive ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Qcm other = (Qcm) obj;
+        if (this.idQcm != other.idQcm) {
+            return false;
+        }
+        if (this.idModule != other.idModule) {
+            return false;
+        }
+        if (this.valide != other.valide) {
+            return false;
+        }
+        if (this.archive != other.archive) {
+            return false;
+        }
+        if (!Objects.equals(this.intitule, other.intitule)) {
+            return false;
+        }
+        if (!Objects.equals(this.nomModule, other.nomModule)) {
+            return false;
+        }
+        if (!Objects.equals(this.lesQuestions, other.lesQuestions)) {
+            return false;
+        }
+        return true;
+    }
 
     public Qcm() {
     }

@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.Objects;
+
 /**
  *
  * @author admin
@@ -24,7 +26,11 @@ public class Choix {
         this.estCorrect = estCorrect;
     }
 
-    
+    public Choix(int idChoix, String libelle, boolean estCorrect) {
+        this.idChoix = idChoix;
+        this.libelle = libelle;
+        this.estCorrect = estCorrect;
+    }
     
     public int getIdChoix() {
         return idChoix;
@@ -56,6 +62,39 @@ public class Choix {
 
     public void setEstChoisi(boolean estChoisi) {
         this.estChoisi = estChoisi;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + this.idChoix;
+        hash = 59 * hash + Objects.hashCode(this.libelle);
+        hash = 59 * hash + (this.estCorrect ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Choix other = (Choix) obj;
+        if (this.idChoix != other.idChoix) {
+            return false;
+        }
+        if (this.estCorrect != other.estCorrect) {
+            return false;
+        }
+        if (!Objects.equals(this.libelle, other.libelle)) {
+            return false;
+        }
+        return true;
     }
     
     

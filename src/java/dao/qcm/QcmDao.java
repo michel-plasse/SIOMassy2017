@@ -139,7 +139,7 @@ public class QcmDao implements QcmHome<Qcm> {
         connection = ConnectionBd.getConnection();
         String sql = "SELECT qc.id_qcm, qc.id_formateur, qc.id_module, qc.intitule, qc.valide, qu.id_question, qu.question, ch.id_choix, ch.libelle, ch.est_correct "
                 + "FROM qcm as qc "
-                + "INNER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
+                + "LEFT OUTER JOIN question as qu ON qc.id_qcm = qu.id_qcm "
                 + "LEFT OUTER JOIN choix as ch ON qu.id_question = ch.id_question "
                 + "WHERE qc.id_qcm = ? "
                 + "ORDER BY id_question";
